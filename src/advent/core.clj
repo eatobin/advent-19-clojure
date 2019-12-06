@@ -9,3 +9,5 @@
                    (into [])
                    (map #(- (quot % 3) 2))
                    (reduce +)))
+
+(max (- (quot 5 3) 2) 0)
