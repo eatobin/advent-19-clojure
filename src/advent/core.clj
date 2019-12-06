@@ -11,3 +11,10 @@
                    (reduce +)))
 
 (max (- (quot 5 3) 2) 0)
+
+(def gas-plus
+  (fn [m]
+    (loop [m m]
+       (if (pos? m)
+          (recur (max (- (quot m 3) 2) 0))
+          m))))
