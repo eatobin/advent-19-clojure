@@ -12,9 +12,17 @@
 
 (max (- (quot 5 3) 2) 0)
 
-(def gas-plus
-  (fn [m]
-    (loop [m m]
-       (if (pos? m)
-          (recur (max (- (quot m 3) 2) 0))
-          m))))
+;; (def gas-plus
+;;   (fn [m]
+;;     (loop [m m]
+;;        (if (pos? m)
+;;           (recur (max (- (quot m 3) 2) 0))
+;;           m))))
+
+(defn gas-plus [module]
+  (loop [m module
+         new-gas (max (- (quot m 3) 2) 0)
+         acc module]
+    (if pos? (new-gas)
+        (recur
+         module))))
