@@ -12,3 +12,26 @@
                   (into [])
                   (map gas)
                   (reduce +)))
+
+;; 3337766
+
+(defn gas-plus [module]
+  (loop [m module
+         acc 0]
+    (let [new-gas (max (- (quot m 3) 2) 0)]
+      (if (pos? new-gas)
+        (recur
+         new-gas
+         (+ acc new-gas))
+        acc))))
+
+(def modules-gas-sum (->>
+                      "modules.txt"
+                      (slurp)
+                      (str/split-lines)
+                      (map #(Integer/parseInt %))
+                      (into [])
+                      (map gas-plus)
+                      (reduce +)))
+
+;; 5003788
