@@ -2,13 +2,15 @@
   (:require [clojure.string :as str]))
 
 (def modules-sum (->>
-                   "modules.txt"
-                   (slurp)
-                   (str/split-lines)
-                   (map #(Integer/parseInt %))
-                   (into [])
-                   (map #(- (quot % 3) 2))
-                   (reduce +)))
+                  "modules.txt"
+                  (slurp)
+                  (str/split-lines)
+                  (map #(Integer/parseInt %))
+                  (into [])
+                  (map #(- (quot % 3) 2))
+                  (reduce +)))
+
+;; 3337766
 
 (max (- (quot 5 3) 2) 0)
 
@@ -18,15 +20,17 @@
     (let [new-gas (max (- (quot m 3) 2) 0)]
       (if (pos? new-gas)
         (recur
-          new-gas
-          (+ acc new-gas))
+         new-gas
+         (+ acc new-gas))
         acc))))
 
 (def modules-gas-sum (->>
-                       "modules.txt"
-                       (slurp)
-                       (str/split-lines)
-                       (map #(Integer/parseInt %))
-                       (into [])
-                       (map gas-plus)
-                       (reduce +)))
+                      "modules.txt"
+                      (slurp)
+                      (str/split-lines)
+                      (map #(Integer/parseInt %))
+                      (into [])
+                      (map gas-plus)
+                      (reduce +)))
+
+;; 5003788
