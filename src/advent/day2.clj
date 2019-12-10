@@ -8,8 +8,12 @@
                         (csv/read-csv reader))))
              (map #(Integer/parseInt %))
              (into [])))
-(def pos1 (assoc tv 1 12))
-(def pos2 (assoc pos1 2 2))
+
+(def update-pos
+  (->
+    tv
+    (assoc 1 12)
+    (assoc 2 2)))
 
 (defn int-code [ic]
   (loop [offset 0
@@ -24,7 +28,7 @@
             (+ 4 offset)
             (assoc ic (ic (+ 3 offset)) (* (ic (ic (+ 1 offset))) (ic (ic (+ 2 offset))))))))))
 
-(def fix-int-code (first (int-code pos2)))
+(def fix-int-code (first (int-code update-pos)))
 
 ;2890696
 
