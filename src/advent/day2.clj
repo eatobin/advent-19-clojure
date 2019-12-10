@@ -26,4 +26,6 @@
 
 (def fix-int-code (first (int-code pos2)))
 
+;2890696
+
 ;part b
