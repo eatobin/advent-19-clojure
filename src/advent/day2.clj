@@ -2,6 +2,7 @@
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]))
 
+;part a
 (def tv (->> (first (with-open [reader (io/reader "ic.csv")]
                       (doall
                         (csv/read-csv reader))))
@@ -24,3 +25,5 @@
             (assoc ic (ic (+ 3 offset)) (* (ic (ic (+ 1 offset))) (ic (ic (+ 2 offset))))))))))
 
 (def fix-int-code (first (int-code pos2)))
+
+;part b
