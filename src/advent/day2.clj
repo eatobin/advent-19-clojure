@@ -1,4 +1,12 @@
-(ns advent.day2)
+(ns advent.day2
+  (:require [clojure.data.csv :as csv]
+            [clojure.java.io :as io]))
+
+(def tv (->> (first (with-open [reader (io/reader "ic.csv")]
+                      (doall
+                        (csv/read-csv reader))))
+             (map #(Integer/parseInt %))
+             (into [])))
 
 (defn int-code [ic]
   (loop [offset 0
@@ -12,3 +20,5 @@
         2 (recur
             (+ 4 offset)
             (assoc ic (ic (+ 3 offset)) (* (ic (ic (+ 1 offset))) (ic (ic (+ 2 offset))))))))))
+
+(def fix-int-code (clojure.string/join "," (int-code tv)))
