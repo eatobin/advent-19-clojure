@@ -3,32 +3,32 @@
             [clojure.java.io :as io]))
 
 ;part a
-(def tv (->> (first (with-open [reader (io/reader "ic.csv")]
+(def tv (->> (first (with-open [reader (io/reader "memory.csv")]
                       (doall
                         (csv/read-csv reader))))
              (map #(Integer/parseInt %))
              (into [])))
 
-(def update-pos
+(def updated-address
   (->
     tv
     (assoc 1 12)
     (assoc 2 2)))
 
-(defn int-code [ic]
-  (loop [offset 0
-         ic ic]
-    (let [ops (ic (+ 0 offset))]
-      (case ops
-        99 ic
+(defn int-code [memory]
+  (loop [pointer 0
+         memory memory]
+    (let [instruction (memory (+ 0 pointer))]
+      (case instruction
+        99 memory
         1 (recur
-            (+ 4 offset)
-            (assoc ic (ic (+ 3 offset)) (+ (ic (ic (+ 1 offset))) (ic (ic (+ 2 offset))))))
+            (+ 4 pointer)
+            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
         2 (recur
-            (+ 4 offset)
-            (assoc ic (ic (+ 3 offset)) (* (ic (ic (+ 1 offset))) (ic (ic (+ 2 offset))))))))))
+            (+ 4 pointer)
+            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))))))
 
-(def fix-int-code (first (int-code update-pos)))
+(def fix-int-code (first (int-code updated-address)))
 
 ;2890696
 
