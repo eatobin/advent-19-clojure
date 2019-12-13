@@ -9,11 +9,11 @@
              (map #(Integer/parseInt %))
              (into [])))
 
-(def updated-address
+(defn updated-memory [noun verb]
   (->
     tv
-    (assoc 1 12)
-    (assoc 2 2)))
+    (assoc 1 noun)
+    (assoc 2 verb)))
 
 (defn int-code [memory]
   (loop [pointer 0
@@ -28,17 +28,11 @@
             (+ 4 pointer)
             (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))))))
 
-(def fix-int-code (first (int-code updated-address)))
+(def fix-int-code (first (int-code (updated-memory 12 2))))
 
 ;2890696
 
 ;part b
-(defn updated-memory [noun verb]
-  (->
-    tv
-    (assoc 1 noun)
-    (assoc 2 verb)))
-
 (def noun-verb
   (for [noun (range 0 100)
         verb (range 0 100)
