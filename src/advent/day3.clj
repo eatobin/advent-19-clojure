@@ -17,4 +17,30 @@
   (subs unit 0 1))
 
 (defn distance [unit]
-  (Integer/parseInt (subs unit 1)))
+  (inc (Integer/parseInt (subs unit 1))))
+
+(def red-path [[0 0]])
+
+(def blue-path [[0 0]])
+
+(into [] (concat red-path [[6 6] [9 6] 7]))
+
+(for [x (range 6)]
+  [x 0])
+
+(for [y (range 6)]
+  [0 y])
+
+(let [mystr "hello"]
+  (case mystr
+    "" 0
+    "hello" (count mystr)))
+
+(defn make-path [unit]
+  (let [direction (direction unit)
+        distance (distance unit)]
+    (into [] (case direction
+               "R" (for [x (range distance)]
+                     [x 0])
+               "U" (for [y (range distance)]
+                     [0 y])))))
