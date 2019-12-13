@@ -45,3 +45,5 @@
         :let [candidate (first (int-code (updated-memory noun verb)))]
         :when (= candidate 19690720)]
     [candidate noun verb (+ (* 100 noun) verb)]))
+
+;[19690720 82 26 8226]
