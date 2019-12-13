@@ -25,22 +25,15 @@
 
 (into [] (concat red-path [[6 6] [9 6] 7]))
 
-(for [x (range 6)]
-  [x 0])
-
-(for [y (range 6)]
-  [0 y])
-
-(let [mystr "hello"]
-  (case mystr
-    "" 0
-    "hello" (count mystr)))
-
-(defn make-path [unit]
+(defn make-path [unit [a b]]
   (let [direction (direction unit)
         distance (distance unit)]
     (into [] (case direction
-               "R" (for [x (range distance)]
-                     [x 0])
-               "U" (for [y (range distance)]
-                     [0 y])))))
+               "R" (for [x (range a (+ distance a))]
+                     [x b])
+               "U" (for [y (range b (+ distance b))]
+                     [a y])
+               "L" (for [x (range a (+ (- distance) a) -1)]
+                     [x b])
+               "D" (for [y (range b (+ (- distance) b) -1)]
+                     [a y])))))
