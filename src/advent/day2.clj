@@ -41,3 +41,16 @@
 (for [x (range 10 15)
       y (range 0 5)]
   (str "|" x "-" y "|"))
+
+(defn updated-memory [noun verb]
+  (->
+    tv
+    (assoc 1 noun)
+    (assoc 2 verb)))
+
+(def noun-verb
+  (for [noun (range 0 100)
+        verb (range 0 100)
+        :let [candidate (first (int-code (updated-memory noun verb)))]
+        :when (= candidate 19690720)]
+    [candidate noun verb]))
