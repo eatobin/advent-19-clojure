@@ -33,15 +33,6 @@
 ;2890696
 
 ;part b
-
-(for [c [:2 :3 :4 :5 :6 :7 :8 :9 :10 :J :Q :K :A]
-      s [:♠ :♥ :♣ :♦]]
-  [c s])
-
-(for [x (range 10 15)
-      y (range 0 5)]
-  (str "|" x "-" y "|"))
-
 (defn updated-memory [noun verb]
   (->
     tv
@@ -53,4 +44,4 @@
         verb (range 0 100)
         :let [candidate (first (int-code (updated-memory noun verb)))]
         :when (= candidate 19690720)]
-    [candidate noun verb]))
+    [candidate noun verb (+ (* 100 noun) verb)]))
