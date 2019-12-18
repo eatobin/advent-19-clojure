@@ -48,3 +48,8 @@
         (rest units)
         (last (make-path (first units) start))
         (into [] (concat path (rest (make-path (first units) start))))))))
+
+(def rs (into #{} (make-paths red [0 0])))
+(def bs (into #{} (make-paths blue [0 0])))
+(def urb (clojure.set/intersection bs rs))
+(count urb)
