@@ -3,7 +3,7 @@
             [clojure.java.io :as io]))
 
 ;part a
-(def both (with-open [reader (io/reader "paths.csv")]
+(def both (with-open [reader (io/reader "paths-test-2.csv")]
             (doall
               (csv/read-csv reader))))
 (def red (->> (first both)
@@ -18,12 +18,6 @@
 
 (defn distance [unit]
   (inc (Integer/parseInt (subs unit 1))))
-
-(def red-path [[0 0]])
-
-(def blue-path [[0 0]])
-
-(into [] (concat red-path [[6 6] [9 6] 7]))
 
 (defn make-path [unit [a b]]
   (let [direction (direction unit)
@@ -52,4 +46,8 @@
 (def rs (into #{} (make-paths red [0 0])))
 (def bs (into #{} (make-paths blue [0 0])))
 (def urb (clojure.set/intersection bs rs))
-(count urb)
+
+(defn abs-dist [[x y]]
+  (+ (Math/abs x) (Math/abs y)))
+(def abs-vals (map abs-dist (disj urb [0 0])))
+(def answer (apply min abs-vals))
