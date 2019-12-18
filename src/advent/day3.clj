@@ -3,7 +3,7 @@
             [clojure.java.io :as io]))
 
 ;part a
-(def both (with-open [reader (io/reader "paths-test-2.csv")]
+(def both (with-open [reader (io/reader "paths.csv")]
             (doall
               (csv/read-csv reader))))
 (def red (->> (first both)
