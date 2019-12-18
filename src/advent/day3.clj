@@ -37,3 +37,14 @@
                      [x b])
                "D" (for [y (range b (+ (- distance) b) -1)]
                      [a y])))))
+
+(defn make-paths [units start]
+  (loop [units units
+         start start
+         path [start]]
+    (if (empty? units)
+      path
+      (recur
+        (rest units)
+        (last (make-path (first units) start))
+        (into [] (concat path (rest (make-path (first units) start))))))))
