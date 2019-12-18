@@ -6,12 +6,12 @@
 (def both (with-open [reader (io/reader "paths.csv")]
             (doall
               (csv/read-csv reader))))
+
 (def red (->> (first both)
               (into [])))
 
 (def blue (->> (second both)
                (into [])))
-
 
 (defn direction [unit]
   (subs unit 0 1))
@@ -43,11 +43,13 @@
         (last (make-path (first units) start))
         (into [] (concat path (rest (make-path (first units) start))))))))
 
-(def rs (into #{} (make-paths red [0 0])))
-(def bs (into #{} (make-paths blue [0 0])))
-(def urb (clojure.set/intersection bs rs))
-
 (defn abs-dist [[x y]]
   (+ (Math/abs x) (Math/abs y)))
-(def abs-vals (map abs-dist (disj urb [0 0])))
-(def answer (apply min abs-vals))
+
+(def answer
+  (let [red-set (into #{} (make-paths red [0 0]))
+        blue-set (into #{} (make-paths blue [0 0]))
+        red-blue-intersect (clojure.set/intersection red-set blue-set)]
+    (apply min (map abs-dist (disj red-blue-intersect [0 0])))))
+
+;2193
