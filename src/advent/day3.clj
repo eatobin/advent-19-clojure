@@ -55,7 +55,7 @@
 ;2193
 
 ;part b
-(defn count-make-path [unit start]
-  (let [path (make-path unit start)
-        jumps (dec (count path))]
-    (into [] (concat path [jumps]))))
+(defn count-make-paths [units start]
+  (let [paths (make-paths units start)
+        jumps (dec (count paths))]
+    (into [] (concat paths [jumps]))))
