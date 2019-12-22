@@ -3,7 +3,7 @@
             [clojure.java.io :as io]))
 
 ;part a
-(def both (with-open [reader (io/reader "paths.csv")]
+(def both (with-open [reader (io/reader "paths-test-1.csv")]
             (doall
               (csv/read-csv reader))))
 
@@ -55,6 +55,11 @@
 ;2193
 
 ;part b
+(defn count-make-path [unit start]
+  (let [path (make-path unit start)
+        jumps (dec (count path))]
+    (into [] (concat path [jumps]))))
+
 (defn count-make-paths [units start]
   (let [paths (make-paths units start)
         jumps (dec (count paths))]
