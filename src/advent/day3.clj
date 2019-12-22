@@ -53,3 +53,9 @@
     (apply min (map abs-dist (disj red-blue-intersect [0 0])))))
 
 ;2193
+
+;part b
+(defn count-make-path [unit start]
+  (let [path (make-path unit start)
+        jumps (dec (count path))]
+    (into [] (concat path [jumps]))))
