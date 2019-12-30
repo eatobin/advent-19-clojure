@@ -59,12 +59,15 @@
 ;2193
 
 ;part b
-(defn count-make-path [unit start]
-  (let [path (make-path unit start)
-        jumps (dec (count path))]
-    (into [] (concat path [jumps]))))
-
-(defn count-make-paths [units start]
-  (let [paths (make-paths units start)
-        jumps (dec (count paths))]
-    (into [] (concat paths [jumps]))))
+(defn count-make-path [unit [a b]]
+  (let [direction (direction unit)
+        distance (distance unit)]
+    (into [] (case direction
+               "R" (for [x (range a (+ distance a))]
+                     [x b (- x a)])
+               "U" (for [y (range b (+ distance b))]
+                     [a y (- y b)])
+               "L" (for [x (range a (+ (- distance) a) -1)]
+                     [x b (- x a)])
+               "D" (for [y (range b (+ (- distance) b) -1)]
+                     [a y (- y b)])))))
