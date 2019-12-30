@@ -59,15 +59,19 @@
 ;2193
 
 ;part b
-(defn count-make-path [unit [a b]]
+(defn count-make-path [unit [a b] step]
   (let [direction (direction unit)
         distance (distance unit)]
     (into [] (case direction
-               "R" (for [x (range a (+ distance a))]
-                     [x b (- x a)])
-               "U" (for [y (range b (+ distance b))]
-                     [a y (- y b)])
-               "L" (for [x (range a (+ (- distance) a) -1)]
-                     [x b (- x a)])
-               "D" (for [y (range b (+ (- distance) b) -1)]
-                     [a y (- y b)])))))
+               "R" (for [x (range a (+ distance a))
+                         :let [ns (inc step)]]
+                     [x b ns])
+               "U" (for [y (range b (+ distance b))
+                         :let [ns (inc step)]]
+                     [a y ns])
+               "L" (for [x (range a (+ (- distance) a) -1)
+                         :let [ns (inc step)]]
+                     [x b ns])
+               "D" (for [y (range b (+ (- distance) b) -1)
+                         :let [ns (inc step)]]
+                     [a y ns])))))
