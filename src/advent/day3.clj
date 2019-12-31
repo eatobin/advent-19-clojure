@@ -3,13 +3,13 @@
             [clojure.java.io :as io]))
 
 ;part a
-;(def both (with-open [reader (io/reader "paths-test-1.csv")]
-;            (doall
-;              (csv/read-csv reader))))
-
-(def both (with-open [reader (io/reader "paths.csv")]
+(def both (with-open [reader (io/reader "paths-test-1.csv")]
             (doall
               (csv/read-csv reader))))
+
+;(def both (with-open [reader (io/reader "paths.csv")]
+;            (doall
+;              (csv/read-csv reader))))
 
 (def red (->> (first both)
               (into [])))
@@ -59,19 +59,15 @@
 ;2193
 
 ;part b
-(defn count-make-path [unit [a b] step]
+(defn count-make-path [unit [a b]]
   (let [direction (direction unit)
         distance (distance unit)]
     (into [] (case direction
-               "R" (for [x (range a (+ distance a))
-                         :let [ns (inc step)]]
-                     [x b ns])
-               "U" (for [y (range b (+ distance b))
-                         :let [ns (inc step)]]
-                     [a y ns])
-               "L" (for [x (range a (+ (- distance) a) -1)
-                         :let [ns (inc step)]]
-                     [x b ns])
-               "D" (for [y (range b (+ (- distance) b) -1)
-                         :let [ns (inc step)]]
-                     [a y ns])))))
+               "R" (for [x (range a (+ distance a))]
+                     [x b (Math/abs (- x a))])
+               "U" (for [y (range b (+ distance b))]
+                     [a y (Math/abs (- y b))])
+               "L" (for [x (range a (+ (- distance) a) -1)]
+                     [x b (Math/abs (- x a))])
+               "D" (for [y (range b (+ (- distance) b) -1)]
+                     [a y (Math/abs (- y b))])))))
