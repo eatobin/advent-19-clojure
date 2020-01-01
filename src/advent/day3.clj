@@ -59,15 +59,18 @@
 ;2193
 
 ;part b
-(defn count-make-path [unit [a b]]
-  (let [direction (direction unit)
-        distance (distance unit)]
-    (into [] (case direction
-               "R" (for [x (range a (+ distance a))]
-                     [x b (Math/abs (- x a))])
-               "U" (for [y (range b (+ distance b))]
-                     [a y (Math/abs (- y b))])
-               "L" (for [x (range a (+ (- distance) a) -1)]
-                     [x b (Math/abs (- x a))])
-               "D" (for [y (range b (+ (- distance) b) -1)]
-                     [a y (Math/abs (- y b))])))))
+(def blue-v (make-paths blue [0 0]))
+(def blue-v-i (map-indexed vector blue-v))
+(def red-v (make-paths red [0 0]))
+(def red-v-i (map-indexed vector red-v))
+
+;(def answer-2
+;  (apply min (into [] (rest (for [b blue-v-i
+;                                  r red-v-i
+;                                  :when (= (second b) (second r))
+;                                  :let [ts (+ (first b) (first r))]]
+;                              ts)))))
+(rest (for [[k v] red-v-i
+      hit red-blue-intersect
+      :when (= v hit)]
+  [k v]))
