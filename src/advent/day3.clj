@@ -3,13 +3,13 @@
             [clojure.java.io :as io]))
 
 ;part a
-(def both (with-open [reader (io/reader "paths-test-1.csv")]
-            (doall
-              (csv/read-csv reader))))
-
-;(def both (with-open [reader (io/reader "paths.csv")]
+;(def both (with-open [reader (io/reader "paths-test-2.csv")]
 ;            (doall
 ;              (csv/read-csv reader))))
+
+(def both (with-open [reader (io/reader "paths.csv")]
+            (doall
+              (csv/read-csv reader))))
 
 (def red (->> (first both)
               (into [])))
@@ -60,17 +60,28 @@
 
 ;part b
 (def blue-v (make-paths blue [0 0]))
-(def blue-v-i (map-indexed vector blue-v))
 (def red-v (make-paths red [0 0]))
+(def blue-set (into #{} blue-v))
+(def red-set (into #{} red-v))
+(def blue-v-i (map-indexed vector blue-v))
 (def red-v-i (map-indexed vector red-v))
+(def red-blue-intersect (clojure.set/intersection red-set blue-set))
 
-;(def answer-2
-;  (apply min (into [] (rest (for [b blue-v-i
-;                                  r red-v-i
-;                                  :when (= (second b) (second r))
-;                                  :let [ts (+ (first b) (first r))]]
-;                              ts)))))
-(rest (for [[k v] red-v-i
-      hit red-blue-intersect
-      :when (= v hit)]
-  [k v]))
+(def reds-k-v
+  (rest (for [[k v] red-v-i
+              hit red-blue-intersect
+              :when (= v hit)]
+          [k v])))
+
+(def blues-k-v
+  (rest (for [[k v] blue-v-i
+              hit red-blue-intersect
+              :when (= v hit)]
+          [k v])))
+
+(def answer-2 (apply min (for [[kr vr] reds-k-v
+                               [kb vb] blues-k-v
+                               :when (= vr vb)]
+                           (+ kr kb))))
+
+;63526
