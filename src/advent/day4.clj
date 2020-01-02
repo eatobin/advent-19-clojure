@@ -19,3 +19,7 @@
                          :when (and (increasing? c) (doubles? c))]
                      c)))
 ;=> 1246
+
+(defn explode [num]
+(for [n (str num)]
+                   (- (byte n) 48)))
