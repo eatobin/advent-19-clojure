@@ -9,25 +9,21 @@
 (defn increasing? [candidate]
   (apply <= (vec (explode candidate))))
 
-(defn doubles? [candidate]
-  (loop [v (explode candidate)]
-    (if (empty? v)
-      false
-      (if (= (first v) (second v))
-        true
-        (recur (rest v))))))
+(defn doubles-or-more [candidate]
+  (some #(<= 2 %)
+        (map count (partition-by identity (explode candidate)))))
 
 (def answer (count (for [c pass
-                         :when (and (increasing? c) (doubles? c))]
+                         :when (and (increasing? c) (doubles-or-more c))]
                      c)))
 ;=> 1246
 
-(defn double-present? [candidate]
+(defn doubles? [candidate]
   (some #(= 2 %)
         (map count (partition-by identity (explode candidate)))))
 
 (def answer-2 (count (for [c pass
-                         :when (and (increasing? c) (double-present? c))]
-                     c)))
+                           :when (and (increasing? c) (doubles? c))]
+                       c)))
 
 ;814
