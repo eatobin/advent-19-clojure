@@ -49,3 +49,27 @@
       true
       (recur (rest v)))))
 ;=> true
+
+(def pass (range 234208 765870))
+
+(for [n (str 123456)]
+  (- (byte n) 48))
+;=> (1 2 3 4 5 6)
+
+(loop [v (for [n (str 1234566)]
+           (- (byte n) 48))]
+  (if (empty? v)
+    false
+    (if (= (first v) (second v))
+      true
+      (recur (rest v)))))
+;=> true
+
+(defn doubles? [candidate]
+  (loop [v (for [n (str candidate)]
+             (- (byte n) 48))]
+    (if (empty? v)
+      false
+      (if (= (first v) (second v))
+        true
+        (recur (rest v))))))
