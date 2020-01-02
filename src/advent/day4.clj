@@ -5,6 +5,7 @@
 (defn increasing? [candidate]
   (apply <= (vec (for [n (str candidate)]
                    (- (byte n) 48)))))
+
 (defn doubles? [candidate]
   (loop [v (for [n (str candidate)]
              (- (byte n) 48))]
