@@ -2,13 +2,15 @@
 
 (def pass (range 234208 765870))
 
+(defn explode [num]
+  (for [n (str num)]
+    (- (byte n) 48)))
+
 (defn increasing? [candidate]
-  (apply <= (vec (for [n (str candidate)]
-                   (- (byte n) 48)))))
+  (apply <= (vec (explode candidate))))
 
 (defn doubles? [candidate]
-  (loop [v (for [n (str candidate)]
-             (- (byte n) 48))]
+  (loop [v (explode candidate)]
     (if (empty? v)
       false
       (if (= (first v) (second v))
@@ -19,7 +21,3 @@
                          :when (and (increasing? c) (doubles? c))]
                      c)))
 ;=> 1246
-
-(defn explode [num]
-(for [n (str num)]
-                   (- (byte n) 48)))
