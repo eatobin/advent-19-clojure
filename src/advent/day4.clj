@@ -21,3 +21,13 @@
                          :when (and (increasing? c) (doubles? c))]
                      c)))
 ;=> 1246
+
+(defn double-present? [candidate]
+  (some #(= 2 %)
+        (map count (partition-by identity (explode candidate)))))
+
+(def answer-2 (count (for [c pass
+                         :when (and (increasing? c) (double-present? c))]
+                     c)))
+
+;814
