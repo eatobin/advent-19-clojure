@@ -73,3 +73,7 @@
       (if (= (first v) (second v))
         true
         (recur (rest v))))))
+
+(defn increasing? [candidate]
+  (apply <= (vec (for [n (str candidate)]
+                   (- (byte n) 48)))))
