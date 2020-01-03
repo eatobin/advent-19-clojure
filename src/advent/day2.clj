@@ -15,7 +15,7 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
-(defn int-code [memory]
+(defn op-code [memory]
   (loop [pointer 0
          memory memory]
     (let [instruction (memory (+ 0 pointer))]
@@ -28,7 +28,7 @@
             (+ 4 pointer)
             (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))))))
 
-(def fix-int-code (first (int-code (updated-memory 12 2))))
+(def fix-op-code (first (op-code (updated-memory 12 2))))
 
 ;2890696
 
@@ -36,7 +36,7 @@
 (def noun-verb
   (for [noun (range 0 100)
         verb (range 0 100)
-        :let [candidate (first (int-code (updated-memory noun verb)))]
+        :let [candidate (first (op-code (updated-memory noun verb)))]
         :when (= candidate 19690720)]
     [candidate noun verb (+ (* 100 noun) verb)]))
 
