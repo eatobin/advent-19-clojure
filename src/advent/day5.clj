@@ -13,10 +13,11 @@
 
 (defn op-code [input memory]
   (loop [pointer 0
-         memory memory]
+         memory memory
+         exit-code 999]
     (let [instruction (memory (+ 0 pointer))]
       (case instruction
-        1101 memory
+        1101 exit-code
         1 (recur
             (+ 4 pointer)
             (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
