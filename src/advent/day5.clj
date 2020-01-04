@@ -26,3 +26,7 @@
         3 (recur
             (+ 2 pointer)
             (assoc memory (memory (inc pointer)) input))))))
+
+(defn explode-2 [num]
+  (for [n (format "%05d" num)]
+    (- (byte n) 48)))
