@@ -36,6 +36,12 @@
             memory
             (memory (inc pointer)))))))
 
-(defn explode-2 [num]
-  (for [n (format "%05d" num)]
-    (- (byte n) 48)))
+(defn explode [num]
+  (vec (for [n (format "%05d" num)]
+         (- (byte n) 48))))
+
+(defn op [number]
+  (->
+    number
+    explode
+    (last)))
