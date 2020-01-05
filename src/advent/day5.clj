@@ -10,6 +10,7 @@
              (into [])))
 
 (def tester [3 7 1 7 6 6 1100 0])
+(def tester-2 [3 0 4 0 1101])
 
 (defn op-code [input memory]
   (loop [pointer 0
@@ -29,7 +30,11 @@
         3 (recur
             (+ 2 pointer)
             (assoc memory (memory (inc pointer)) input)
-            999)))))
+            999)
+        4 (recur
+            (+ 2 pointer)
+            memory
+            (memory (inc pointer)))))))
 
 (defn explode-2 [num]
   (for [n (format "%05d" num)]
