@@ -20,13 +20,16 @@
         1101 exit-code
         1 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
+            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
+            999)
         2 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
+            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
+            999)
         3 (recur
             (+ 2 pointer)
-            (assoc memory (memory (inc pointer)) input))))))
+            (assoc memory (memory (inc pointer)) input)
+            999)))))
 
 (defn explode-2 [num]
   (for [n (format "%05d" num)]
