@@ -44,12 +44,12 @@
   (->
     number
     explode
-    (last)))
+    last))
 
 (defn mode-rev [number]
   (->
     number
     explode
     (subvec 0 3)
-    (reverse)
+    reverse
     vec))
