@@ -45,3 +45,11 @@
     number
     explode
     (last)))
+
+(defn mode-rev [number]
+  (->
+    number
+    explode
+    (subvec 0 3)
+    (reverse)
+    vec))
