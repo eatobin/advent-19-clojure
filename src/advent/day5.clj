@@ -9,32 +9,9 @@
              (map #(Integer/parseInt %))
              (into [])))
 
-(def tester [3 7 1 7 6 6 1100 0])
-(def tester-2 [3 0 4 0 1101])
-
-;(defn op-code [input memory]
-;  (loop [pointer 0
-;         memory memory
-;         exit-code 999]
-;    (let [instruction (memory (+ 0 pointer))]
-;      (case instruction
-;        1101 exit-code
-;        1 (recur
-;            (+ 4 pointer)
-;            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-;            999)
-;        2 (recur
-;            (+ 4 pointer)
-;            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-;            999)
-;        3 (recur
-;            (+ 2 pointer)
-;            (assoc memory (memory (inc pointer)) input)
-;            999)
-;        4 (recur
-;            (+ 2 pointer)
-;            memory
-;            (memory (inc pointer)))))))
+(def ex1 [3 0 4 0 99])
+(def ex2 [3 0 104 63 99])
+(def ex3 [1002 4 3 4 33])
 
 (defn op-code [input memory]
   (loop [pointer 0
@@ -46,58 +23,48 @@
         1 (recur
             (+ 4 pointer)
             (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            999)
+            0)
         101 (recur
               (+ 4 pointer)
               (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              999)
+              0)
         1001 (recur
                (+ 4 pointer)
                (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               999)
+               0)
         1101 (recur
                (+ 4 pointer)
                (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               999)
+               0)
         2 (recur
             (+ 4 pointer)
             (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            999)
+            0)
         102 (recur
               (+ 4 pointer)
               (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              999)
+              0)
         1002 (recur
                (+ 4 pointer)
                (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               999)
+               0)
         1102 (recur
                (+ 4 pointer)
                (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               999)
+               0)
         3 (recur
             (+ 2 pointer)
-            (assoc memory (memory (inc pointer)) input)
-            999)
+            (assoc memory (memory (+ 1 pointer)) input)
+            0)
         4 (recur
             (+ 2 pointer)
             memory
-            (memory (inc pointer)))))))
+            (memory (memory (+ 1 pointer))))
+        104 (recur
+              (+ 2 pointer)
+              memory
+              (memory (+ 1 pointer)))))))
 
-;(defn explode [num]
-;  (vec (for [n (format "%05d" num)]
-;         (- (byte n) 48))))
-;
-;(defn op [number]
-;  (->
-;    number
-;    explode
-;    last))
-;
-;(defn mode-rev [number]
-;  (->
-;    number
-;    explode
-;    (subvec 0 3)
-;    reverse
-;    vec))
+(def answer (op-code 1 tv))
+
+;9025675
