@@ -39,7 +39,7 @@
 (defn op-code [input memory]
   (loop [pointer 0
          memory memory
-         exit-code 999]
+         exit-code nil]
     (let [instruction (memory (+ 0 pointer))]
       (case instruction
         99 exit-code
@@ -63,6 +63,18 @@
             (+ 4 pointer)
             (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
             999)
+        102 (recur
+              (+ 4 pointer)
+              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
+              999)
+        1002 (recur
+               (+ 4 pointer)
+               (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
+               999)
+        1102 (recur
+               (+ 4 pointer)
+               (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (+ 2 pointer))))
+               999)
         3 (recur
             (+ 2 pointer)
             (assoc memory (memory (inc pointer)) input)
