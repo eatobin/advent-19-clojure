@@ -65,7 +65,7 @@
 ;              memory
 ;              (memory (+ 1 pointer)))))))
 
-(def answer (op-code 1 tv))
+;(def answer (op-code 1 tv))
 
 ;9025675
 
@@ -173,6 +173,12 @@
         7 (recur
             (+ 4 pointer)
             (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            exit-code)))))
+              (assoc memory (memory (memory (+ 3 pointer))) 1)
+              (assoc memory (memory (memory (+ 3 pointer))) 0))
+            exit-code)
+        107 (recur
+              (+ 4 pointer)
+              (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
+                (assoc memory (memory (memory (+ 3 pointer))) 1)
+                (assoc memory (memory (memory (+ 3 pointer))) 0))
+              exit-code)))))
