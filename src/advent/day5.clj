@@ -169,4 +169,10 @@
                   (+ 3 pointer)
                   (memory (+ 2 pointer))))
                memory
-               exit-code)))))
+               exit-code)
+        7 (recur
+            (+ 4 pointer)
+            (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+              (assoc memory (memory (+ 3 pointer)) 1)
+              (assoc memory (memory (+ 3 pointer)) 0))
+            exit-code)))))
