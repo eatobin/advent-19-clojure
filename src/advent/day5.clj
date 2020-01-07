@@ -135,8 +135,14 @@
               memory
               exit-code)
         1005 (recur
-              ((if (= 0 (memory (memory (+ 1 pointer))))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer))))
-              memory
-              exit-code)))))
+               ((if (= 0 (memory (memory (+ 1 pointer))))
+                  (+ 3 pointer)
+                  (memory (+ 2 pointer))))
+               memory
+               exit-code)
+        1105 (recur
+               ((if (= 0 (memory (+ 1 pointer)))
+                  (+ 3 pointer)
+                  (memory (+ 2 pointer))))
+               memory
+               exit-code)))))
