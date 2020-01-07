@@ -17,12 +17,18 @@
   (loop [pointer 0
          memory memory
          exit-code 0]
-    (let [instruction (memory (+ 0 pointer))]
+    (let [instruction (memory (+ 0 pointer))
+          pm1 (memory (+ 1 pointer))
+          im1 (+ 1 pointer)
+          pm2 (memory (+ 2 pointer))
+          im2 (+ 2 pointer)
+          pm3 (memory (+ 3 pointer))
+          im3 (+ 3 pointer)]
       (case instruction
         99 exit-code
         1 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory (memory (+ 2 pointer)))))
             exit-code)
         101 (recur
               (+ 4 pointer)
@@ -30,7 +36,7 @@
               exit-code)
         1001 (recur
                (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
+               (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory (+ 2 pointer))))
                exit-code)
         1101 (recur
                (+ 4 pointer)
@@ -38,7 +44,7 @@
                exit-code)
         2 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory (memory (+ 2 pointer)))))
             exit-code)
         102 (recur
               (+ 4 pointer)
@@ -46,7 +52,7 @@
               exit-code)
         1002 (recur
                (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
+               (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory (+ 2 pointer))))
                exit-code)
         1102 (recur
                (+ 4 pointer)
@@ -59,7 +65,7 @@
         4 (recur
             (+ 2 pointer)
             memory
-            (memory (memory (+ 1 pointer))))
+            (memory pm1))
         104 (recur
               (+ 2 pointer)
               memory
@@ -75,12 +81,18 @@
   (loop [pointer 0
          memory memory
          exit-code 0]
-    (let [instruction (memory (+ 0 pointer))]
+    (let [instruction (memory (+ 0 pointer))
+          pm1 (memory (+ 1 pointer))
+          im1 (+ 1 pointer)
+          pm2 (memory (+ 2 pointer))
+          im2 (+ 2 pointer)
+          pm3 (memory (+ 3 pointer))
+          im3 (+ 3 pointer)]
       (case instruction
         99 exit-code
         1 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory (memory (+ 2 pointer)))))
             exit-code)
         101 (recur
               (+ 4 pointer)
@@ -88,7 +100,7 @@
               exit-code)
         1001 (recur
                (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
+               (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory (+ 2 pointer))))
                exit-code)
         1101 (recur
                (+ 4 pointer)
@@ -96,7 +108,7 @@
                exit-code)
         2 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory (memory (+ 2 pointer)))))
             exit-code)
         102 (recur
               (+ 4 pointer)
@@ -104,7 +116,7 @@
               exit-code)
         1002 (recur
                (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
+               (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory (+ 2 pointer))))
                exit-code)
         1102 (recur
                (+ 4 pointer)
@@ -117,13 +129,13 @@
         4 (recur
             (+ 2 pointer)
             memory
-            (memory (memory (+ 1 pointer))))
+            (memory pm1))
         104 (recur
               (+ 2 pointer)
               memory
               (memory (+ 1 pointer)))
         5 (recur
-            (if (= 0 (memory (memory (+ 1 pointer))))
+            (if (= 0 (memory pm1))
               (+ 3 pointer)
               (memory (memory (+ 2 pointer))))
             memory
@@ -135,7 +147,7 @@
               memory
               exit-code)
         1005 (recur
-               (if (= 0 (memory (memory (+ 1 pointer))))
+               (if (= 0 (memory pm1))
                  (+ 3 pointer)
                  (memory (+ 2 pointer)))
                memory
@@ -147,7 +159,7 @@
                memory
                exit-code)
         6 (recur
-            (if (not= 0 (memory (memory (+ 1 pointer))))
+            (if (not= 0 (memory pm1))
               (+ 3 pointer)
               (memory (memory (+ 2 pointer))))
             memory
@@ -159,7 +171,7 @@
               memory
               exit-code)
         1006 (recur
-               (if (not= 0 (memory (memory (+ 1 pointer))))
+               (if (not= 0 (memory pm1))
                  (+ 3 pointer)
                  (memory (+ 2 pointer)))
                memory
@@ -172,7 +184,7 @@
                exit-code)
         7 (recur
             (+ 4 pointer)
-            (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+            (if (< (memory pm1) (memory (memory (+ 2 pointer))))
               (assoc memory (memory (memory (+ 3 pointer))) 1)
               (assoc memory (memory (memory (+ 3 pointer))) 0))
             exit-code)
