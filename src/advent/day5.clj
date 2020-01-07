@@ -145,4 +145,28 @@
                   (+ 3 pointer)
                   (memory (+ 2 pointer))))
                memory
+               exit-code)
+        6 (recur
+            ((if (not= 0 (memory (memory (+ 1 pointer))))
+               (+ 3 pointer)
+               (memory (memory (+ 2 pointer)))))
+            memory
+            exit-code)
+        106 (recur
+              ((if (not= 0 (memory (+ 1 pointer)))
+                 (+ 3 pointer)
+                 (memory (memory (+ 2 pointer)))))
+              memory
+              exit-code)
+        1006 (recur
+               ((if (not= 0 (memory (memory (+ 1 pointer))))
+                  (+ 3 pointer)
+                  (memory (+ 2 pointer))))
+               memory
+               exit-code)
+        1106 (recur
+               ((if (not= 0 (memory (+ 1 pointer)))
+                  (+ 3 pointer)
+                  (memory (+ 2 pointer))))
+               memory
                exit-code)))))
