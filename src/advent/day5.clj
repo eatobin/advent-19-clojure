@@ -28,11 +28,11 @@
         99 exit-code
         1 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory pm2)))
             exit-code)
         101 (recur
               (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
+              (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory pm2)))
               exit-code)
         1001 (recur
                (+ 4 pointer)
@@ -44,11 +44,11 @@
                exit-code)
         2 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory pm2)))
             exit-code)
         102 (recur
               (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
+              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory pm2)))
               exit-code)
         1002 (recur
                (+ 4 pointer)
@@ -92,11 +92,11 @@
         99 exit-code
         1 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (+ (memory pm1) (memory pm2)))
             exit-code)
         101 (recur
               (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
+              (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory pm2)))
               exit-code)
         1001 (recur
                (+ 4 pointer)
@@ -108,11 +108,11 @@
                exit-code)
         2 (recur
             (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory (memory (+ 2 pointer)))))
+            (assoc memory (memory (+ 3 pointer)) (* (memory pm1) (memory pm2)))
             exit-code)
         102 (recur
               (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
+              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory pm2)))
               exit-code)
         1002 (recur
                (+ 4 pointer)
@@ -137,13 +137,13 @@
         5 (recur
             (if (= 0 (memory pm1))
               (+ 3 pointer)
-              (memory (memory (+ 2 pointer))))
+              (memory pm2))
             memory
             exit-code)
         105 (recur
               (if (= 0 (memory (+ 1 pointer)))
                 (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
+                (memory pm2))
               memory
               exit-code)
         1005 (recur
@@ -161,13 +161,13 @@
         6 (recur
             (if (not= 0 (memory pm1))
               (+ 3 pointer)
-              (memory (memory (+ 2 pointer))))
+              (memory pm2))
             memory
             exit-code)
         106 (recur
               (if (not= 0 (memory (+ 1 pointer)))
                 (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
+                (memory pm2))
               memory
               exit-code)
         1006 (recur
@@ -184,13 +184,13 @@
                exit-code)
         7 (recur
             (+ 4 pointer)
-            (if (< (memory pm1) (memory (memory (+ 2 pointer))))
+            (if (< (memory pm1) (memory pm2))
               (assoc memory (memory (memory (+ 3 pointer))) 1)
               (assoc memory (memory (memory (+ 3 pointer))) 0))
             exit-code)
         107 (recur
               (+ 4 pointer)
-              (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
+              (if (< (memory (+ 1 pointer)) (memory pm2))
                 (assoc memory (memory (memory (+ 3 pointer))) 1)
                 (assoc memory (memory (memory (+ 3 pointer))) 0))
               exit-code)))))
