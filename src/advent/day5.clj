@@ -193,3 +193,5 @@
                 (assoc memory (memory pm3) 1)
                 (assoc memory (memory pm3) 0))
               exit-code)))))
+
+(def answer-2 (op-code-2 1 tv))
