@@ -19,11 +19,8 @@
          exit-code 0]
     (let [instruction (memory (+ 0 pointer))
           pm1 (memory (+ 1 pointer))
-          im1 (+ 1 pointer)
           pm2 (memory (+ 2 pointer))
-          im2 (+ 2 pointer)
-          pm3 (memory (+ 3 pointer))
-          im3 (+ 3 pointer)]
+          pm3 (memory (+ 3 pointer))]
       (case instruction
         99 exit-code
         1 (recur
