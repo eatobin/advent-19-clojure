@@ -76,6 +76,8 @@
 
 ;part b
 
+(def ex44 [5 2 0 4 0 99])
+
 (defn op-code-2 [input memory]
   (loop [pointer 0
          memory memory
@@ -228,12 +230,57 @@
                 (if (< (memory im1) (memory im2))
                   (assoc memory (memory im3) 1)
                   (assoc memory (memory im3) 0))
+                exit-code)
+        8 (recur
+            (+ 4 pointer)
+            (if (= (memory pm1) (memory pm2))
+              (assoc memory (memory pm3) 1)
+              (assoc memory (memory pm3) 0))
+            exit-code)
+        108 (recur
+              (+ 4 pointer)
+              (if (= (memory im1) (memory pm2))
+                (assoc memory (memory pm3) 1)
+                (assoc memory (memory pm3) 0))
+              exit-code)
+        1008 (recur
+               (+ 4 pointer)
+               (if (= (memory pm1) (memory im2))
+                 (assoc memory (memory pm3) 1)
+                 (assoc memory (memory pm3) 0))
+               exit-code)
+        1108 (recur
+               (+ 4 pointer)
+               (if (= (memory im1) (memory im2))
+                 (assoc memory (memory pm3) 1)
+                 (assoc memory (memory pm3) 0))
+               exit-code)
+        10008 (recur
+                (+ 4 pointer)
+                (if (= (memory pm1) (memory pm2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
+                exit-code)
+        10108 (recur
+                (+ 4 pointer)
+                (if (= (memory im1) (memory pm2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
+                exit-code)
+        11008 (recur
+                (+ 4 pointer)
+                (if (= (memory pm1) (memory im2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
+                exit-code)
+        11108 (recur
+                (+ 4 pointer)
+                (if (= (memory im1) (memory im2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
                 exit-code)))))
 
-
-
-
-(def answer-2 (op-code-2 1 tv))
+(def answer-2 (op-code-2 0 ex44))
 
 ;(defn instruction [n]
 ;  (mod n 100))
