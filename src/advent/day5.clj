@@ -192,6 +192,60 @@
               (if (< (memory im1) (memory pm2))
                 (assoc memory (memory pm3) 1)
                 (assoc memory (memory pm3) 0))
-              exit-code)))))
+              exit-code)
+        1007 (recur
+               (+ 4 pointer)
+               (if (< (memory pm1) (memory im2))
+                 (assoc memory (memory pm3) 1)
+                 (assoc memory (memory pm3) 0))
+               exit-code)
+        1107 (recur
+               (+ 4 pointer)
+               (if (< (memory im1) (memory im2))
+                 (assoc memory (memory pm3) 1)
+                 (assoc memory (memory pm3) 0))
+               exit-code)
+        10007 (recur
+                (+ 4 pointer)
+                (if (< (memory pm1) (memory pm2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
+                exit-code)
+        10107 (recur
+                (+ 4 pointer)
+                (if (< (memory im1) (memory pm2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
+                exit-code)
+        11007 (recur
+                (+ 4 pointer)
+                (if (< (memory pm1) (memory im2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
+                exit-code)
+        11107 (recur
+                (+ 4 pointer)
+                (if (< (memory im1) (memory im2))
+                  (assoc memory (memory im3) 1)
+                  (assoc memory (memory im3) 0))
+                exit-code)))))
+
+
+
 
 (def answer-2 (op-code-2 1 tv))
+
+;(defn instruction [n]
+;  (mod n 100))
+;
+;(defn modes [n]
+;  (quot n 100))
+;
+;(defn param-1 [n]
+;  (mod (modes n) 10))
+;
+;(defn param-2 [n]
+;  (mod (modes n) 100))
+;
+;(defn param-3 [n]
+;  (mod (modes n) 1000))
