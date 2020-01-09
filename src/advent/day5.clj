@@ -121,6 +121,12 @@
             (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
               (assoc memory (memory (+ 3 pointer)) 1)
               (assoc memory (memory (+ 3 pointer)) 0))
+            exit-code)
+        7 (recur
+            (+ 4 pointer)
+            (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+              (assoc memory (memory (+ 3 pointer)) 1)
+              (assoc memory (memory (+ 3 pointer)) 0))
             exit-code)))))
 
 ;(def answer (op-code 1 tv))
@@ -279,26 +285,26 @@
 ;        8 (recur
 ;            (+ 4 pointer)
 ;            (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-;              (assoc memory (memory (memory (+ 3 pointer))) 1)
-;              (assoc memory (memory (memory (+ 3 pointer))) 0))
+;              (assoc memory (memory (+ 3 pointer)) 1)
+;              (assoc memory (memory (+ 3 pointer)) 0))
 ;            exit-code)
 ;        108 (recur
 ;              (+ 4 pointer)
 ;              (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-;                (assoc memory (memory (memory (+ 3 pointer))) 1)
-;                (assoc memory (memory (memory (+ 3 pointer))) 0))
+;                (assoc memory (memory (+ 3 pointer)) 1)
+;                (assoc memory (memory (+ 3 pointer)) 0))
 ;              exit-code)
 ;        1008 (recur
 ;               (+ 4 pointer)
 ;               (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-;                 (assoc memory (memory (memory (+ 3 pointer))) 1)
-;                 (assoc memory (memory (memory (+ 3 pointer))) 0))
+;                 (assoc memory (memory (+ 3 pointer)) 1)
+;                 (assoc memory (memory (+ 3 pointer)) 0))
 ;               exit-code)
 ;        1108 (recur
 ;               (+ 4 pointer)
 ;               (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-;                 (assoc memory (memory (memory (+ 3 pointer))) 1)
-;                 (assoc memory (memory (memory (+ 3 pointer))) 0))
+;                 (assoc memory (memory (+ 3 pointer)) 1)
+;                 (assoc memory (memory (+ 3 pointer)) 0))
 ;               exit-code)
 ;        10008 (recur
 ;                (+ 4 pointer)
@@ -328,6 +334,7 @@
 ;(def answer-2 (op-code-2 5 tv))
 ;(def jump-if-true [5 2 0 4 0 99])
 (def xx [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8])
+(def yy [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8])
 ;(defn instruction [n]
 ;  (mod n 100))
 ;
