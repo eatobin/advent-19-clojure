@@ -13,24 +13,24 @@ E)J
 J)K
 K)L")
 
-;(def tester "COM)C
-;B)D
-;C)F
-;B)E
-;COM)B")
-
-;(def orbits (->>
-;              tester
-;              (str/split-lines)
-;              (map #(str/split % #"\)"))
-;              (sort-by second)))
+;; (def tester "COM)C
+;; B)D
+;; C)F
+;; B)E
+;; COM)B")
 
 (def orbits (->>
-              "day6.txt"
-              (slurp)
-              (str/split-lines)
-              (map #(str/split % #"\)"))
-              (sort-by second)))
+             tester
+             (str/split-lines)
+             (map #(str/split % #"\)"))
+             (sort-by second)))
+
+;; (def orbits (->>
+;;               "day6.txt"
+;;               (slurp)
+;;               (str/split-lines)
+;;               (map #(str/split % #"\)"))
+;;               (sort-by second)))
 
 (def my-parents (group-by first (for [[i1 o1] orbits
                                       [i2 o2] orbits
