@@ -1,29 +1,29 @@
 (ns advent.day6
   (:require [clojure.string :as str]))
 
-(def tester "COM)B
-B)C
-C)D
-D)E
-E)F
-B)G
-G)H
-D)I
-E)J
-J)K
-K)L")
+;(def tester "COM)B
+;B)C
+;C)D
+;D)E
+;E)F
+;B)G
+;G)H
+;D)I
+;E)J
+;J)K
+;K)L")
 
-;; (def tester "COM)C
-;; B)D
-;; C)F
-;; B)E
-;; COM)B")
+(def tester "COM)C
+B)D
+C)F
+B)E
+COM)B")
 
 (def orbits (->>
-             tester
-             (str/split-lines)
-             (map #(str/split % #"\)"))
-             (sort-by second)))
+              tester
+              (str/split-lines)
+              (map #(str/split % #"\)"))
+              (sort-by second)))
 
 ;; (def orbits (->>
 ;;               "day6.txt"
