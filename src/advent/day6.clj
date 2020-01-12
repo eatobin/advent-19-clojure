@@ -13,11 +13,11 @@
 ;J)K
 ;K)L")
 
-(def tester "COM)C
+(def tester "A)C
 B)D
 C)F
 B)E
-COM)B")
+A)B")
 
 (def orbits (->>
               tester
@@ -32,14 +32,10 @@ COM)B")
 ;;               (map #(str/split % #"\)"))
 ;;               (sort-by second)))
 
-(def my-parents (group-by first (for [[i1 o1] orbits
-                                      [i2 o2] orbits
-                                      :when (= o1 i2)]
-                                  [o1 o2])))
+(def parent-levels (sort-by first (group-by first (for [[p1 c1] orbits
+                                                        [p2 c2] orbits
+                                                        :when (= c1 p2)]
+                                                    [c1 c2]))))
 
 
-(def branches (for [[k v] my-parents
-                    :when (> (count v) 1)]
-                [k v]))
-
-(def branch-count (count branches))
+(def x (* (inc (first (first (map-indexed vector parent-levels)))) (count (second (second (first (map-indexed vector parent-levels)))))))
