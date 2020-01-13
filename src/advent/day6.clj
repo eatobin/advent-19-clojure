@@ -33,11 +33,11 @@ C)F")
 ;;               (sort-by second)))
 
 (loop [orbits [["A" "B"] ["A" "C"]]
-       generation 0
+       generation 1
        sibling "A"
        kids []]
   (if (empty? orbits)
-    [(inc generation) kids]
+    [generation kids]
     (recur
       (rest orbits)
       (if (= (first (first orbits)) sibling)
