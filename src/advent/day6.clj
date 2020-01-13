@@ -13,17 +13,17 @@
 ;J)K
 ;K)L")
 
-(def tester "A)C
+(def tester "A)B
+A)C
 B)D
-C)F
 B)E
-A)B")
+C)F")
 
 (def orbits (->>
               tester
               (str/split-lines)
               (map #(str/split % #"\)"))
-              (sort-by second)))
+              (vec)))
 
 ;; (def orbits (->>
 ;;               "day6.txt"
@@ -32,25 +32,18 @@ A)B")
 ;;               (map #(str/split % #"\)"))
 ;;               (sort-by second)))
 
-;(def parent-levels (vec (sort-by first (group-by first (for [[p1 c1] orbits
-;                                                             [p2 c2] orbits
-;                                                             :when (= c1 p2)]
-;                                                         [c1 c2])))))
-
-(def parent-levels (vec (sort-by first (group-by first (for [[p1 c1] orbits
-                                                             [p2 c2] orbits
-                                                             :when (= p1 p2)]
-                                                         [p1 c1])))))
-
-(def indexed-pl (map-indexed vector parent-levels))
-
-
-(def x (* (inc (first (first (map-indexed vector parent-levels)))) (count (second (second (first (map-indexed vector parent-levels)))))))
-
-(loop [orbits orbits
-       parents (conj [] (first (first orbits)))
-       children []]
+(loop [orbits [["A" "B"] ["A" "C"]]
+       generation 0
+       sibling "A"
+       kids []]
   (if (empty? orbits)
-    children
-    (recur (rest orbits)
-           )))
+    [(inc generation) kids]
+    (recur
+      (rest orbits)
+      (if (= (first (first orbits)) sibling)
+        generation
+        (inc generation))
+      (first (first orbits))
+      (if (= (first (first orbits)) sibling)
+        (conj kids (second (first orbits)))
+        kids))))
