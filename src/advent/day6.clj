@@ -13,8 +13,8 @@
 ;J)K
 ;K)L")
 
-(def tester "A)B
-A)C
+(def tester "COM)B
+COM)C
 B)D
 B)E
 C)F")
@@ -33,7 +33,6 @@ C)F")
 ;;               (sort-by second)))
 
 (loop [orbits [["A" "B"] ["A" "C"]]
-       generation 1
        sibling "A"
        kids []]
   (if (empty? orbits)
