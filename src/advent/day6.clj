@@ -37,7 +37,8 @@ C)F")
   (some #(= % v) coll))
 
 (loop [orbits [[:com :a] [:com :b] [:a :y] [:b :me] [:com :j] [:me :you]]
-       parents [:com]]
+       parents [:com]
+       kids []]
   (if (empty? orbits)
     parents
     (recur
@@ -45,3 +46,13 @@ C)F")
       (if (parent? (first (first orbits)) parents)
         (conj parents (second (first orbits)))
         parents))))
+
+(loop [orbits []
+       generation 0
+       kids []
+       parents [:com]]
+  (if (empty? orbits)
+    [[generation parents]]
+    (let [new-kids (if (parent? (first (first orbits)) parents)
+                     (conj parents (second (first orbits)))
+                     parents)])))
