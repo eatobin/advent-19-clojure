@@ -32,17 +32,16 @@ C)F")
 ;;               (map #(str/split % #"\)"))
 ;;               (sort-by second)))
 
-(loop [orbits [["A" "B"] ["A" "C"]]
-       sibling "A"
-       kids []]
+(defn parent?
+  [v coll]
+  (some #(= % v) coll))
+
+(loop [orbits [[:com :a] [:com :b] [:a :y] [:b :me] [:com :j] [:me :you]]
+       parents [:com]]
   (if (empty? orbits)
-    [generation kids]
+    parents
     (recur
       (rest orbits)
-      (if (= (first (first orbits)) sibling)
-        generation
-        (inc generation))
-      (first (first orbits))
-      (if (= (first (first orbits)) sibling)
-        (conj kids (second (first orbits)))
-        kids))))
+      (if (parent? (first (first orbits)) parents)
+        (conj parents (second (first orbits)))
+        parents))))
