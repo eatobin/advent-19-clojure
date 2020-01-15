@@ -3,7 +3,7 @@
             [clojure.java.io :as io]))
 
 ;part a
-(def tv (->> (first (with-open [reader (io/reader "day5.csv")]
+(def tv (->> (first (with-open [reader (io/reader "resources/day5.csv")]
                       (doall
                         (csv/read-csv reader))))
              (map #(Integer/parseInt %))
