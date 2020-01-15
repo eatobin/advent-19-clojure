@@ -11,7 +11,7 @@
   (apply hash-map (flatten (map (comp reverse #(str/split % #"\)")) (str/split-lines raw)))))
 
 (def input (->>
-             "resources/day6.txt"
+             "resources/santa-advent.txt"
              (slurp)
              (parse-orbit-map)))
 
