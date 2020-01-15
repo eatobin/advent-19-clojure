@@ -6,7 +6,7 @@
   (- (quot m 3) 2))
 
 (def modules-sum (->>
-                   "modules.txt"
+                   "resources/day1.txt"
                    (slurp)
                    (str/split-lines)
                    (map #(Integer/parseInt %))
@@ -28,7 +28,7 @@
         acc))))
 
 (def modules-gas-sum (->>
-                       "modules.txt"
+                       "resources/day1.txt"
                        (slurp)
                        (str/split-lines)
                        (map #(Integer/parseInt %))
