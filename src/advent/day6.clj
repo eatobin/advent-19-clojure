@@ -26,7 +26,7 @@ C)F")
               (vec)))
 
 ;; (def orbits (->>
-;;               "day6.txt"
+;;               "resources/day6.txt"
 ;;               (slurp)
 ;;               (str/split-lines)
 ;;               (map #(str/split % #"\)"))
