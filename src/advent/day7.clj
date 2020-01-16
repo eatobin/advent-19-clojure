@@ -9,7 +9,7 @@
              (map #(Integer/parseInt %))
              (into [])))
 
-(defn op-code [input memory]
+(defn op-code [phase input memory]
   (loop [pointer 0
          memory memory
          exit-code 0]
