@@ -37,10 +37,25 @@
                (slurp)
                (parse-orbit-map)))
 
-(loop [you-path (take-while some? (drop 2 (iterate input-2 "YOU")))
-       santa-path (take-while some? (drop 1 (iterate input-2 "SAN")))]
-  (if (some #(= (first you-path) %) santa-path)
-    true
-    (recur
-      (rest you-path)
-      santa-path)))
+(defn first-common-ancestor
+  "Returns the first common ancestor encountered"
+  [orbit-map]
+  (loop [you-path (take-while some? (drop 2 (iterate orbit-map "YOU")))
+         santa-path (take-while some? (drop 1 (iterate orbit-map "SAN")))]
+    (if (some #(= (first you-path) %) santa-path)
+      (first you-path)
+      (recur
+        (rest you-path)
+        santa-path))))
+
+(defn transfers
+  "Returns the number of transfers between YOU and SAN"
+  [orbit-map]
+  (let [you-path (take-while some? (drop 1 (iterate orbit-map "YOU")))
+        santa-path (take-while some? (drop 1 (iterate orbit-map "SAN")))
+        first-common (first-common-ancestor orbit-map)
+        you-count (.indexOf you-path first-common)
+        san-count (.indexOf santa-path first-common)]
+    (+ you-count san-count)))
+
+;418
