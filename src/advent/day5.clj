@@ -266,3 +266,7 @@
 (def answer-2 (op-code-2 5 tv))
 
 ;11981754
+
+
+(defn pad [n coll]
+  (vec (take n (concat coll (repeat (first coll))))))
