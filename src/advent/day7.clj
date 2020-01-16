@@ -3,7 +3,7 @@
             [clojure.java.io :as io]))
 
 ;part a
-(def tv (->> (first (with-open [reader (io/reader "resources/day5.csv")]
+(def tv (->> (first (with-open [reader (io/reader "resources/day7.csv")]
                       (doall
                         (csv/read-csv reader))))
              (map #(Integer/parseInt %))
@@ -205,6 +205,6 @@
                   (assoc memory (memory (+ 3 pointer)) 0))
                 exit-code)))))
 
-(def answer (op-code 5 tv))
+(def answer (op-code 0 tv))
 
 ;11981754
