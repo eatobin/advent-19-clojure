@@ -11,7 +11,7 @@
   (apply hash-map (flatten (map (comp reverse #(str/split % #"\)")) (str/split-lines raw)))))
 
 (def input (->>
-             "resources/santa-advent.txt"
+             "resources/day6.txt"
              (slurp)
              (parse-orbit-map)))
 
@@ -26,3 +26,10 @@
 (println "Total number of (in)direct orbits:" (direct-and-indirect-orbits input))
 
 ;241064
+
+;part 2
+
+(def input-2 (->>
+               "resources/santa-advent.txt"
+               (slurp)
+               (parse-orbit-map)))
