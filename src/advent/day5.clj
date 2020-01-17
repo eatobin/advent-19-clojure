@@ -266,13 +266,3 @@
 (def answer-2 (op-code-2 5 tv))
 
 ;11981754
-
-
-(defn pad [n coll]
-  (vec (take n (concat coll (repeat (first coll))))))
-(def v [1 2 3 0])
-;=> #'advent.day5/v
-(pad 6 v)
-;=> [1 2 3 0 1 1]
-(pad 4 v)
-;=> [1 2 3 0]
