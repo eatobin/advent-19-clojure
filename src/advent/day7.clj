@@ -205,6 +205,6 @@
                   (assoc memory (memory (+ 3 pointer)) 0))
                 exit-code)))))
 
-(def answer (op-code 0 tv))
+(def answer (op-code 0 0 tv))
 
 ;11981754
