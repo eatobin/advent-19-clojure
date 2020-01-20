@@ -9,6 +9,9 @@
              (map #(Integer/parseInt %))
              (into [])))
 
+(def a [4, 3, 2, 1, 0])
+(def b [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0])
+
 (defn op-code [phase input memory]
   (loop [pointer 0
          memory memory
@@ -50,7 +53,9 @@
                exit-code)
         3 (recur
             (+ 2 pointer)
-            (assoc memory (memory (+ 1 pointer)) input)
+            (if (= 0 pointer)
+              (assoc memory (memory (+ 1 pointer)) phase)
+              (assoc memory (memory (+ 1 pointer)) input))
             exit-code)
         4 (recur
             (+ 2 pointer)
