@@ -235,3 +235,12 @@
 (def answer (apply max (passes tv)))
 
 ;368584
+
+;part b
+
+(def aa [9, 8, 7, 6, 5])
+(def bb [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26,
+         27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])
+
+(defn pass-2 [[a b c d e] i-code]
+  (op-code a (op-code e (op-code d (op-code c (op-code b (op-code a 0 i-code) i-code) i-code) i-code) i-code) i-code))
