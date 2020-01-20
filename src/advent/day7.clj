@@ -229,4 +229,9 @@
 (defn pass [[a b c d e] i-code]
   (op-code e (op-code d (op-code c (op-code b (op-code a 0 i-code) i-code) i-code) i-code) i-code))
 
-;11981754
+(defn passes [i-code]
+  (vec (map #(pass % i-code) possibles)))
+
+(def answer (apply max (passes tv)))
+
+;368584
