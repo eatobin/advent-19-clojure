@@ -287,14 +287,8 @@
               (assoc memory (memory (+ 1 pointer)) phase)
               (assoc memory (memory (+ 1 pointer)) input))
             exit-code)
-        4 (recur
-            (+ 2 pointer)
-            memory
-            (memory (memory (+ 1 pointer))))
-        104 (recur
-              (+ 2 pointer)
-              memory
-              (memory (+ 1 pointer)))
+        4 [(+ 2 pointer) phase (memory (memory (+ 1 pointer))) memory]
+        104 [(+ 2 pointer) phase (memory (+ 1 pointer)) memory]
         5 (recur
             (if (= 0 (memory (memory (+ 1 pointer))))
               (+ 3 pointer)
