@@ -239,7 +239,7 @@
 
 ;part b
 
-(defn op-code-2 [[amp input phase pointer memory]]
+(defn op-code-2 [[input phase pointer memory]]
   (loop [pointer pointer
          memory memory
          exit-code 0]
@@ -284,8 +284,8 @@
               (assoc memory (memory (+ 1 pointer)) phase)
               (assoc memory (memory (+ 1 pointer)) input))
             exit-code)
-        4 [amp (memory (memory (+ 1 pointer))) phase (+ 2 pointer) memory]
-        104 [amp (memory (+ 1 pointer)) phase (+ 2 pointer) memory]
+        4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) memory]
+        104 [(memory (+ 1 pointer)) phase (+ 2 pointer) memory]
         5 (recur
             (if (= 0 (memory (memory (+ 1 pointer))))
               (+ 3 pointer)
@@ -435,5 +435,23 @@
 (def bb [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26,
          27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])
 
-(op-code-2 [1 0 9 0 bb])
-;=> [1 5 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5]]
+(op-code-2 [0 9 0 bb])
+;=> [5 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5]]
+
+(def amp1 (atom [0 9 0 bb]))
+(def amp2 (atom [nil 8 0 bb]))
+(def amp3 (atom [nil 7 0 bb]))
+(def amp4 (atom [nil 6 0 bb]))
+(def amp5 (atom [nil 5 0 bb]))
+(def amps {1 amp1, 2 amp2, 3 amp3, 4 amp4, 5 amp5})
+
+(defn runner [amps]
+  (loop [amps amps
+         current-amp-no 1
+         next-amp-no (+ 1 (mod current-amp-no 5))
+         current-amp @(amps current-amp-no)
+         next-amp @(amps next-amp-no)
+         thrust "done"]
+    (if (and (= 0 @(amps 1)) (= 0 @(amps 2)) (= 0 @(amps 3)) (= 0 @(amps 4)) (= 0 @(amps 5)))
+      thrust
+      "not done")))
