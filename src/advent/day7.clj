@@ -438,6 +438,11 @@
 (op-code-2 [0 9 0 bb])
 ;=> [5 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5]]
 
+(def amp1 (atom 0))
+(def amp2 (atom 0))
+(def amp3 (atom 0))
+(def amp4 (atom 0))
+(def amp5 (atom 0))
 (def amp1 (atom [0 9 0 bb]))
 (def amp2 (atom [nil 8 0 bb]))
 (def amp3 (atom [nil 7 0 bb]))
@@ -451,7 +456,16 @@
          next-amp-no (+ 1 (mod current-amp-no 5))
          current-amp @(amps current-amp-no)
          next-amp @(amps next-amp-no)
-         thrust "done"]
+         thrust 0]
     (if (and (= 0 @(amps 1)) (= 0 @(amps 2)) (= 0 @(amps 3)) (= 0 @(amps 4)) (= 0 @(amps 5)))
       thrust
-      "not done")))
+      (let [result (op-code-2 current-amp)
+            new-next-amp (assoc next-amp 0 (result 0))
+            new-thrust (result 0)]
+        (recur
+          (assoc amps current-amp-no (atom result))
+          next-amp-no
+          (+ 1 (mod current-amp-no 5))
+          new-next-amp
+          @(amps next-amp-no)
+          new-thrust)))))
