@@ -430,7 +430,8 @@
                   (assoc memory (memory (+ 3 pointer)) 1)
                   (assoc memory (memory (+ 3 pointer)) 0))
                 exit-code)))))
-
+;TODO
+;FIX
 (op-code-2 [0 4 0 b])
 ;=> [4 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0]]
 (op-code-2 [0 3 0 b])
