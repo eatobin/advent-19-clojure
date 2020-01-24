@@ -500,6 +500,8 @@
 (def amp5 (atom [nil 5 0 bb]))
 (def amps {1 amp1, 2 amp2, 3 amp3, 4 amp4, 5 amp5})
 
+(def next-amp {1 2, 2 3, 3 4, 4 5, 5 1})
+
 (defn runner [amps]
   (loop [amps amps
          current-amp-no 1
