@@ -420,6 +420,166 @@
                   (assoc memory (memory (+ 3 pointer)) 0))
                 exit-code)))))
 
+(defn op-code-3 [[input phase pointer memory running?]]
+  (if running?
+    (loop [pointer pointer
+           memory memory]
+      (let [instruction (memory pointer)]
+        (case instruction
+          99 [input phase pointer memory false]
+          1 (recur
+              (+ 4 pointer)
+              (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
+          101 (recur
+                (+ 4 pointer)
+                (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))))
+          1001 (recur
+                 (+ 4 pointer)
+                 (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))))
+          1101 (recur
+                 (+ 4 pointer)
+                 (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (+ 2 pointer)))))
+          2 (recur
+              (+ 4 pointer)
+              (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
+          102 (recur
+                (+ 4 pointer)
+                (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))))
+          1002 (recur
+                 (+ 4 pointer)
+                 (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))))
+          1102 (recur
+                 (+ 4 pointer)
+                 (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (+ 2 pointer)))))
+          3 (recur
+              (+ 2 pointer)
+              (if (= 0 pointer)
+                (assoc memory (memory (+ 1 pointer)) phase)
+                (assoc memory (memory (+ 1 pointer)) input)))
+          4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) memory true]
+          104 [(memory (+ 1 pointer)) phase (+ 2 pointer) memory true]
+          5 (recur
+              (if (= 0 (memory (memory (+ 1 pointer))))
+                (+ 3 pointer)
+                (memory (memory (+ 2 pointer))))
+              memory)
+          105 (recur
+                (if (= 0 (memory (+ 1 pointer)))
+                  (+ 3 pointer)
+                  (memory (memory (+ 2 pointer))))
+                memory)
+          1005 (recur
+                 (if (= 0 (memory (memory (+ 1 pointer))))
+                   (+ 3 pointer)
+                   (memory (+ 2 pointer)))
+                 memory)
+          1105 (recur
+                 (if (= 0 (memory (+ 1 pointer)))
+                   (+ 3 pointer)
+                   (memory (+ 2 pointer)))
+                 memory)
+          6 (recur
+              (if (not= 0 (memory (memory (+ 1 pointer))))
+                (+ 3 pointer)
+                (memory (memory (+ 2 pointer))))
+              memory)
+          106 (recur
+                (if (not= 0 (memory (+ 1 pointer)))
+                  (+ 3 pointer)
+                  (memory (memory (+ 2 pointer))))
+                memory)
+          1006 (recur
+                 (if (not= 0 (memory (memory (+ 1 pointer))))
+                   (+ 3 pointer)
+                   (memory (+ 2 pointer)))
+                 memory)
+          1106 (recur
+                 (if (not= 0 (memory (+ 1 pointer)))
+                   (+ 3 pointer)
+                   (memory (+ 2 pointer)))
+                 memory)
+          7 (recur
+              (+ 4 pointer)
+              (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+                (assoc memory (memory (+ 3 pointer)) 1)
+                (assoc memory (memory (+ 3 pointer)) 0)))
+          107 (recur
+                (+ 4 pointer)
+                (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
+                  (assoc memory (memory (+ 3 pointer)) 1)
+                  (assoc memory (memory (+ 3 pointer)) 0)))
+          1007 (recur
+                 (+ 4 pointer)
+                 (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
+                   (assoc memory (memory (+ 3 pointer)) 1)
+                   (assoc memory (memory (+ 3 pointer)) 0)))
+          1107 (recur
+                 (+ 4 pointer)
+                 (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
+                   (assoc memory (memory (+ 3 pointer)) 1)
+                   (assoc memory (memory (+ 3 pointer)) 0)))
+          10007 (recur
+                  (+ 4 pointer)
+                  (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0)))
+          10107 (recur
+                  (+ 4 pointer)
+                  (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0)))
+          11007 (recur
+                  (+ 4 pointer)
+                  (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0)))
+          11107 (recur
+                  (+ 4 pointer)
+                  (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0)))
+          8 (recur
+              (+ 4 pointer)
+              (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+                (assoc memory (memory (+ 3 pointer)) 1)
+                (assoc memory (memory (+ 3 pointer)) 0)))
+          108 (recur
+                (+ 4 pointer)
+                (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
+                  (assoc memory (memory (+ 3 pointer)) 1)
+                  (assoc memory (memory (+ 3 pointer)) 0)))
+          1008 (recur
+                 (+ 4 pointer)
+                 (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
+                   (assoc memory (memory (+ 3 pointer)) 1)
+                   (assoc memory (memory (+ 3 pointer)) 0)))
+          1108 (recur
+                 (+ 4 pointer)
+                 (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
+                   (assoc memory (memory (+ 3 pointer)) 1)
+                   (assoc memory (memory (+ 3 pointer)) 0)))
+          10008 (recur
+                  (+ 4 pointer)
+                  (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0)))
+          10108 (recur
+                  (+ 4 pointer)
+                  (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0)))
+          11008 (recur
+                  (+ 4 pointer)
+                  (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0)))
+          11108 (recur
+                  (+ 4 pointer)
+                  (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
+                    (assoc memory (memory (+ 3 pointer)) 1)
+                    (assoc memory (memory (+ 3 pointer)) 0))))))
+    [input phase pointer memory false]))
+
 (def a [4, 3, 2, 1, 0])
 (def b [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0])
 
@@ -486,6 +646,13 @@
 (op-code-2 [1090855 6 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 2 68176 3]])
 (op-code-2 [2181712 5 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 1 136353 3]])
 (op-code-2 [4363425 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 272711 2]])
+
+(op-code-3 [0 4 0 b true])
+;=> [4 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] true]
+(op-code-3 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] true])
+;=> [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false]
+(op-code-3 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false])
+;=> [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false]
 
 
 (def amp1 (atom 0))
