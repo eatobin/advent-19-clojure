@@ -228,13 +228,14 @@
 
 ;part b
 
-(defn op-code-2 [[input phase pointer memory running?]]
-  (if running?
+(defn op-code-2 [[input phase pointer memory stopped?]]
+  (if stopped?
+    [input phase pointer memory true]
     (loop [pointer pointer
            memory memory]
       (let [instruction (memory pointer)]
         (case instruction
-          99 [input phase pointer memory false]
+          99 "exit"
           1 (recur
               (+ 4 pointer)
               (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
@@ -264,8 +265,8 @@
               (if (= 0 pointer)
                 (assoc memory (memory (+ 1 pointer)) phase)
                 (assoc memory (memory (+ 1 pointer)) input)))
-          4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) memory true]
-          104 [(memory (+ 1 pointer)) phase (+ 2 pointer) memory true]
+          4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) memory false]
+          104 [(memory (+ 1 pointer)) phase (+ 2 pointer) memory false]
           5 (recur
               (if (= 0 (memory (memory (+ 1 pointer))))
                 (+ 3 pointer)
@@ -385,8 +386,7 @@
                   (+ 4 pointer)
                   (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
                     (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0))))))
-    [input phase pointer memory false]))
+                    (assoc memory (memory (+ 3 pointer)) 0))))))))
 
 (def a [4, 3, 2, 1, 0])
 (def b [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0])
@@ -463,16 +463,16 @@
 ;=> [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false]
 
 (defn runner [phases memory]
-  (loop [amp1 (op-code-2 [0 (phases 0) 0 memory true])
-         amp2 (op-code-2 [(first amp1) (phases 1) 0 memory true])
-         amp3 (op-code-2 [(first amp2) (phases 2) 0 memory true])
-         amp4 (op-code-2 [(first amp3) (phases 3) 0 memory true])
-         amp5 (op-code-2 [(first amp4) (phases 4) 0 memory true])]
-    (if (last amp5)
+  (loop [amp1 (op-code-2 [0 (phases 0) 0 memory false])
+         amp2 (op-code-2 [(first amp1) (phases 1) 0 memory false])
+         amp3 (op-code-2 [(first amp2) (phases 2) 0 memory false])
+         amp4 (op-code-2 [(first amp3) (phases 3) 0 memory false])
+         amp5 (op-code-2 [(first amp4) (phases 4) 0 memory false])]
+    (if (not (last amp5))
+      amp1
       (recur
         (op-code-2 (assoc amp1 0 (first amp5)))
         (op-code-2 (assoc amp2 0 (first amp1)))
         (op-code-2 (assoc amp3 0 (first amp2)))
         (op-code-2 (assoc amp4 0 (first amp3)))
-        (op-code-2 (assoc amp5 0 (first amp4))))
-      (first amp1))))
+        (op-code-2 (assoc amp5 0 (first amp4)))))))
