@@ -483,7 +483,6 @@
 
 (def next-amp {1 2, 2 3, 3 4, 4 5, 5 1})
 
-
 (defn runner []
   (loop [amp1 (op-code-2 [0 4 0 b true])
          amp2 (op-code-2 [(first amp1) 3 0 b true])
@@ -499,27 +498,17 @@
         (op-code-2 (assoc amp5 0 (first amp4))))
       (first amp1))))
 
-
-
-
-;(defn runner [amps]
-;  (loop [amps amps
-;         current-amp-no 1
-;         next-amp-no (+ 1 (mod current-amp-no 5))
-;         current-amp @(amps current-amp-no)
-;         next-amp @(amps next-amp-no)
-;         thrust 0]
-;    (if (and (= 0 @(amps 1)) (= 0 @(amps 2)) (= 0 @(amps 3)) (= 0 @(amps 4)) (= 0 @(amps 5)))
-;      thrust
-;      (if (and (not= 0 current-amp) (not= 0 next-amp))
-;        (let [result (op-code-2 current-amp)
-;              new-next-amp (assoc next-amp 0 (result 0))
-;              new-thrust (result 0)]
-;          (recur
-;            (assoc amps current-amp-no (atom result))
-;            next-amp-no
-;            (+ 1 (mod current-amp-no 5))
-;            new-next-amp
-;            @(amps next-amp-no)
-;            new-thrust))
-;        true))))
+(defn runner-2 [phases memory]
+  (loop [amp1 (op-code-2 [0 (phases 0) 0 b true])
+         amp2 (op-code-2 [(first amp1) (phases 1) 0 memory true])
+         amp3 (op-code-2 [(first amp2) (phases 2) 0 memory true])
+         amp4 (op-code-2 [(first amp3) (phases 3) 0 memory true])
+         amp5 (op-code-2 [(first amp4) (phases 4) 0 memory true])]
+    (if (last amp5)
+      (recur
+        (op-code-2 (assoc amp1 0 (first amp5)))
+        (op-code-2 (assoc amp2 0 (first amp1)))
+        (op-code-2 (assoc amp3 0 (first amp2)))
+        (op-code-2 (assoc amp4 0 (first amp3)))
+        (op-code-2 (assoc amp5 0 (first amp4))))
+      (first amp1))))
