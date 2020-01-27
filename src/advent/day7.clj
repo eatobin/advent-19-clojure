@@ -228,199 +228,7 @@
 
 ;part b
 
-(defn op-code-2 [[input phase pointer memory]]
-  (loop [pointer pointer
-         memory memory
-         exit-code 0]
-    (let [instruction (memory pointer)]
-      (case instruction
-        99 exit-code
-        1 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            exit-code)
-        101 (recur
-              (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              exit-code)
-        1001 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               exit-code)
-        1101 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               exit-code)
-        2 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            exit-code)
-        102 (recur
-              (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              exit-code)
-        1002 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               exit-code)
-        1102 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               exit-code)
-        3 (recur
-            (+ 2 pointer)
-            (if (= 0 pointer)
-              (assoc memory (memory (+ 1 pointer)) phase)
-              (assoc memory (memory (+ 1 pointer)) input))
-            exit-code)
-        4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) memory]
-        104 [(memory (+ 1 pointer)) phase (+ 2 pointer) memory]
-        5 (recur
-            (if (= 0 (memory (memory (+ 1 pointer))))
-              (+ 3 pointer)
-              (memory (memory (+ 2 pointer))))
-            memory
-            exit-code)
-        105 (recur
-              (if (= 0 (memory (+ 1 pointer)))
-                (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
-              memory
-              exit-code)
-        1005 (recur
-               (if (= 0 (memory (memory (+ 1 pointer))))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
-        1105 (recur
-               (if (= 0 (memory (+ 1 pointer)))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
-        6 (recur
-            (if (not= 0 (memory (memory (+ 1 pointer))))
-              (+ 3 pointer)
-              (memory (memory (+ 2 pointer))))
-            memory
-            exit-code)
-        106 (recur
-              (if (not= 0 (memory (+ 1 pointer)))
-                (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
-              memory
-              exit-code)
-        1006 (recur
-               (if (not= 0 (memory (memory (+ 1 pointer))))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
-        1106 (recur
-               (if (not= 0 (memory (+ 1 pointer)))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
-        7 (recur
-            (+ 4 pointer)
-            (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            exit-code)
-        107 (recur
-              (+ 4 pointer)
-              (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                (assoc memory (memory (+ 3 pointer)) 1)
-                (assoc memory (memory (+ 3 pointer)) 0))
-              exit-code)
-        1007 (recur
-               (+ 4 pointer)
-               (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        1107 (recur
-               (+ 4 pointer)
-               (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        10007 (recur
-                (+ 4 pointer)
-                (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        10107 (recur
-                (+ 4 pointer)
-                (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11007 (recur
-                (+ 4 pointer)
-                (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11107 (recur
-                (+ 4 pointer)
-                (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        8 (recur
-            (+ 4 pointer)
-            (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            exit-code)
-        108 (recur
-              (+ 4 pointer)
-              (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                (assoc memory (memory (+ 3 pointer)) 1)
-                (assoc memory (memory (+ 3 pointer)) 0))
-              exit-code)
-        1008 (recur
-               (+ 4 pointer)
-               (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        1108 (recur
-               (+ 4 pointer)
-               (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        10008 (recur
-                (+ 4 pointer)
-                (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        10108 (recur
-                (+ 4 pointer)
-                (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11008 (recur
-                (+ 4 pointer)
-                (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11108 (recur
-                (+ 4 pointer)
-                (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)))))
-
-(defn op-code-3 [[input phase pointer memory running?]]
+(defn op-code-2 [[input phase pointer memory running?]]
   (if running?
     (loop [pointer pointer
            memory memory]
@@ -591,45 +399,45 @@
 (def f [3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31, 1007, 31, 0, 33,
         1002, 33, 7, 33, 1, 33, 31, 31, 1, 32, 31, 31, 4, 31, 99, 0, 0, 0])
 
-(op-code-2 [0 4 0 b])
-;=> [4 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0]]
-(op-code-2 [4 3 0 b])
-;=> [43 3 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43 40]]
-(op-code-2 [43 2 0 b])
-;=> [432 2 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 432 430]]
-(op-code-2 [432 1 0 b])
-;=> [4321 1 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4321 4320]]
-(op-code-2 [4321 0 0 b])
-;=> [43210 0 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43210 43210]]
+(op-code-2 [0 4 0 b true])
+;=> [4 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] true]
+(op-code-2 [4 3 0 b true])
+;=>[43 3 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43 40] true]
+(op-code-2 [43 2 0 b true])
+;=> [432 2 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 432 430] true]
+(op-code-2 [432 1 0 b true])
+;=> [4321 1 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4321 4320] true]
+(op-code-2 [4321 0 0 b true])
+;=> [43210 0 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43210 43210] true]
 
-(op-code-2 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0]])
-;=> 0
-(op-code-2 [43210 3 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43 40]])
-;=> 0
-(op-code-2 [43210 2 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 432 430]])
-;=> 0
-(op-code-2 [43210 1 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4321 4320]])
-;=> 0
-(op-code-2 [43210 0 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43210 43210]])
-;=> 0
+(op-code-2 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] true])
+;=> [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false]
+(op-code-2 [43210 3 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43 40] true])
+;=> [43210 3 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43 40] false]
+(op-code-2 [43210 2 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 432 430] true])
+;=> [43210 2 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 432 430] false]
+(op-code-2 [43210 1 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4321 4320] true])
+;=> [43210 1 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4321 4320] false]
+(op-code-2 [43210 0 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43210 43210] true])
+;=> [43210 0 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43210 43210] false]
 
 (def aa [9, 8, 7, 6, 5])
 (def bb [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26,
          27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])
 
-(op-code-2 [0 9 0 bb])
-;=> [5 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5]]
-(op-code-2 [5 8 0 bb])
-;=> [14 8 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 4 14 5]]
-(op-code-2 [14 7 0 bb])
-;=> [31 7 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 3 31 5]]
-(op-code-2 [31 6 0 bb])
-;=> [64 6 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 2 64 5]]
-(op-code-2 [64 5 0 bb])
-;=> [129 5 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 1 129 5]]
+(op-code-2 [0 9 0 bb true])
+;=> [5 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5] true]
+(op-code-2 [5 8 0 bb true])
+;=> [14 8 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 4 14 5] true]
+(op-code-2 [14 7 0 bb true])
+;=> [31 7 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 3 31 5] true]
+(op-code-2 [31 6 0 bb true])
+;=> [64 6 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 2 64 5] true]
+(op-code-2 [64 5 0 bb true])
+;=> [129 5 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 1 129 5] true]
 
-(op-code-2 [129 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5]])
-;=> [263 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 263 4]]
+(op-code-2 [129 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5] true])
+;=> [263 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 263 4] true]
 
 (op-code-2 [263 8 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 4 14 5]])
 (op-code-2 [530 7 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 3 31 5]])
@@ -647,11 +455,11 @@
 (op-code-2 [2181712 5 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 1 136353 3]])
 (op-code-2 [4363425 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 272711 2]])
 
-(op-code-3 [0 4 0 b true])
+(op-code-2 [0 4 0 b true])
 ;=> [4 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] true]
-(op-code-3 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] true])
+(op-code-2 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] true])
 ;=> [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false]
-(op-code-3 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false])
+(op-code-2 [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false])
 ;=> [43210 4 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 4 0] false]
 
 
