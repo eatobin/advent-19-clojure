@@ -63,6 +63,8 @@
 
 (def answer (op-code 1 tv))
 
+(println answer)
+
 ;9025675
 
 ;part b
@@ -264,5 +266,7 @@
                 exit-code)))))
 
 (def answer-2 (op-code-2 5 tv))
+
+(println answer-2)
 
 ;11981754
