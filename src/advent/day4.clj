@@ -16,6 +16,9 @@
 (def answer (count (for [c pass
                          :when (and (increasing? c) (doubles-or-more c))]
                      c)))
+
+(println answer)
+
 ;=> 1246
 
 (defn doubles? [candidate]
@@ -25,5 +28,7 @@
 (def answer-2 (count (for [c pass
                            :when (and (increasing? c) (doubles? c))]
                        c)))
+
+(println answer-2)
 
 ;814
