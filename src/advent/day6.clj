@@ -32,11 +32,6 @@
 
 ;part 2
 
-(def input-2 (->>
-               "resources/santa-advent.txt"
-               (slurp)
-               (parse-orbit-map)))
-
 (defn first-common-ancestor
   "Returns the first common ancestor encountered"
   [orbit-map]
@@ -57,5 +52,7 @@
         you-count (.indexOf you-path first-common)
         san-count (.indexOf santa-path first-common)]
     (+ you-count san-count)))
+
+(println (transfers input))
 
 ;418
