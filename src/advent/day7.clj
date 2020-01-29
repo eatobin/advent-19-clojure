@@ -422,6 +422,7 @@
 ;=> [43210 0 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43210 43210] true]
 
 (def aa [9, 8, 7, 6, 5])
+(def zz [9,7,8,5,6])
 (def bb [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26,
          27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])
 (def cc [3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54,
@@ -458,27 +459,20 @@
 (op-code-2 [2181712 5 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 1 136353 3] false])
 (op-code-2 [4363425 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 272711 2] false])
 
-;(defn runner [phases memory]
-;  (loop [amp1 (op-code-2 [0 (phases 0) 0 memory false])
-;         amp2 (op-code-2 [(first amp1) (phases 1) 0 memory false])
-;         amp3 (op-code-2 [(first amp2) (phases 2) 0 memory false])
-;         amp4 (op-code-2 [(first amp3) (phases 3) 0 memory false])
-;         amp5 (op-code-2 [(first amp4) (phases 4) 0 memory false])]
-;    (if (and (last amp1) (last amp2) (last amp3) (last amp4) (last amp5))
-;      amp5
-;      (recur
-;        (op-code-2 (assoc amp1 0 (first amp5)))
-;        (op-code-2 (assoc amp2 0 (first amp1)))
-;        (op-code-2 (assoc amp3 0 (first amp2)))
-;        (op-code-2 (assoc amp4 0 (first amp3)))
-;        (op-code-2 (assoc amp5 0 (first amp4)))))))
-
 (def amp1 (atom [0 4 0 b false]))
 (def amp2 (atom [nil 3 0 b false]))
 (def amp3 (atom [nil 2 0 b false]))
 (def amp4 (atom [nil 1 0 b false]))
 (def amp5 (atom [nil 0 0 b false]))
 (def amps {1 amp1, 2 amp2, 3 amp3, 4 amp4, 5 amp5})
+
+
+(defn to-amps [phases memory]
+  {1 (atom [0 (phases 0) 0 memory false])
+   2 (atom [nil (phases 1) 0 memory false])
+   3 (atom [nil (phases 2) 0 memory false])
+   4 (atom [nil (phases 3) 0 memory false])
+   5 (atom [nil (phases 4) 0 memory false])})
 
 (defn make-amp [input phase memory]
   (atom [input phase 0 memory false]))
