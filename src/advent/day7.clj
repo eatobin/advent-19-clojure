@@ -423,7 +423,10 @@
 
 (def aa [9, 8, 7, 6, 5])
 (def bb [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26,
-         27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])false
+         27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])
+(def cc [3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,
+         -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
+         53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10])
 
 (op-code-2 [0 9 0 bb false])
 ;=> [5 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5] false]
@@ -461,11 +464,48 @@
 ;         amp3 (op-code-2 [(first amp2) (phases 2) 0 memory false])
 ;         amp4 (op-code-2 [(first amp3) (phases 3) 0 memory false])
 ;         amp5 (op-code-2 [(first amp4) (phases 4) 0 memory false])]
-;    (if (not (last amp5))
-;      amp1
+;    (if (and (last amp1) (last amp2) (last amp3) (last amp4) (last amp5))
+;      amp5
 ;      (recur
 ;        (op-code-2 (assoc amp1 0 (first amp5)))
 ;        (op-code-2 (assoc amp2 0 (first amp1)))
 ;        (op-code-2 (assoc amp3 0 (first amp2)))
 ;        (op-code-2 (assoc amp4 0 (first amp3)))
 ;        (op-code-2 (assoc amp5 0 (first amp4)))))))
+
+(def amp1 (atom [0 4 0 b false]))
+(def amp2 (atom [nil 3 0 b false]))
+(def amp3 (atom [nil 2 0 b false]))
+(def amp4 (atom [nil 1 0 b false]))
+(def amp5 (atom [nil 0 0 b false]))
+(def amps {1 amp1, 2 amp2, 3 amp3, 4 amp4, 5 amp5})
+
+(defn make-amp [input phase memory]
+  (atom [input phase 0 memory false]))
+
+(def amp6 (make-amp 0 0 d))
+(def amp7 (make-amp nil 1 d))
+(def amp8 (make-amp nil 2 d))
+(def amp9 (make-amp nil 3 d))
+(def amp10 (make-amp nil 4 d))
+(def amps2 {1 amp6, 2 amp7, 3 amp8, 4 amp9, 5 amp10})
+
+(def amp11 (make-amp 0 9 bb))
+(def amp12 (make-amp nil 8 bb))
+(def amp13 (make-amp nil 7 bb))
+(def amp14 (make-amp nil 6 bb))
+(def amp15 (make-amp nil 5 bb))
+(def amps3 {1 amp11, 2 amp12, 3 amp13, 4 amp14, 5 amp15})
+
+(defn runner [amps]
+  (loop [amps amps
+         current-amp-no 1
+         next-amp-no (+ 1 (mod current-amp-no 5))]
+    (if (and (= 5 current-amp-no) (last @(amps current-amp-no)))
+      @(amps current-amp-no)
+      (let [op-this (atom (swap! (amps current-amp-no) op-code-2))
+            op-next (atom (swap! (amps next-amp-no) assoc 0 (first @op-this)))]
+        (recur
+          (assoc amps current-amp-no op-this next-amp-no op-next)
+          next-amp-no
+          (+ 1 (mod next-amp-no 5)))))))
