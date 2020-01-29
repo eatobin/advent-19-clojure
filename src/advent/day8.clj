@@ -39,4 +39,7 @@
   (vec (sort-by second < (map-indexed (fn [i l] (vector i (zeros-in-layer l)))
                                       layers))))
 
-(def smallest (first (zeros-in-layers (input 150 25))))
+(def smallest (first (first (zeros-in-layers (input 150 25)))))
+
+(defn small-layer [layer-size num-rows]
+  ((input layer-size num-rows) smallest))
