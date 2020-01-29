@@ -14,6 +14,8 @@
                    (map gas)
                    (reduce +)))
 
+(println modules-sum)
+
 ;; 3337766
 
 ;part b
@@ -35,5 +37,7 @@
                        (into [])
                        (map gas-plus)
                        (reduce +)))
+
+(println modules-gas-sum)
 
 ;; 5003788
