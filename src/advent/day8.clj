@@ -25,3 +25,16 @@
     (map to-ints)
     (map #(partition num-rows %))
     (m/matrix)))
+
+(defn zeros-in-row [row]
+  (->>
+    row
+    (filter #(= % 0))
+    (count)))
+
+(defn zeros-in-layer [layer]
+  (reduce + (map zeros-in-row layer)))
+
+(defn zeros-in-layers [layers]
+  (map-indexed (fn [i l] (vector (inc i) (zeros-in-layer l)))
+               layers))
