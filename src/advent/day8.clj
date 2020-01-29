@@ -36,5 +36,7 @@
   (reduce + (map zeros-in-row layer)))
 
 (defn zeros-in-layers [layers]
-  (map-indexed (fn [i l] (vector (inc i) (zeros-in-layer l)))
-               layers))
+  (vec (sort-by second < (map-indexed (fn [i l] (vector (inc i) (zeros-in-layer l)))
+                                      layers))))
+
+(def answer (first (zeros-in-layers (input 150 25))))
