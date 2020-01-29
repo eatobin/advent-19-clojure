@@ -224,6 +224,8 @@
 
 (def answer (apply max (passes tv)))
 
+(println answer)
+
 ;368584
 
 ;part b
@@ -419,5 +421,7 @@
           (+ 1 (mod next-amp-no 5)))))))
 
 (def answer-2 (apply max (vec (map runner (to-amps-vector possibles-2 tv)))))
+
+(println answer-2)
 
 ;35993240
