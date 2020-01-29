@@ -424,9 +424,9 @@
 (def aa [9, 8, 7, 6, 5])
 (def bb [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26,
          27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])
-(def cc [3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,
-         -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
-         53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10])
+(def cc [3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54,
+         -5, 54, 1105, 1, 12, 1, 53, 54, 53, 1008, 54, 0, 55, 1001, 55, 1, 55, 2, 53, 55, 53, 4,
+         53, 1001, 56, -1, 56, 1005, 56, 6, 99, 0, 0, 0, 0, 10])
 
 (op-code-2 [0 9 0 bb false])
 ;=> [5 9 18 [3 26 1001 26 -4 26 3 27 1002 27 2 27 1 27 26 27 4 27 1001 28 -1 28 1005 28 6 99 5 5 5] false]
@@ -497,12 +497,19 @@
 (def amp15 (make-amp nil 5 bb))
 (def amps3 {1 amp11, 2 amp12, 3 amp13, 4 amp14, 5 amp15})
 
+(def amp16 (make-amp 0 9 cc))
+(def amp17 (make-amp nil 7 cc))
+(def amp18 (make-amp nil 8 cc))
+(def amp19 (make-amp nil 5 cc))
+(def amp20 (make-amp nil 6 cc))
+(def amps4 {1 amp16, 2 amp17, 3 amp18, 4 amp19, 5 amp20})
+
 (defn runner [amps]
   (loop [amps amps
          current-amp-no 1
          next-amp-no (+ 1 (mod current-amp-no 5))]
     (if (and (= 5 current-amp-no) (last @(amps current-amp-no)))
-      @(amps current-amp-no)
+      (first @(amps current-amp-no))
       (let [op-this (atom (swap! (amps current-amp-no) op-code-2))
             op-next (atom (swap! (amps next-amp-no) assoc 0 (first @op-this)))]
         (recur
