@@ -30,6 +30,8 @@
 
 (def fix-op-code (first (op-code (updated-memory 12 2))))
 
+(println fix-op-code)
+
 ;2890696
 
 ;part b
@@ -39,5 +41,7 @@
         :let [candidate (first (op-code (updated-memory noun verb)))]
         :when (= candidate 19690720)]
     [candidate noun verb (+ (* 100 noun) verb)]))
+
+(println noun-verb)
 
 ;[19690720 82 26 8226]
