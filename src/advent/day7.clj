@@ -422,7 +422,7 @@
 ;=> [43210 0 14 [3 15 3 16 1002 16 10 16 1 16 15 15 4 15 99 43210 43210] true]
 
 (def aa [9, 8, 7, 6, 5])
-(def zz [9,7,8,5,6])
+(def zz [9, 7, 8, 5, 6])
 (def bb [3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26,
          27, 4, 27, 1001, 28, -1, 28, 1005, 28, 6, 99, 0, 0, 5])
 (def cc [3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54,
@@ -467,12 +467,23 @@
 (def amps {1 amp1, 2 amp2, 3 amp3, 4 amp4, 5 amp5})
 
 
-(defn to-amps [phases memory]
-  {1 (atom [0 (phases 0) 0 memory false])
-   2 (atom [nil (phases 1) 0 memory false])
-   3 (atom [nil (phases 2) 0 memory false])
-   4 (atom [nil (phases 3) 0 memory false])
-   5 (atom [nil (phases 4) 0 memory false])})
+(def possibles-2 (for [a (range 5 10)
+                       b (range 5 10)
+                       c (range 5 10)
+                       d (range 5 10)
+                       e (range 5 10)
+                       :when (distinct? a b c d e)]
+                   [a b c d e]))
+
+
+(defn to-amps-vector [phases-vector memory]
+  (letfn [(to-amps [phases]
+            {1 (atom [0 (phases 0) 0 memory false])
+             2 (atom [nil (phases 1) 0 memory false])
+             3 (atom [nil (phases 2) 0 memory false])
+             4 (atom [nil (phases 3) 0 memory false])
+             5 (atom [nil (phases 4) 0 memory false])})]
+    (map to-amps phases-vector)))
 
 (defn make-amp [input phase memory]
   (atom [input phase 0 memory false]))
