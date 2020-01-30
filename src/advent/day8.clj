@@ -91,3 +91,8 @@
 
 (defn value-in-matrix [matrix [layer-number row-number column-number]]
   ((first (m/select-indices matrix [[layer-number row-number]])) column-number))
+
+(first (for [layer (range 100)
+             :let [mv ((first (m/select-indices (input 150 25) [[layer 0]])) 23)]
+             :when (< mv 2)]
+         mv))
