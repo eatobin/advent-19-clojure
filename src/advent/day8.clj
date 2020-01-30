@@ -1,6 +1,8 @@
 (ns advent.day8
   (:require [clojure.core.matrix :as m]))
 
+;part a
+
 (defn to-ints [char-v]
   (vec (for [c char-v]
          (- (int c) 48))))
