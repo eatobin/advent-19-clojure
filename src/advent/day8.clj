@@ -107,3 +107,13 @@
 ;=> 150
 (apply max lst)
 ;=> 2
+
+
+(def mv (m/to-nested-vectors m))
+(count mv)
+;=> 100
+(mv 99)
+(count (mv 99))
+;=> 150
+((mv 99) 149)
+;=> 1
