@@ -96,3 +96,14 @@
              :let [mv ((first (m/select-indices (input 150 25) [[layer 0]])) 23)]
              :when (< mv 2)]
          mv))
+
+(def raw (slurp "resources/day8.txt"))
+(def m1 (m/matrix (partition 150 raw)))
+(count m1)
+;=> 100
+(def m (map to-ints m1))
+(def lst (m/to-vector (m/select-indices m [99])))
+(count lst)
+;=> 150
+(apply max lst)
+;=> 2
