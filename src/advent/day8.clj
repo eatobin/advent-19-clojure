@@ -61,59 +61,28 @@
 
 ;part b
 
-(def sample (vec (take 5 (input 150 25))))
-(m/select-indices sample [[0 0]])
-;=> [[2 1 2 2 2 2 2 2 2 2 2 2 2 2 0 1 0 2 2 2 1 2 2 2 2]]
-(m/select-indices sample [[4 0]])
-;=> [[2 0 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 2 2 2 1 2 2 2 2]]
-(m/select-indices sample [[0 5]])
-;=> [[2 2 2 2 2 2 2 2 2 0 1 2 2 2 0 2 2 2 2 2 2 2 0 2 2]]
-(m/select-indices sample [[4 5]])
-;=> [[2 2 2 2 2 2 2 2 2 1 0 2 2 2 1 2 2 2 2 2 2 2 1 2 2]]
-(first (m/select-indices sample [[4 5]]))
-;=> [2 2 2 2 2 2 2 2 2 1 0 2 2 2 1 2 2 2 2 2 2 2 1 2 2]
-((first (m/select-indices sample [[4 5]])) 0)
-;=> 2
-((first (m/select-indices sample [[4 5]])) 1)
-;=> 2
-(count (first (m/select-indices sample [[4 5]])))
-;=> 25
-((first (m/select-indices sample [[0 0]])) 1)
-;=> 1
-((first (m/select-indices sample [[1 0]])) 1)
-;=> 2
-((first (m/select-indices sample [[2 0]])) 1)
-;=> 0
-((first (m/select-indices sample [[3 0]])) 1)
-;=> 2
-((first (m/select-indices sample [[4 0]])) 1)
-;=> 0
+(def input-2
+  (->>
+    "resources/day8.txt"
+    (slurp)
+    (partition 150)
+    (m/matrix)
+    (map to-ints)
+    (m/to-nested-vectors)))
 
-(defn value-in-matrix [matrix [layer-number row-number column-number]]
-  ((first (m/select-indices matrix [[layer-number row-number]])) column-number))
+(defn val-for-column [column]
+  (first (for [row (range 100)
+               :let [value ((input-2 row) column)]
+               :when (< value 2)]
+           value)))
 
-(first (for [layer (range 100)
-             :let [mv ((first (m/select-indices (input 150 25) [[layer 0]])) 23)]
-             :when (< mv 2)]
-         mv))
+(partition 25 (map val-for-column (range 150)))
+;=>
+;((1 1 1 0 0 1 0 0 0 0 0 1 1 0 0 1 0 0 1 0 1 1 1 1 0)
+; (1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 1 0 1 0 0 1 0 0 0 0)
+; (1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 1 1 0 0 0 1 1 1 0 0)
+; (1 1 1 0 0 1 0 0 0 0 1 1 1 1 0 1 0 1 0 0 1 0 0 0 0)
+; (1 0 1 0 0 1 0 0 0 0 1 0 0 1 0 1 0 1 0 0 1 0 0 0 0)
+; (1 0 0 1 0 1 1 1 1 0 1 0 0 1 0 1 0 0 1 0 1 0 0 0 0))
 
-(def raw (slurp "resources/day8.txt"))
-(def m1 (m/matrix (partition 150 raw)))
-(count m1)
-;=> 100
-(def m (map to-ints m1))
-(def lst (m/to-vector (m/select-indices m [99])))
-(count lst)
-;=> 150
-(apply max lst)
-;=> 2
-
-
-(def mv (m/to-nested-vectors m))
-(count mv)
-;=> 100
-(mv 99)
-(count (mv 99))
-;=> 150
-((mv 99) 149)
-;=> 1
+;RLAKF
