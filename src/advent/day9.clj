@@ -10,7 +10,9 @@
              (map #(Integer/parseInt %))
              (into [])))
 
-(defn op-code-2 [[input phase pointer relative-base memory stopped?]]
+(def sample [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99])
+
+(defn op-code [[input phase pointer relative-base memory stopped?]]
   (if stopped?
     [input phase pointer relative-base memory true]
     (loop [pointer pointer
