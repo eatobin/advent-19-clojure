@@ -13,7 +13,8 @@
 (defn op-code [phase input memory]
   (loop [pointer 0
          memory memory
-         exit-code 0]
+         exit-code 0
+         relative-base 0]
     (let [instruction (memory pointer)]
       (case instruction
         99 exit-code
@@ -206,4 +207,14 @@
                 (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
                   (assoc memory (memory (+ 3 pointer)) 1)
                   (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)))))
+                exit-code)
+        9 (recur
+            (+ 2 pointer)
+            memory
+            exit-code
+            (+ (memory (memory (+ 1 pointer))) relative-base))
+        109 (recur
+              (+ 2 pointer)
+              memory
+              exit-code
+              (+ (memory (+ 1 pointer)) relative-base))))))
