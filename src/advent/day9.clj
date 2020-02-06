@@ -61,6 +61,7 @@
                 (assoc memory (memory (+ 1 pointer)) input)))
           4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) relative-base memory false]
           104 [(memory (+ 1 pointer)) phase (+ 2 pointer) relative-base memory false]
+          204 [(memory (+ (memory (+ 1 pointer)) relative-base)) phase (+ 2 pointer) relative-base memory false]
           5 (recur
               (if (= 0 (memory (memory (+ 1 pointer))))
                 (+ 3 pointer)
