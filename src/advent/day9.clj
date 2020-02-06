@@ -172,9 +172,9 @@
                     (assoc memory (memory (+ 3 pointer)) 0)))
           9 (recur
               (+ 2 pointer)
-              memory
-              (+ (memory (memory (+ 1 pointer))) relative-base))
+              (+ (memory (memory (+ 1 pointer))) relative-base)
+              memory)
           109 (recur
                 (+ 2 pointer)
-                memory
-                (+ (memory (+ 1 pointer)) relative-base)))))))
+                (+ (memory (+ 1 pointer)) relative-base)
+                memory))))))
