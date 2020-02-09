@@ -109,16 +109,34 @@
                   (get memory (memory (+ 2 pointer)) 0))
                 relative-base
                 memory)
+          205 (recur
+                (if (= 0 (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
+                  (+ 3 pointer)
+                  (get memory (memory (+ 2 pointer)) 0))
+                relative-base
+                memory)
           1005 (recur
                  (if (= 0 (get memory (memory (+ 1 pointer)) 0))
                    (+ 3 pointer)
                    (memory (+ 2 pointer)))
                  relative-base
                  memory)
+          2005 (recur
+                 (if (= 0 (get memory (memory (+ 1 pointer)) 0))
+                   (+ 3 pointer)
+                   (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
+                 relative-base
+                 memory)
           1105 (recur
                  (if (= 0 (memory (+ 1 pointer)))
                    (+ 3 pointer)
                    (memory (+ 2 pointer)))
+                 relative-base
+                 memory)
+          2205 (recur
+                 (if (= 0 (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
+                   (+ 3 pointer)
+                   (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
                  relative-base
                  memory)
           6 (recur
