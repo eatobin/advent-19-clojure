@@ -16,6 +16,10 @@
 (sort-by key < good)
 (assoc good 100 700)
 (sort-by key < (assoc good 100 700))
+(good 100)
+(get good 100 0)
+(get sample 100 0)
+(get sample 0 0)
 
 (defn op-code [[input phase pointer relative-base memory stopped?]]
   (if stopped?
@@ -41,7 +45,7 @@
           1001 (recur
                  (+ 4 pointer)
                  relative-base
-                 (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))))
+                 (assoc memory (memory (+ 3 pointer)) (+ (get memory (memory (+ 1 pointer)) 0) (memory (+ 2 pointer)))))
           1101 (recur
                  (+ 4 pointer)
                  relative-base
