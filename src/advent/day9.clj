@@ -193,10 +193,22 @@
                 (if (< (memory (+ 1 pointer)) (get memory (memory (+ 2 pointer)) 0))
                   (assoc memory (memory (+ 3 pointer)) 1)
                   (assoc memory (memory (+ 3 pointer)) 0)))
+          207 (recur
+                (+ 4 pointer)
+                relative-base
+                (if (< (get memory (+ (memory (+ 1 pointer)) relative-base) 0) (get memory (memory (+ 2 pointer)) 0))
+                  (assoc memory (memory (+ 3 pointer)) 1)
+                  (assoc memory (memory (+ 3 pointer)) 0)))
           1007 (recur
                  (+ 4 pointer)
                  relative-base
                  (if (< (get memory (memory (+ 1 pointer)) 0) (memory (+ 2 pointer)))
+                   (assoc memory (memory (+ 3 pointer)) 1)
+                   (assoc memory (memory (+ 3 pointer)) 0)))
+          2007 (recur
+                 (+ 4 pointer)
+                 relative-base
+                 (if (< (get memory (memory (+ 1 pointer)) 0) (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
                    (assoc memory (memory (+ 3 pointer)) 1)
                    (assoc memory (memory (+ 3 pointer)) 0)))
           1107 (recur
@@ -205,12 +217,24 @@
                  (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
                    (assoc memory (memory (+ 3 pointer)) 1)
                    (assoc memory (memory (+ 3 pointer)) 0)))
+          2207 (recur
+                 (+ 4 pointer)
+                 relative-base
+                 (if (< (get memory (+ (memory (+ 1 pointer)) relative-base) 0) (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
+                   (assoc memory (memory (+ 3 pointer)) 1)
+                   (assoc memory (memory (+ 3 pointer)) 0)))
           10007 (recur
                   (+ 4 pointer)
                   relative-base
                   (if (< (get memory (memory (+ 1 pointer)) 0) (get memory (memory (+ 2 pointer)) 0))
                     (assoc memory (memory (+ 3 pointer)) 1)
                     (assoc memory (memory (+ 3 pointer)) 0)))
+          20007 (recur
+                  (+ 4 pointer)
+                  relative-base
+                  (if (< (get memory (memory (+ 1 pointer)) 0) (get memory (memory (+ 2 pointer)) 0))
+                    (assoc memory (get memory (+ (memory (+ 3 pointer)) relative-base) 0) 1)
+                    (assoc memory (get memory (+ (memory (+ 3 pointer)) relative-base) 0) 0)))
           10107 (recur
                   (+ 4 pointer)
                   relative-base
