@@ -21,8 +21,7 @@
 (get sample 100 0)
 (get sample 0 0)
 
-(+ (memory (+ 1 pointer)) relative-base)
-(get memory (memory (+ 1 pointer)) 0)
+;(get memory (+ (memory (+ 1 pointer)) relative-base) 0)
 
 (defn op-code [[input phase pointer relative-base memory stopped?]]
   (if stopped?
@@ -49,6 +48,10 @@
                  (+ 4 pointer)
                  relative-base
                  (assoc memory (memory (+ 3 pointer)) (+ (get memory (memory (+ 1 pointer)) 0) (memory (+ 2 pointer)))))
+          2001 (recur
+                 (+ 4 pointer)
+                 relative-base
+                 (assoc memory (memory (+ 3 pointer)) (+ (get memory (memory (+ 1 pointer)) 0) (get memory (+ (memory (+ 2 pointer)) relative-base) 0))))
           1101 (recur
                  (+ 4 pointer)
                  relative-base
