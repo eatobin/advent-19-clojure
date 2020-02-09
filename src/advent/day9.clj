@@ -368,4 +368,8 @@
           109 (recur
                 (+ 2 pointer)
                 (+ (memory (+ 1 pointer)) relative-base)
+                memory)
+          209 (recur
+                (+ 2 pointer)
+                (+ (get memory (+ (memory (+ 1 pointer)) relative-base) 0) relative-base)
                 memory))))))
