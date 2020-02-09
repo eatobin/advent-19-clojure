@@ -4,7 +4,7 @@
 
 ;part a
 
-(def tv (->> (first (with-open [reader (io/reader "resources/day7.csv")]
+(def tv (->> (first (with-open [reader (io/reader "resources/day9.csv")]
                       (doall
                         (csv/read-csv reader))))
              (map #(Integer/parseInt %))
@@ -91,6 +91,10 @@
               (if (= 0 pointer)
                 (assoc memory (memory (+ 1 pointer)) phase)
                 (assoc memory (memory (+ 1 pointer)) input)))
+          203 (recur
+                (+ 2 pointer)
+                relative-base
+                (assoc memory (get memory (+ (memory (+ 1 pointer)) relative-base) 0) input))
           4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) relative-base memory false]
           104 [(memory (+ 1 pointer)) phase (+ 2 pointer) relative-base memory false]
           204 [(get memory (+ (memory (+ 1 pointer)) relative-base) 0) phase (+ 2 pointer) relative-base memory false]
