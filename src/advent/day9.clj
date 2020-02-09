@@ -8,20 +8,11 @@
                       (doall
                         (csv/read-csv reader))))
              (map #(Integer/parseInt %))
-             (into [])))
+             (into [])
+             (zipmap (range))))
 
 (def sample [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99])
-
 (def good (zipmap (range) sample))
-(sort-by key < good)
-(assoc good 100 700)
-(sort-by key < (assoc good 100 700))
-(good 100)
-(get good 100 0)
-(get sample 100 0)
-(get sample 0 0)
-
-;(get memory (+ (memory (+ 1 pointer)) relative-base) 0)
 
 (defn op-code [[input phase pointer relative-base memory stopped?]]
   (if stopped?
