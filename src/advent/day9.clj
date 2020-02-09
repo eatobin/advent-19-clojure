@@ -68,10 +68,18 @@
                 (+ 4 pointer)
                 relative-base
                 (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (get memory (memory (+ 2 pointer)) 0))))
+          202 (recur
+                (+ 4 pointer)
+                relative-base
+                (assoc memory (memory (+ 3 pointer)) (* (get memory (+ (memory (+ 1 pointer)) relative-base) 0) (get memory (memory (+ 2 pointer)) 0))))
           1002 (recur
                  (+ 4 pointer)
                  relative-base
                  (assoc memory (memory (+ 3 pointer)) (* (get memory (memory (+ 1 pointer)) 0) (memory (+ 2 pointer)))))
+          2002 (recur
+                 (+ 4 pointer)
+                 relative-base
+                 (assoc memory (memory (+ 3 pointer)) (* (get memory (memory (+ 1 pointer)) 0) (get memory (+ (memory (+ 2 pointer)) relative-base) 0))))
           1102 (recur
                  (+ 4 pointer)
                  relative-base
