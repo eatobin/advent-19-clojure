@@ -1,13 +1,3 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]
-
-eatobin 16*
-
- {'year':2019}[Calendar][AoC++][Sponsors][Leaderboard][Stats]
-
-Our sponsors help make Advent of Code possible:
-
-AuricVault® - Thieves can't steal -- what isn't there! Secure your sensitive data. Simple API. FREE test credentials. Start simplifying your compliance.
-
 --- Day 9: Sensor Boost ---
 
 You've just said goodbye to the rebooted rover and left Mars when you receive a faint distress signal coming from the asteroid belt. It must be the Ceres monitoring station!
