@@ -15,10 +15,21 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
+(def tester [1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50])
+
+(defn pad-5 [n]
+  (format "%05d" n))
+
 (defn op-code [memory]
   (loop [pointer 0
          memory memory]
-    (let [instruction (memory (+ 0 pointer))]
+    (let [instruction (memory (+ 0 pointer))
+          expanded (pad-5 instruction)
+          a (get expanded 0)
+          b (get expanded 1)
+          c (get expanded 2)
+          d (get expanded 3)
+          e (get expanded 4)]
       (case instruction
         99 memory
         1 (recur
