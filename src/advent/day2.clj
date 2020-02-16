@@ -21,7 +21,7 @@
 (defn pos-b [pointer memory]
   (memory (memory (+ 2 pointer))))
 
-(defn imm-a [pointer memory]
+(defn pos-a [pointer memory]
   (memory (+ 3 pointer)))
 
 (defn op-code [memory]
@@ -30,10 +30,10 @@
     (case (memory pointer)
       99 memory
       1 (recur
-          (assoc memory (imm-a pointer memory) (+ (pos-c pointer memory) (pos-b pointer memory)))
+          (assoc memory (pos-a pointer memory) (+ (pos-c pointer memory) (pos-b pointer memory)))
           (+ 4 pointer))
       2 (recur
-          (assoc memory (imm-a pointer memory) (* (pos-c pointer memory) (pos-b pointer memory)))
+          (assoc memory (pos-a pointer memory) (* (pos-c pointer memory) (pos-b pointer memory)))
           (+ 4 pointer)))))
 
 (def fix-op-code (first (op-code (updated-memory 12 2))))
