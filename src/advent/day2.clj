@@ -15,29 +15,26 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
-(def tester [1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50])
+(defn pos-c [pointer memory]
+  (memory (memory (+ 1 pointer))))
 
-(defn pad-5 [n]
-  (format "%05d" n))
+(defn pos-b [pointer memory]
+  (memory (memory (+ 2 pointer))))
+
+(defn imm-a [pointer memory]
+  (memory (+ 3 pointer)))
 
 (defn op-code [memory]
-  (loop [pointer 0
-         memory memory]
-    (let [instruction (memory (+ 0 pointer))
-          expanded (pad-5 instruction)
-          a (get expanded 0)
-          b (get expanded 1)
-          c (get expanded 2)
-          d (get expanded 3)
-          e (get expanded 4)]
-      (case instruction
-        99 memory
-        1 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
-        2 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))))))
+  (loop [memory memory
+         pointer 0]
+    (case (memory pointer)
+      99 memory
+      1 (recur
+          (assoc memory (imm-a pointer memory) (+ (pos-c pointer memory) (pos-b pointer memory)))
+          (+ 4 pointer))
+      2 (recur
+          (assoc memory (imm-a pointer memory) (* (pos-c pointer memory) (pos-b pointer memory)))
+          (+ 4 pointer)))))
 
 (def fix-op-code (first (op-code (updated-memory 12 2))))
 
