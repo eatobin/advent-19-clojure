@@ -15,6 +15,14 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
+(defn pad-5 [n]
+  (zipmap [:a :b :c :d :e]
+          (for [n (format "%05d" n)] (- (byte n) 48))))
+
+
+(for [n (str num)]
+  (- (byte n) 48))
+
 (defn pos-c [pointer memory]
   (memory (memory (+ 1 pointer))))
 
