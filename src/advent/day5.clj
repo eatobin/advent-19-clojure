@@ -9,57 +9,61 @@
              (map #(Integer/parseInt %))
              (into [])))
 
+(defn pad-5 [n]
+  (zipmap [:a :b :c :d :e]
+          (for [n (format "%05d" n)]
+            (- (byte n) 48))))
+
+(defn param-mode-c [instruction pointer memory]
+  (case (instruction :c)
+    0 (memory (memory (+ 1 pointer)))
+    1 (memory (+ 1 pointer))))
+
+(defn param-mode-b [instruction pointer memory]
+  (case (instruction :b)
+    0 (memory (memory (+ 2 pointer)))
+    1 (memory (+ 2 pointer))))
+
+(defn param-mode-a [instruction pointer memory]
+  (case (instruction :a)
+    0 (memory (+ 3 pointer))))
+
+(def tester [3, 0, 4, 0, 99])
+(def tester-2 [1002, 4, 3, 4, 33])
+
 (defn op-code [input memory]
-  (loop [pointer 0
-         memory memory
+  (loop [memory memory
+         pointer 0
+         instruction (pad-5 (memory pointer))
          exit-code 0]
-    (let [instruction (memory pointer)]
-      (case instruction
-        99 exit-code
-        1 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            exit-code)
-        101 (recur
-              (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              exit-code)
-        1001 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               exit-code)
-        1101 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               exit-code)
-        2 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            exit-code)
-        102 (recur
-              (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              exit-code)
-        1002 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               exit-code)
-        1102 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               exit-code)
-        3 (recur
-            (+ 2 pointer)
-            (assoc memory (memory (+ 1 pointer)) input)
-            exit-code)
-        4 (recur
-            (+ 2 pointer)
-            memory
-            (memory (memory (+ 1 pointer))))
-        104 (recur
-              (+ 2 pointer)
-              memory
-              (memory (+ 1 pointer)))))))
+    (case (instruction :e)
+      9 (if (= (instruction :d) 9)
+          exit-code
+          memory)
+      1 (recur
+          (assoc memory (param-mode-a instruction pointer memory)
+                        (+ (param-mode-c instruction pointer memory)
+                           (param-mode-b instruction pointer memory)))
+          (+ 4 pointer)
+          (pad-5 (memory (+ 4 pointer)))
+          exit-code)
+      2 (recur
+          (assoc memory (param-mode-a instruction pointer memory)
+                        (* (param-mode-c instruction pointer memory)
+                           (param-mode-b instruction pointer memory)))
+          (+ 4 pointer)
+          (pad-5 (memory (+ 4 pointer)))
+          exit-code)
+      3 (recur
+          (assoc memory (memory (+ 1 pointer)) input)
+          (+ 2 pointer)
+          (pad-5 (memory (+ 2 pointer)))
+          exit-code)
+      4 (recur
+          memory
+          (+ 2 pointer)
+          (pad-5 (memory (+ 2 pointer)))
+          (param-mode-c instruction pointer memory)))))
 
 (def answer (op-code 1 tv))
 
