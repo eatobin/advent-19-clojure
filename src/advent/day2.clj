@@ -37,7 +37,9 @@
          pointer 0
          instruction (pad-5 (memory pointer))]
     (case (instruction :e)
-      9 memory
+      9 (if (= (instruction :d) 9)
+          memory
+          memory)
       1 (recur
           (assoc memory (param-mode-a instruction pointer memory)
                         (+ (param-mode-c instruction pointer memory)
