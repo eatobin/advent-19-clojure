@@ -17,7 +17,8 @@
 
 (defn pad-5 [n]
   (zipmap [:a :b :c :d :e]
-          (for [n (format "%05d" n)] (- (byte n) 48))))
+          (for [n (format "%05d" n)]
+            (- (byte n) 48))))
 
 (defn param-mode-c [instruction pointer memory]
   (case (instruction :c)
