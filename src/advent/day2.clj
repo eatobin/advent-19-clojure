@@ -15,20 +15,21 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
-(def tester [1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50])
-
 (defn pad-5 [n]
   (zipmap [:a :b :c :d :e]
           (for [n (format "%05d" n)] (- (byte n) 48))))
 
-(defn pos-c [pointer memory]
-  (memory (memory (+ 1 pointer))))
+(defn param-mode-c [instruction pointer memory]
+  (case (instruction :c)
+    0 (memory (memory (+ 1 pointer)))))
 
-(defn pos-b [pointer memory]
-  (memory (memory (+ 2 pointer))))
+(defn param-mode-b [instruction pointer memory]
+  (case (instruction :b)
+    0 (memory (memory (+ 2 pointer)))))
 
-(defn pos-a [pointer memory]
-  (memory (+ 3 pointer)))
+(defn param-mode-a [instruction pointer memory]
+  (case (instruction :a)
+    0 (memory (+ 3 pointer))))
 
 (defn op-code [memory]
   (loop [memory memory
@@ -37,11 +38,15 @@
     (case (instruction :e)
       9 memory
       1 (recur
-          (assoc memory (pos-a pointer memory) (+ (pos-c pointer memory) (pos-b pointer memory)))
+          (assoc memory (param-mode-a instruction pointer memory)
+                        (+ (param-mode-c instruction pointer memory)
+                           (param-mode-b instruction pointer memory)))
           (+ 4 pointer)
           (pad-5 (memory (+ 4 pointer))))
       2 (recur
-          (assoc memory (pos-a pointer memory) (* (pos-c pointer memory) (pos-b pointer memory)))
+          (assoc memory (param-mode-a instruction pointer memory)
+                        (* (param-mode-c instruction pointer memory)
+                           (param-mode-b instruction pointer memory)))
           (+ 4 pointer)
           (pad-5 (memory (+ 4 pointer)))))))
 
