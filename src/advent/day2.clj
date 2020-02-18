@@ -34,24 +34,22 @@
 
 (defn op-code [memory]
   (loop [memory memory
-         pointer 0
-         instruction (pad-5 (memory pointer))]
-    (case (instruction :e)
-      9 (if (= (instruction :d) 9)
-          memory
-          memory)
-      1 (recur
-          (assoc memory (param-mode-a instruction pointer memory)
-                        (+ (param-mode-c instruction pointer memory)
-                           (param-mode-b instruction pointer memory)))
-          (+ 4 pointer)
-          (pad-5 (memory (+ 4 pointer))))
-      2 (recur
-          (assoc memory (param-mode-a instruction pointer memory)
-                        (* (param-mode-c instruction pointer memory)
-                           (param-mode-b instruction pointer memory)))
-          (+ 4 pointer)
-          (pad-5 (memory (+ 4 pointer)))))))
+         pointer 0]
+    (let [instruction (pad-5 (memory pointer))]
+      (case (instruction :e)
+        9 (if (= (instruction :d) 9)
+            memory
+            memory)
+        1 (recur
+            (assoc memory (param-mode-a instruction pointer memory)
+                          (+ (param-mode-c instruction pointer memory)
+                             (param-mode-b instruction pointer memory)))
+            (+ 4 pointer))
+        2 (recur
+            (assoc memory (param-mode-a instruction pointer memory)
+                          (* (param-mode-c instruction pointer memory)
+                             (param-mode-b instruction pointer memory)))
+            (+ 4 pointer))))))
 
 (def fix-op-code (first (op-code (updated-memory 12 2))))
 
