@@ -79,6 +79,10 @@
                 (if (= 0 pointer)
                   (assoc memory (memory (+ 1 pointer)) phase)
                   (assoc memory (memory (+ 1 pointer)) input))))
+          4 (recur
+              (+ 2 pointer)
+              relative-base
+              (memory (memory (+ 1 pointer))))
           4 [(param-mode-c instruction pointer memory relative-base) phase (+ 2 pointer) relative-base memory false]
           5 (recur
               (if (= 0 (param-mode-c instruction pointer memory relative-base))
