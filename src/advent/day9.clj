@@ -45,7 +45,7 @@
 
 (defn op-code [[input phase pointer relative-base memory stopped? recur?]]
   (if stopped?
-    [input phase pointer relative-base memory true false]
+    [input phase pointer relative-base memory true recur?]
     (loop [input input
            pointer pointer
            relative-base relative-base
@@ -54,7 +54,7 @@
       (let [instruction (pad-5 (memory pointer))]
         (case (instruction :e)
           9 (if (= (instruction :d) 9)
-              [input phase pointer relative-base memory true false]
+              [input phase pointer relative-base memory true recur?]
               (recur
                 input
                 (+ 2 pointer)
