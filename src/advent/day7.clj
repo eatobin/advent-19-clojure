@@ -10,203 +10,80 @@
              (map #(Integer/parseInt %))
              (into [])))
 
-(defn op-code [phase input memory]
-  (loop [pointer 0
+(defn pad-5 [n]
+  (zipmap [:a :b :c :d :e]
+          (for [n (format "%05d" n)]
+            (- (byte n) 48))))
+
+(defn param-mode-c [instruction pointer memory]
+  (case (instruction :c)
+    0 (memory (memory (+ 1 pointer)))
+    1 (memory (+ 1 pointer))))
+
+(defn param-mode-b [instruction pointer memory]
+  (case (instruction :b)
+    0 (memory (memory (+ 2 pointer)))
+    1 (memory (+ 2 pointer))))
+
+(defn param-mode-a [instruction pointer memory]
+  (case (instruction :a)
+    0 (memory (+ 3 pointer))))
+
+(defn op-code [[input phase memory]]
+  (loop [input input
          memory memory
-         exit-code 0]
-    (let [instruction (memory pointer)]
-      (case instruction
-        99 exit-code
+         pointer 0]
+    (let [instruction (pad-5 (memory pointer))]
+      (case (instruction :e)
+        9 (if (= (instruction :d) 9)
+            input
+            memory)
         1 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            exit-code)
-        101 (recur
-              (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              exit-code)
-        1001 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               exit-code)
-        1101 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               exit-code)
+            input
+            (assoc memory (param-mode-a instruction pointer memory)
+                          (+ (param-mode-c instruction pointer memory)
+                             (param-mode-b instruction pointer memory)))
+            (+ 4 pointer))
         2 (recur
-            (+ 4 pointer)
-            (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer)))))
-            exit-code)
-        102 (recur
-              (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer)))))
-              exit-code)
-        1002 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer))))
-               exit-code)
-        1102 (recur
-               (+ 4 pointer)
-               (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (+ 2 pointer))))
-               exit-code)
+            input
+            (assoc memory (param-mode-a instruction pointer memory)
+                          (* (param-mode-c instruction pointer memory)
+                             (param-mode-b instruction pointer memory)))
+            (+ 4 pointer))
         3 (recur
-            (+ 2 pointer)
+            input
             (if (= 0 pointer)
               (assoc memory (memory (+ 1 pointer)) phase)
               (assoc memory (memory (+ 1 pointer)) input))
-            exit-code)
+            (+ 2 pointer))
         4 (recur
-            (+ 2 pointer)
+            (memory (memory (+ 1 pointer)))
             memory
-            (memory (memory (+ 1 pointer))))
-        104 (recur
-              (+ 2 pointer)
-              memory
-              (memory (+ 1 pointer)))
+            (+ 2 pointer))
         5 (recur
-            (if (= 0 (memory (memory (+ 1 pointer))))
-              (+ 3 pointer)
-              (memory (memory (+ 2 pointer))))
+            input
             memory
-            exit-code)
-        105 (recur
-              (if (= 0 (memory (+ 1 pointer)))
-                (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
-              memory
-              exit-code)
-        1005 (recur
-               (if (= 0 (memory (memory (+ 1 pointer))))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
-        1105 (recur
-               (if (= 0 (memory (+ 1 pointer)))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
+            (if (= 0 (param-mode-c instruction pointer memory))
+              (+ 3 pointer)
+              (param-mode-b instruction pointer memory)))
         6 (recur
-            (if (not= 0 (memory (memory (+ 1 pointer))))
-              (+ 3 pointer)
-              (memory (memory (+ 2 pointer))))
+            input
             memory
-            exit-code)
-        106 (recur
-              (if (not= 0 (memory (+ 1 pointer)))
-                (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
-              memory
-              exit-code)
-        1006 (recur
-               (if (not= 0 (memory (memory (+ 1 pointer))))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
-        1106 (recur
-               (if (not= 0 (memory (+ 1 pointer)))
-                 (+ 3 pointer)
-                 (memory (+ 2 pointer)))
-               memory
-               exit-code)
+            (if (not= 0 (param-mode-c instruction pointer memory))
+              (+ 3 pointer)
+              (param-mode-b instruction pointer memory)))
         7 (recur
-            (+ 4 pointer)
-            (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+            input
+            (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
               (assoc memory (memory (+ 3 pointer)) 1)
               (assoc memory (memory (+ 3 pointer)) 0))
-            exit-code)
-        107 (recur
-              (+ 4 pointer)
-              (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                (assoc memory (memory (+ 3 pointer)) 1)
-                (assoc memory (memory (+ 3 pointer)) 0))
-              exit-code)
-        1007 (recur
-               (+ 4 pointer)
-               (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        1107 (recur
-               (+ 4 pointer)
-               (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        10007 (recur
-                (+ 4 pointer)
-                (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        10107 (recur
-                (+ 4 pointer)
-                (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11007 (recur
-                (+ 4 pointer)
-                (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11107 (recur
-                (+ 4 pointer)
-                (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
+            (+ 4 pointer))
         8 (recur
-            (+ 4 pointer)
-            (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+            input
+            (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
               (assoc memory (memory (+ 3 pointer)) 1)
               (assoc memory (memory (+ 3 pointer)) 0))
-            exit-code)
-        108 (recur
-              (+ 4 pointer)
-              (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                (assoc memory (memory (+ 3 pointer)) 1)
-                (assoc memory (memory (+ 3 pointer)) 0))
-              exit-code)
-        1008 (recur
-               (+ 4 pointer)
-               (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        1108 (recur
-               (+ 4 pointer)
-               (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                 (assoc memory (memory (+ 3 pointer)) 1)
-                 (assoc memory (memory (+ 3 pointer)) 0))
-               exit-code)
-        10008 (recur
-                (+ 4 pointer)
-                (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        10108 (recur
-                (+ 4 pointer)
-                (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11008 (recur
-                (+ 4 pointer)
-                (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)
-        11108 (recur
-                (+ 4 pointer)
-                (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0))
-                exit-code)))))
+            (+ 4 pointer))))))
 
 (def possibles (for [a (range 0 5)
                      b (range 0 5)
@@ -217,7 +94,16 @@
                  [a b c d e]))
 
 (defn pass [[a b c d e] i-code]
-  (op-code e (op-code d (op-code c (op-code b (op-code a 0 i-code) i-code) i-code) i-code) i-code))
+  (op-code [
+            (op-code [
+                      (op-code [
+                                (op-code [
+                                          (op-code [
+                                                    0 a i-code])
+                                          b i-code])
+                                c i-code])
+                      d i-code])
+            e i-code]))
 
 (defn passes [i-code]
   (vec (map #(pass % i-code) possibles)))
@@ -235,160 +121,47 @@
     [input phase pointer memory true]
     (loop [pointer pointer
            memory memory]
-      (let [instruction (memory pointer)]
-        (case instruction
-          99 [input phase pointer memory true]
+      (let [instruction (pad-5 (memory pointer))]
+        (case (instruction :e)
+          9 (if (= (instruction :d) 9)
+              [input phase pointer memory true]
+              memory)
           1 (recur
               (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
-          101 (recur
-                (+ 4 pointer)
-                (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))))
-          1001 (recur
-                 (+ 4 pointer)
-                 (assoc memory (memory (+ 3 pointer)) (+ (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))))
-          1101 (recur
-                 (+ 4 pointer)
-                 (assoc memory (memory (+ 3 pointer)) (+ (memory (+ 1 pointer)) (memory (+ 2 pointer)))))
+              (assoc memory (param-mode-a instruction pointer memory)
+                            (+ (param-mode-c instruction pointer memory)
+                               (param-mode-b instruction pointer memory))))
           2 (recur
               (+ 4 pointer)
-              (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))))
-          102 (recur
-                (+ 4 pointer)
-                (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))))
-          1002 (recur
-                 (+ 4 pointer)
-                 (assoc memory (memory (+ 3 pointer)) (* (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))))
-          1102 (recur
-                 (+ 4 pointer)
-                 (assoc memory (memory (+ 3 pointer)) (* (memory (+ 1 pointer)) (memory (+ 2 pointer)))))
+              (assoc memory (param-mode-a instruction pointer memory)
+                            (* (param-mode-c instruction pointer memory)
+                               (param-mode-b instruction pointer memory))))
           3 (recur
               (+ 2 pointer)
               (if (= 0 pointer)
                 (assoc memory (memory (+ 1 pointer)) phase)
                 (assoc memory (memory (+ 1 pointer)) input)))
-          4 [(memory (memory (+ 1 pointer))) phase (+ 2 pointer) memory false]
-          104 [(memory (+ 1 pointer)) phase (+ 2 pointer) memory false]
+          4 [(param-mode-c instruction pointer memory) phase (+ 2 pointer) memory false]
           5 (recur
-              (if (= 0 (memory (memory (+ 1 pointer))))
+              (if (= 0 (param-mode-c instruction pointer memory))
                 (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
+                (param-mode-b instruction pointer memory))
               memory)
-          105 (recur
-                (if (= 0 (memory (+ 1 pointer)))
-                  (+ 3 pointer)
-                  (memory (memory (+ 2 pointer))))
-                memory)
-          1005 (recur
-                 (if (= 0 (memory (memory (+ 1 pointer))))
-                   (+ 3 pointer)
-                   (memory (+ 2 pointer)))
-                 memory)
-          1105 (recur
-                 (if (= 0 (memory (+ 1 pointer)))
-                   (+ 3 pointer)
-                   (memory (+ 2 pointer)))
-                 memory)
           6 (recur
-              (if (not= 0 (memory (memory (+ 1 pointer))))
+              (if (not= 0 (param-mode-c instruction pointer memory))
                 (+ 3 pointer)
-                (memory (memory (+ 2 pointer))))
+                (param-mode-b instruction pointer memory))
               memory)
-          106 (recur
-                (if (not= 0 (memory (+ 1 pointer)))
-                  (+ 3 pointer)
-                  (memory (memory (+ 2 pointer))))
-                memory)
-          1006 (recur
-                 (if (not= 0 (memory (memory (+ 1 pointer))))
-                   (+ 3 pointer)
-                   (memory (+ 2 pointer)))
-                 memory)
-          1106 (recur
-                 (if (not= 0 (memory (+ 1 pointer)))
-                   (+ 3 pointer)
-                   (memory (+ 2 pointer)))
-                 memory)
           7 (recur
               (+ 4 pointer)
-              (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+              (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
                 (assoc memory (memory (+ 3 pointer)) 1)
                 (assoc memory (memory (+ 3 pointer)) 0)))
-          107 (recur
-                (+ 4 pointer)
-                (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0)))
-          1007 (recur
-                 (+ 4 pointer)
-                 (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                   (assoc memory (memory (+ 3 pointer)) 1)
-                   (assoc memory (memory (+ 3 pointer)) 0)))
-          1107 (recur
-                 (+ 4 pointer)
-                 (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                   (assoc memory (memory (+ 3 pointer)) 1)
-                   (assoc memory (memory (+ 3 pointer)) 0)))
-          10007 (recur
-                  (+ 4 pointer)
-                  (if (< (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0)))
-          10107 (recur
-                  (+ 4 pointer)
-                  (if (< (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0)))
-          11007 (recur
-                  (+ 4 pointer)
-                  (if (< (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0)))
-          11107 (recur
-                  (+ 4 pointer)
-                  (if (< (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0)))
           8 (recur
               (+ 4 pointer)
-              (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
+              (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
                 (assoc memory (memory (+ 3 pointer)) 1)
-                (assoc memory (memory (+ 3 pointer)) 0)))
-          108 (recur
-                (+ 4 pointer)
-                (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                  (assoc memory (memory (+ 3 pointer)) 1)
-                  (assoc memory (memory (+ 3 pointer)) 0)))
-          1008 (recur
-                 (+ 4 pointer)
-                 (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                   (assoc memory (memory (+ 3 pointer)) 1)
-                   (assoc memory (memory (+ 3 pointer)) 0)))
-          1108 (recur
-                 (+ 4 pointer)
-                 (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                   (assoc memory (memory (+ 3 pointer)) 1)
-                   (assoc memory (memory (+ 3 pointer)) 0)))
-          10008 (recur
-                  (+ 4 pointer)
-                  (if (= (memory (memory (+ 1 pointer))) (memory (memory (+ 2 pointer))))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0)))
-          10108 (recur
-                  (+ 4 pointer)
-                  (if (= (memory (+ 1 pointer)) (memory (memory (+ 2 pointer))))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0)))
-          11008 (recur
-                  (+ 4 pointer)
-                  (if (= (memory (memory (+ 1 pointer))) (memory (+ 2 pointer)))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0)))
-          11108 (recur
-                  (+ 4 pointer)
-                  (if (= (memory (+ 1 pointer)) (memory (+ 2 pointer)))
-                    (assoc memory (memory (+ 3 pointer)) 1)
-                    (assoc memory (memory (+ 3 pointer)) 0))))))))
+                (assoc memory (memory (+ 3 pointer)) 0))))))))
 
 (def possibles-2 (for [a (range 5 10)
                        b (range 5 10)
