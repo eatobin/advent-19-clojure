@@ -32,26 +32,24 @@
   (case (instruction :a)
     0 (memory (+ 3 pointer))))
 
-(defn op-code [memory]
-  (loop [memory memory
-         pointer 0]
-    (let [instruction (pad-5 (memory pointer))]
-      (case (instruction :e)
-        9 (if (= (instruction :d) 9)
-            memory
-            memory)
-        1 (recur
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (+ (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))
-        2 (recur
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (* (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))))))
+(defn op-code [[pointer memory]]
+  (let [instruction (pad-5 (memory pointer))]
+    (case (instruction :e)
+      9 (if (= (instruction :d) 9)
+          [pointer memory]
+          [pointer memory])
+      1 (recur
+          [(+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (+ (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))])
+      2 (recur
+          [(+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (* (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))]))))
 
-(def fix-op-code (first (op-code (updated-memory 12 2))))
+(def fix-op-code (first (last (op-code [0 (updated-memory 12 2)]))))
 
 (println fix-op-code)
 
@@ -61,7 +59,7 @@
 (def noun-verb
   (for [noun (range 0 100)
         verb (range 0 100)
-        :let [candidate (first (op-code (updated-memory noun verb)))]
+        :let [candidate (first (last (op-code [0 (updated-memory noun verb)])))]
         :when (= candidate 19690720)]
     [candidate noun verb (+ (* 100 noun) verb)]))
 
