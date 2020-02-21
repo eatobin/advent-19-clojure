@@ -12,15 +12,6 @@
              (zipmap (range))
              (into (sorted-map-by <))))
 
-(def sample [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99])
-(def good (into (sorted-map-by <) (zipmap (range) sample)))
-
-(def sample-2 [1102, 34915192, 34915192, 7, 4, 7, 99, 0])
-(def good-2 (into (sorted-map-by <) (zipmap (range) sample-2)))
-
-(def sample-3 [104, 1125899906842624, 99])
-(def good-3 (into (sorted-map-by <) (zipmap (range) sample-3)))
-
 (defn pad-5 [n]
   (zipmap [:a :b :c :d :e]
           (for [n (format "%05d" n)]
