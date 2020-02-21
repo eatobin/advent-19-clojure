@@ -28,37 +28,34 @@
   (case (instruction :a)
     0 (memory (+ 3 pointer))))
 
-(defn op-code [[input memory]]
-  (loop [input input
-         memory memory
-         pointer 0]
-    (let [instruction (pad-5 (memory pointer))]
-      (case (instruction :e)
-        9 (if (= (instruction :d) 9)
-            input
-            memory)
-        1 (recur
-            input
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (+ (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))
-        2 (recur
-            input
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (* (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))
-        3 (recur
-            input
-            (assoc memory (memory (+ 1 pointer)) input)
-            (+ 2 pointer))
-        4 (recur
-            (memory (memory (+ 1 pointer)))
-            memory
-            (+ 2 pointer))))))
+(defn op-code [[input pointer memory]]
+  (let [instruction (pad-5 (memory pointer))]
+    (case (instruction :e)
+      9 (if (= (instruction :d) 9)
+          [input pointer memory]
+          "not used")
+      1 (recur
+          [input
+           (+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (+ (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))])
+      2 (recur
+          [input
+           (+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (* (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))])
+      3 (recur
+          [input
+           (+ 2 pointer)
+           (assoc memory (memory (+ 1 pointer)) input)])
+      4 (recur
+          [(memory (memory (+ 1 pointer)))
+           (+ 2 pointer)
+           memory]))))
 
-(def answer (op-code [1 tv]))
+(def answer (first (op-code [1 0 tv])))
 
 (println answer) answer
 

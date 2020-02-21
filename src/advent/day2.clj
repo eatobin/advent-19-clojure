@@ -37,7 +37,7 @@
     (case (instruction :e)
       9 (if (= (instruction :d) 9)
           [pointer memory]
-          [pointer memory])
+          "not used")
       1 (recur
           [(+ 4 pointer)
            (assoc memory (param-mode-a instruction pointer memory)
