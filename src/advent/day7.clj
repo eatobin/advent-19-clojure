@@ -8,7 +8,18 @@
                       (doall
                         (csv/read-csv reader))))
              (map #(Integer/parseInt %))
-             (into [])))
+             (into [])
+             (zipmap (range))
+             (into (sorted-map-by <))))
+
+(def sample [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99])
+(def good (into (sorted-map-by <) (zipmap (range) sample)))
+
+(def sample-2 [1102, 34915192, 34915192, 7, 4, 7, 99, 0])
+(def good-2 (into (sorted-map-by <) (zipmap (range) sample-2)))
+
+(def sample-3 [104, 1125899906842624, 99])
+(def good-3 (into (sorted-map-by <) (zipmap (range) sample-3)))
 
 (defn pad-5 [n]
   (zipmap [:a :b :c :d :e]
@@ -17,12 +28,12 @@
 
 (defn param-mode-c [instruction pointer memory]
   (case (instruction :c)
-    0 (memory (memory (+ 1 pointer)))
+    0 (get memory (memory (+ 1 pointer)) 0)
     1 (memory (+ 1 pointer))))
 
 (defn param-mode-b [instruction pointer memory]
   (case (instruction :b)
-    0 (memory (memory (+ 2 pointer)))
+    0 (get memory (memory (+ 2 pointer)) 0)
     1 (memory (+ 2 pointer))))
 
 (defn param-mode-a [instruction pointer memory]
