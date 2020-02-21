@@ -63,61 +63,58 @@
 
 ;part b
 
-(defn op-code-2 [[input memory]]
-  (loop [input input
-         memory memory
-         pointer 0]
-    (let [instruction (pad-5 (memory pointer))]
-      (case (instruction :e)
-        9 (if (= (instruction :d) 9)
-            input
-            memory)
-        1 (recur
-            input
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (+ (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))
-        2 (recur
-            input
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (* (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))
-        3 (recur
-            input
-            (assoc memory (memory (+ 1 pointer)) input)
-            (+ 2 pointer))
-        4 (recur
-            (memory (memory (+ 1 pointer)))
-            memory
-            (+ 2 pointer))
-        5 (recur
-            input
-            memory
-            (if (= 0 (param-mode-c instruction pointer memory))
-              (+ 3 pointer)
-              (param-mode-b instruction pointer memory)))
-        6 (recur
-            input
-            memory
-            (if (not= 0 (param-mode-c instruction pointer memory))
-              (+ 3 pointer)
-              (param-mode-b instruction pointer memory)))
-        7 (recur
-            input
-            (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            (+ 4 pointer))
-        8 (recur
-            input
-            (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            (+ 4 pointer))))))
+(defn op-code-2 [[input pointer memory]]
+  (let [instruction (pad-5 (memory pointer))]
+    (case (instruction :e)
+      9 (if (= (instruction :d) 9)
+          [input pointer memory]
+          "not used")
+      1 (recur
+          [input
+           (+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (+ (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))])
+      2 (recur
+          [input
+           (+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (* (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))])
+      3 (recur
+          [input
+           (+ 2 pointer)
+           (assoc memory (memory (+ 1 pointer)) input)])
+      4 (recur
+          [(memory (memory (+ 1 pointer)))
+           (+ 2 pointer)
+           memory])
+      5 (recur
+          [input
+           (if (= 0 (param-mode-c instruction pointer memory))
+             (+ 3 pointer)
+             (param-mode-b instruction pointer memory))
+           memory])
+      6 (recur
+          [input
+           (if (not= 0 (param-mode-c instruction pointer memory))
+             (+ 3 pointer)
+             (param-mode-b instruction pointer memory))
+           memory])
+      7 (recur
+          [input
+           (+ 4 pointer)
+           (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+             (assoc memory (memory (+ 3 pointer)) 1)
+             (assoc memory (memory (+ 3 pointer)) 0))])
+      8 (recur
+          [input
+           (+ 4 pointer)
+           (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+             (assoc memory (memory (+ 3 pointer)) 1)
+             (assoc memory (memory (+ 3 pointer)) 0))]))))
 
-(def answer-2 (op-code-2 [5 tv]))
+(def answer-2 (first (op-code-2 [5 0 tv])))
 
 (println answer-2)
 
