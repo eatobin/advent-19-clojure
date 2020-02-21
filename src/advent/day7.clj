@@ -29,61 +29,66 @@
   (case (instruction :a)
     0 (memory (+ 3 pointer))))
 
-(defn op-code [[input phase memory]]
-  (loop [input input
-         memory memory
-         pointer 0]
-    (let [instruction (pad-5 (memory pointer))]
-      (case (instruction :e)
-        9 (if (= (instruction :d) 9)
-            input
-            memory)
-        1 (recur
-            input
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (+ (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))
-        2 (recur
-            input
-            (assoc memory (param-mode-a instruction pointer memory)
-                          (* (param-mode-c instruction pointer memory)
-                             (param-mode-b instruction pointer memory)))
-            (+ 4 pointer))
-        3 (recur
-            input
-            (if (= 0 pointer)
-              (assoc memory (memory (+ 1 pointer)) phase)
-              (assoc memory (memory (+ 1 pointer)) input))
-            (+ 2 pointer))
-        4 (recur
-            (memory (memory (+ 1 pointer)))
-            memory
-            (+ 2 pointer))
-        5 (recur
-            input
-            memory
-            (if (= 0 (param-mode-c instruction pointer memory))
-              (+ 3 pointer)
-              (param-mode-b instruction pointer memory)))
-        6 (recur
-            input
-            memory
-            (if (not= 0 (param-mode-c instruction pointer memory))
-              (+ 3 pointer)
-              (param-mode-b instruction pointer memory)))
-        7 (recur
-            input
-            (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            (+ 4 pointer))
-        8 (recur
-            input
-            (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            (+ 4 pointer))))))
+(defn op-code [[input phase pointer memory]]
+  (let [instruction (pad-5 (memory pointer))]
+    (case (instruction :e)
+      9 (if (= (instruction :d) 9)
+          [input phase pointer memory]
+          "not used")
+      1 (recur
+          [input
+           phase
+           (+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (+ (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))])
+      2 (recur
+          [input
+           phase
+           (+ 4 pointer)
+           (assoc memory (param-mode-a instruction pointer memory)
+                         (* (param-mode-c instruction pointer memory)
+                            (param-mode-b instruction pointer memory)))])
+      3 (recur
+          [input
+           phase
+           (+ 2 pointer)
+           (if (= 0 pointer)
+             (assoc memory (memory (+ 1 pointer)) phase)
+             (assoc memory (memory (+ 1 pointer)) input))])
+      4 (recur
+          [(memory (memory (+ 1 pointer)))
+           phase
+           (+ 2 pointer)
+           memory])
+      5 (recur
+          [input
+           phase
+           (if (= 0 (param-mode-c instruction pointer memory))
+             (+ 3 pointer)
+             (param-mode-b instruction pointer memory))
+           memory])
+      6 (recur
+          [input
+           phase
+           (if (not= 0 (param-mode-c instruction pointer memory))
+             (+ 3 pointer)
+             (param-mode-b instruction pointer memory))
+           memory])
+      7 (recur
+          [input
+           phase
+           (+ 4 pointer)
+           (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+             (assoc memory (memory (+ 3 pointer)) 1)
+             (assoc memory (memory (+ 3 pointer)) 0))])
+      8 (recur
+          [input
+           phase
+           (+ 4 pointer)
+           (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+             (assoc memory (memory (+ 3 pointer)) 1)
+             (assoc memory (memory (+ 3 pointer)) 0))]))))
 
 (def possibles (for [a (range 0 5)
                      b (range 0 5)
@@ -94,16 +99,16 @@
                  [a b c d e]))
 
 (defn pass [[a b c d e] i-code]
-  (op-code [
-            (op-code [
-                      (op-code [
-                                (op-code [
-                                          (op-code [
-                                                    0 a i-code])
-                                          b i-code])
-                                c i-code])
-                      d i-code])
-            e i-code]))
+  (first (op-code [
+                   (first (op-code [
+                                    (first (op-code [
+                                                     (first (op-code [
+                                                                      (first (op-code [
+                                                                                       0 a 0 i-code]))
+                                                                      b 0 i-code]))
+                                                     c 0 i-code]))
+                                    d 0 i-code]))
+                   e 0 i-code])))
 
 (defn passes [i-code]
   (vec (map #(pass % i-code) possibles)))
