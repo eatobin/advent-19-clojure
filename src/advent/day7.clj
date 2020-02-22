@@ -23,6 +23,18 @@
 (defn param-c-pr-rr-rw [pointer memory relative-base]
   (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
 
+(defn param-b-pr-rr [pointer memory relative-base]
+  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
+
+(defn param-b-ir [pointer memory]
+  (memory (+ 2 pointer)))
+
+(defn param-a-pw-iw [pointer memory]
+  (memory (+ 3 pointer)))
+
+(defn param-a-rw [pointer memory relative-base]
+  (get memory (+ (memory (+ 3 pointer)) relative-base) 0))
+
 (defn param-mode-c [instruction pointer memory]
   (case (instruction :c)
     0 (param-c-pr-rr-rw pointer memory 0)
@@ -30,12 +42,12 @@
 
 (defn param-mode-b [instruction pointer memory]
   (case (instruction :b)
-    0 (get memory (memory (+ 2 pointer)) 0)
-    1 (memory (+ 2 pointer))))
+    0 (param-b-pr-rr pointer memory 0)
+    1 (param-b-ir pointer memory)))
 
 (defn param-mode-a [instruction pointer memory]
   (case (instruction :a)
-    0 (memory (+ 3 pointer))))
+    0 (param-a-pw-iw pointer memory)))
 
 (defn op-code [[input phase pointer memory]]
   (let [instruction (pad-5 (memory pointer))]
