@@ -17,10 +17,16 @@
           (for [n (format "%05d" n)]
             (- (byte n) 48))))
 
+(defn param-c-ir-pw-iw [pointer memory]
+  (memory (+ 1 pointer)))
+
+(defn param-c-pr-rr-rw [pointer memory relative-base]
+  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
+
 (defn param-mode-c [instruction pointer memory]
   (case (instruction :c)
-    0 (get memory (memory (+ 1 pointer)) 0)
-    1 (memory (+ 1 pointer))))
+    0 (param-c-pr-rr-rw pointer memory 0)
+    1 (param-c-ir-pw-iw pointer memory)))
 
 (defn param-mode-b [instruction pointer memory]
   (case (instruction :b)
