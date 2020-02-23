@@ -165,14 +165,14 @@
           [input
            (+ 4 pointer)
            (if (< (param-maker-c instruction pointer memory) (param-maker-b instruction pointer memory))
-             (assoc memory (memory (+ 3 pointer)) 1)
-             (assoc memory (memory (+ 3 pointer)) 0))])
+             (assoc memory (param-maker-a instruction pointer memory) 1)
+             (assoc memory (param-maker-a instruction pointer memory) 0))])
       8 (recur
           [input
            (+ 4 pointer)
            (if (= (param-maker-c instruction pointer memory) (param-maker-b instruction pointer memory))
-             (assoc memory (memory (+ 3 pointer)) 1)
-             (assoc memory (memory (+ 3 pointer)) 0))]))))
+             (assoc memory (param-maker-a instruction pointer memory) 1)
+             (assoc memory (param-maker-a instruction pointer memory) 0))]))))
 
 (def answer-2 (first (op-code-2 [5 0 tv])))
 
