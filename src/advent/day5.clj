@@ -81,9 +81,9 @@
       3 (recur
           [input
            (+ 2 pointer)
-           (assoc memory (memory (+ 1 pointer)) input)])
+           (assoc memory (param-maker-c instruction pointer memory) input)])
       4 (recur
-          [(memory (memory (+ 1 pointer)))
+          [(param-maker-c instruction pointer memory)
            (+ 2 pointer)
            memory]))))
 
