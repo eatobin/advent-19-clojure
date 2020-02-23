@@ -22,10 +22,6 @@
 (def good-3 (into (sorted-map-by <) (zipmap (range) sample-3)))
 
 
-(defn pad-5 [n]
-  (zipmap [:a :b :c :d :e]
-          (for [n (format "%05d" n)]
-            (- (byte n) 48))))
 
 (defn param-mode-c [instruction pointer memory relative-base]
   (case (instruction :c)
@@ -43,6 +39,91 @@
   (case (instruction :a)
     0 (memory (+ 3 pointer))
     2 (get memory (+ (memory (+ 3 pointer)) relative-base) 0)))
+
+
+
+
+
+
+
+(defn pad-5 [n]
+  (zipmap [:a :b :c :d :e]
+          (for [n (format "%05d" n)]
+            (- (byte n) 48))))
+
+(defn param-c-ir-pw-iw [pointer memory]
+  (memory (+ 1 pointer)))
+
+(defn param-c-pr-rr-rw [pointer memory relative-base]
+  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
+
+(defn param-b-pr-rr [pointer memory relative-base]
+  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
+
+(defn param-b-ir [pointer memory]
+  (memory (+ 2 pointer)))
+
+(defn param-a-pw-iw [pointer memory]
+  (memory (+ 3 pointer)))
+
+(defn param-maker-c [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    2 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    3 (param-c-ir-pw-iw pointer memory)
+    4 (param-c-pr-rr-rw pointer memory 0)
+    5 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    6 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    7 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    8 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))))
+
+(defn param-maker-b [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    2 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    5 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    6 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    7 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    8 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))))
+
+(defn param-maker-a [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))
+    2 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))
+    7 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))
+    8 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))))
 
 (defn op-code [[input phase pointer relative-base memory stopped? recur?]]
   (if stopped?
