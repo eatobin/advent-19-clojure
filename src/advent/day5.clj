@@ -14,19 +14,51 @@
           (for [n (format "%05d" n)]
             (- (byte n) 48))))
 
-(defn param-mode-c [instruction pointer memory]
-  (case (instruction :c)
-    0 (memory (memory (+ 1 pointer)))
-    1 (memory (+ 1 pointer))))
+(defn param-c-ir-pw-iw [pointer memory]
+  (memory (+ 1 pointer)))
 
-(defn param-mode-b [instruction pointer memory]
-  (case (instruction :b)
-    0 (memory (memory (+ 2 pointer)))
-    1 (memory (+ 2 pointer))))
+(defn param-c-pr-rr-rw [pointer memory relative-base]
+  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
 
-(defn param-mode-a [instruction pointer memory]
-  (case (instruction :a)
-    0 (memory (+ 3 pointer))))
+(defn param-b-pr-rr [pointer memory relative-base]
+  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
+
+(defn param-b-ir [pointer memory]
+  (memory (+ 2 pointer)))
+
+(defn param-a-pw-iw [pointer memory]
+  (memory (+ 3 pointer)))
+
+(defn param-maker-c [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    2 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    3 (param-c-ir-pw-iw pointer memory)
+    4 (param-c-pr-rr-rw pointer memory 0)))
+
+(defn param-maker-b [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    2 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))))
+
+(defn param-maker-a [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))
+    2 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))))
+
+(def tester1 [1002, 4, 3, 4, 33])
 
 (defn op-code [[input pointer memory]]
   (let [instruction (pad-5 (memory pointer))]
@@ -37,15 +69,15 @@
       1 (recur
           [input
            (+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (+ (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))])
+           (assoc memory (param-maker-a instruction pointer memory)
+                         (+ (param-maker-c instruction pointer memory)
+                            (param-maker-b instruction pointer memory)))])
       2 (recur
           [input
            (+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (* (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))])
+           (assoc memory (param-maker-a instruction pointer memory)
+                         (* (param-maker-c instruction pointer memory)
+                            (param-maker-b instruction pointer memory)))])
       3 (recur
           [input
            (+ 2 pointer)
@@ -59,63 +91,63 @@
 
 (println answer) answer
 
-;9025675
-
-;part b
-
-(defn op-code-2 [[input pointer memory]]
-  (let [instruction (pad-5 (memory pointer))]
-    (case (instruction :e)
-      9 (if (= (instruction :d) 9)
-          [input pointer memory]
-          "not used")
-      1 (recur
-          [input
-           (+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (+ (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))])
-      2 (recur
-          [input
-           (+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (* (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))])
-      3 (recur
-          [input
-           (+ 2 pointer)
-           (assoc memory (memory (+ 1 pointer)) input)])
-      4 (recur
-          [(memory (memory (+ 1 pointer)))
-           (+ 2 pointer)
-           memory])
-      5 (recur
-          [input
-           (if (= 0 (param-mode-c instruction pointer memory))
-             (+ 3 pointer)
-             (param-mode-b instruction pointer memory))
-           memory])
-      6 (recur
-          [input
-           (if (not= 0 (param-mode-c instruction pointer memory))
-             (+ 3 pointer)
-             (param-mode-b instruction pointer memory))
-           memory])
-      7 (recur
-          [input
-           (+ 4 pointer)
-           (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-             (assoc memory (memory (+ 3 pointer)) 1)
-             (assoc memory (memory (+ 3 pointer)) 0))])
-      8 (recur
-          [input
-           (+ 4 pointer)
-           (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-             (assoc memory (memory (+ 3 pointer)) 1)
-             (assoc memory (memory (+ 3 pointer)) 0))]))))
-
-(def answer-2 (first (op-code-2 [5 0 tv])))
-
-(println answer-2)
+;;9025675
+;
+;;part b
+;
+;(defn op-code-2 [[input pointer memory]]
+;  (let [instruction (pad-5 (memory pointer))]
+;    (case (instruction :e)
+;      9 (if (= (instruction :d) 9)
+;          [input pointer memory]
+;          "not used")
+;      1 (recur
+;          [input
+;           (+ 4 pointer)
+;           (assoc memory (param-mode-a instruction pointer memory)
+;                         (+ (param-mode-c instruction pointer memory)
+;                            (param-mode-b instruction pointer memory)))])
+;      2 (recur
+;          [input
+;           (+ 4 pointer)
+;           (assoc memory (param-mode-a instruction pointer memory)
+;                         (* (param-mode-c instruction pointer memory)
+;                            (param-mode-b instruction pointer memory)))])
+;      3 (recur
+;          [input
+;           (+ 2 pointer)
+;           (assoc memory (memory (+ 1 pointer)) input)])
+;      4 (recur
+;          [(memory (memory (+ 1 pointer)))
+;           (+ 2 pointer)
+;           memory])
+;      5 (recur
+;          [input
+;           (if (= 0 (param-mode-c instruction pointer memory))
+;             (+ 3 pointer)
+;             (param-mode-b instruction pointer memory))
+;           memory])
+;      6 (recur
+;          [input
+;           (if (not= 0 (param-mode-c instruction pointer memory))
+;             (+ 3 pointer)
+;             (param-mode-b instruction pointer memory))
+;           memory])
+;      7 (recur
+;          [input
+;           (+ 4 pointer)
+;           (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+;             (assoc memory (memory (+ 3 pointer)) 1)
+;             (assoc memory (memory (+ 3 pointer)) 0))])
+;      8 (recur
+;          [input
+;           (+ 4 pointer)
+;           (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+;             (assoc memory (memory (+ 3 pointer)) 1)
+;             (assoc memory (memory (+ 3 pointer)) 0))]))))
+;
+;(def answer-2 (first (op-code-2 [5 0 tv])))
+;
+;(println answer-2)
 
 ;11981754

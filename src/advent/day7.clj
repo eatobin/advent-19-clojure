@@ -32,22 +32,78 @@
 (defn param-a-pw-iw [pointer memory]
   (memory (+ 3 pointer)))
 
-(defn param-a-rw [pointer memory relative-base]
-  (get memory (+ (memory (+ 3 pointer)) relative-base) 0))
+(defn param-maker-c [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    2 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    3 (param-c-ir-pw-iw pointer memory)
+    4 (param-c-pr-rr-rw pointer memory 0)
+    5 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    6 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    7 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))
+    8 (case (instruction :c)
+        0 (param-c-pr-rr-rw pointer memory 0)
+        1 (param-c-ir-pw-iw pointer memory))))
 
-(defn param-mode-c [instruction pointer memory]
-  (case (instruction :c)
-    0 (param-c-pr-rr-rw pointer memory 0)
-    1 (param-c-ir-pw-iw pointer memory)))
+(defn param-maker-b [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    2 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    5 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    6 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    7 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))
+    8 (case (instruction :b)
+        0 (param-b-pr-rr pointer memory 0)
+        1 (param-b-ir pointer memory))))
 
-(defn param-mode-b [instruction pointer memory]
-  (case (instruction :b)
-    0 (param-b-pr-rr pointer memory 0)
-    1 (param-b-ir pointer memory)))
+(defn param-maker-a [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))
+    2 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))
+    7 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))
+    8 (case (instruction :a)
+        0 (param-a-pw-iw pointer memory)
+        1 (param-a-pw-iw pointer memory))))
 
-(defn param-mode-a [instruction pointer memory]
-  (case (instruction :a)
-    0 (param-a-pw-iw pointer memory)))
+;(defn param-mode-c [instruction pointer memory]
+;  (case (instruction :c)
+;    0 (param-c-pr-rr-rw pointer memory 0)
+;    1 (param-c-ir-pw-iw pointer memory)))
+;
+;(defn param-mode-b [instruction pointer memory]
+;  (case (instruction :b)
+;    0 (param-b-pr-rr pointer memory 0)
+;    1 (param-b-ir pointer memory)))
+;
+;(defn param-mode-a [instruction pointer memory]
+;  (case (instruction :a)
+;    0 (param-a-pw-iw pointer memory)))
 
 (defn op-code [[input phase pointer memory]]
   (let [instruction (pad-5 (memory pointer))]
@@ -59,56 +115,56 @@
           [input
            phase
            (+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (+ (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))])
+           (assoc memory (param-maker-a instruction pointer memory)
+                         (+ (param-maker-c instruction pointer memory)
+                            (param-maker-b instruction pointer memory)))])
       2 (recur
           [input
            phase
            (+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (* (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))])
+           (assoc memory (param-maker-a instruction pointer memory)
+                         (* (param-maker-c instruction pointer memory)
+                            (param-maker-b instruction pointer memory)))])
       3 (recur
           [input
            phase
            (+ 2 pointer)
            (if (= 0 pointer)
-             (assoc memory (memory (+ 1 pointer)) phase)
-             (assoc memory (memory (+ 1 pointer)) input))])
+             (assoc memory (param-maker-c instruction pointer memory) phase)
+             (assoc memory (param-maker-c instruction pointer memory) input))])
       4 (recur
-          [(memory (memory (+ 1 pointer)))
+          [(memory (param-maker-c instruction pointer memory))
            phase
            (+ 2 pointer)
            memory])
       5 (recur
           [input
            phase
-           (if (= 0 (param-mode-c instruction pointer memory))
+           (if (= 0 (param-maker-c instruction pointer memory))
              (+ 3 pointer)
-             (param-mode-b instruction pointer memory))
+             (param-maker-b instruction pointer memory))
            memory])
       6 (recur
           [input
            phase
-           (if (not= 0 (param-mode-c instruction pointer memory))
+           (if (not= 0 (param-maker-c instruction pointer memory))
              (+ 3 pointer)
-             (param-mode-b instruction pointer memory))
+             (param-maker-b instruction pointer memory))
            memory])
       7 (recur
           [input
            phase
            (+ 4 pointer)
-           (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-             (assoc memory (memory (+ 3 pointer)) 1)
-             (assoc memory (memory (+ 3 pointer)) 0))])
+           (if (< (param-maker-c instruction pointer memory) (param-maker-b instruction pointer memory))
+             (assoc memory (param-maker-a instruction pointer memory) 1)
+             (assoc memory (param-maker-a instruction pointer memory) 0))])
       8 (recur
           [input
            phase
            (+ 4 pointer)
-           (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-             (assoc memory (memory (+ 3 pointer)) 1)
-             (assoc memory (memory (+ 3 pointer)) 0))]))))
+           (if (= (param-maker-c instruction pointer memory) (param-maker-b instruction pointer memory))
+             (assoc memory (param-maker-a instruction pointer memory) 1)
+             (assoc memory (param-maker-a instruction pointer memory) 0))]))))
 
 (def possibles (for [a (range 0 5)
                      b (range 0 5)
@@ -141,104 +197,104 @@
 
 ;part b
 
-(defn op-code-2 [[input phase pointer memory stopped?]]
-  (if stopped?
-    [input phase pointer memory stopped?]
-    (let [instruction (pad-5 (memory pointer))]
-      (case (instruction :e)
-        9 (if (= (instruction :d) 9)
-            [input phase pointer memory true]
-            "not used")
-        1 (recur
-            [input
-             phase
-             (+ 4 pointer)
-             (assoc memory (param-mode-a instruction pointer memory)
-                           (+ (param-mode-c instruction pointer memory)
-                              (param-mode-b instruction pointer memory)))
-             stopped?])
-        2 (recur
-            [input
-             phase
-             (+ 4 pointer)
-             (assoc memory (param-mode-a instruction pointer memory)
-                           (* (param-mode-c instruction pointer memory)
-                              (param-mode-b instruction pointer memory)))
-             stopped?])
-        3 (recur
-            [input
-             phase
-             (+ 2 pointer)
-             (if (= 0 pointer)
-               (assoc memory (memory (+ 1 pointer)) phase)
-               (assoc memory (memory (+ 1 pointer)) input))
-             stopped?])
-        4 [(param-mode-c instruction pointer memory) phase (+ 2 pointer) memory stopped?]
-        5 (recur
-            [input
-             phase
-             (if (= 0 (param-mode-c instruction pointer memory))
-               (+ 3 pointer)
-               (param-mode-b instruction pointer memory))
-             memory
-             stopped?])
-        6 (recur
-            [input
-             phase
-             (if (not= 0 (param-mode-c instruction pointer memory))
-               (+ 3 pointer)
-               (param-mode-b instruction pointer memory))
-             memory
-             stopped?])
-        7 (recur
-            [input
-             phase
-             (+ 4 pointer)
-             (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-               (assoc memory (memory (+ 3 pointer)) 1)
-               (assoc memory (memory (+ 3 pointer)) 0))
-             stopped?])
-        8 (recur
-            [input
-             phase
-             (+ 4 pointer)
-             (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
-               (assoc memory (memory (+ 3 pointer)) 1)
-               (assoc memory (memory (+ 3 pointer)) 0))
-             stopped?])))))
-
-(def possibles-2 (for [a (range 5 10)
-                       b (range 5 10)
-                       c (range 5 10)
-                       d (range 5 10)
-                       e (range 5 10)
-                       :when (distinct? a b c d e)]
-                   [a b c d e]))
-
-(defn to-amps-vector [phases-vector memory]
-  (letfn [(to-amps [phases]
-            {1 (atom [0 (phases 0) 0 memory false])
-             2 (atom [nil (phases 1) 0 memory false])
-             3 (atom [nil (phases 2) 0 memory false])
-             4 (atom [nil (phases 3) 0 memory false])
-             5 (atom [nil (phases 4) 0 memory false])})]
-    (map to-amps phases-vector)))
-
-(defn runner [amps]
-  (loop [amps amps
-         current-amp-no 1
-         next-amp-no (+ 1 (mod current-amp-no 5))]
-    (if (and (= 5 current-amp-no) (last @(amps current-amp-no)))
-      (first @(amps current-amp-no))
-      (let [op-this (atom (swap! (amps current-amp-no) op-code-2))
-            op-next (atom (swap! (amps next-amp-no) assoc 0 (first @op-this)))]
-        (recur
-          (assoc amps current-amp-no op-this next-amp-no op-next)
-          next-amp-no
-          (+ 1 (mod next-amp-no 5)))))))
-
-(def answer-2 (apply max (vec (map runner (to-amps-vector possibles-2 tv)))))
-
-(println answer-2)
+;(defn op-code-2 [[input phase pointer memory stopped?]]
+;  (if stopped?
+;    [input phase pointer memory stopped?]
+;    (let [instruction (pad-5 (memory pointer))]
+;      (case (instruction :e)
+;        9 (if (= (instruction :d) 9)
+;            [input phase pointer memory true]
+;            "not used")
+;        1 (recur
+;            [input
+;             phase
+;             (+ 4 pointer)
+;             (assoc memory (param-mode-a instruction pointer memory)
+;                           (+ (param-mode-c instruction pointer memory)
+;                              (param-mode-b instruction pointer memory)))
+;             stopped?])
+;        2 (recur
+;            [input
+;             phase
+;             (+ 4 pointer)
+;             (assoc memory (param-mode-a instruction pointer memory)
+;                           (* (param-mode-c instruction pointer memory)
+;                              (param-mode-b instruction pointer memory)))
+;             stopped?])
+;        3 (recur
+;            [input
+;             phase
+;             (+ 2 pointer)
+;             (if (= 0 pointer)
+;               (assoc memory (memory (+ 1 pointer)) phase)
+;               (assoc memory (memory (+ 1 pointer)) input))
+;             stopped?])
+;        4 [(param-mode-c instruction pointer memory) phase (+ 2 pointer) memory stopped?]
+;        5 (recur
+;            [input
+;             phase
+;             (if (= 0 (param-mode-c instruction pointer memory))
+;               (+ 3 pointer)
+;               (param-mode-b instruction pointer memory))
+;             memory
+;             stopped?])
+;        6 (recur
+;            [input
+;             phase
+;             (if (not= 0 (param-mode-c instruction pointer memory))
+;               (+ 3 pointer)
+;               (param-mode-b instruction pointer memory))
+;             memory
+;             stopped?])
+;        7 (recur
+;            [input
+;             phase
+;             (+ 4 pointer)
+;             (if (< (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+;               (assoc memory (memory (+ 3 pointer)) 1)
+;               (assoc memory (memory (+ 3 pointer)) 0))
+;             stopped?])
+;        8 (recur
+;            [input
+;             phase
+;             (+ 4 pointer)
+;             (if (= (param-mode-c instruction pointer memory) (param-mode-b instruction pointer memory))
+;               (assoc memory (memory (+ 3 pointer)) 1)
+;               (assoc memory (memory (+ 3 pointer)) 0))
+;             stopped?])))))
+;
+;(def possibles-2 (for [a (range 5 10)
+;                       b (range 5 10)
+;                       c (range 5 10)
+;                       d (range 5 10)
+;                       e (range 5 10)
+;                       :when (distinct? a b c d e)]
+;                   [a b c d e]))
+;
+;(defn to-amps-vector [phases-vector memory]
+;  (letfn [(to-amps [phases]
+;            {1 (atom [0 (phases 0) 0 memory false])
+;             2 (atom [nil (phases 1) 0 memory false])
+;             3 (atom [nil (phases 2) 0 memory false])
+;             4 (atom [nil (phases 3) 0 memory false])
+;             5 (atom [nil (phases 4) 0 memory false])})]
+;    (map to-amps phases-vector)))
+;
+;(defn runner [amps]
+;  (loop [amps amps
+;         current-amp-no 1
+;         next-amp-no (+ 1 (mod current-amp-no 5))]
+;    (if (and (= 5 current-amp-no) (last @(amps current-amp-no)))
+;      (first @(amps current-amp-no))
+;      (let [op-this (atom (swap! (amps current-amp-no) op-code-2))
+;            op-next (atom (swap! (amps next-amp-no) assoc 0 (first @op-this)))]
+;        (recur
+;          (assoc amps current-amp-no op-this next-amp-no op-next)
+;          next-amp-no
+;          (+ 1 (mod next-amp-no 5)))))))
+;
+;(def answer-2 (apply max (vec (map runner (to-amps-vector possibles-2 tv)))))
+;
+;(println answer-2)
 
 ;35993240
