@@ -3,7 +3,6 @@
             [clojure.java.io :as io]))
 
 ;part a
-
 (def tv (->> (first (with-open [reader (io/reader "resources/day7.csv")]
                       (doall
                         (csv/read-csv reader))))
@@ -91,20 +90,6 @@
         0 (param-a-pw-iw pointer memory)
         1 (param-a-pw-iw pointer memory))))
 
-;(defn param-mode-c [instruction pointer memory]
-;  (case (instruction :c)
-;    0 (param-c-pr-rr-rw pointer memory 0)
-;    1 (param-c-ir-pw-iw pointer memory)))
-;
-;(defn param-mode-b [instruction pointer memory]
-;  (case (instruction :b)
-;    0 (param-b-pr-rr pointer memory 0)
-;    1 (param-b-ir pointer memory)))
-;
-;(defn param-mode-a [instruction pointer memory]
-;  (case (instruction :a)
-;    0 (param-a-pw-iw pointer memory)))
-
 (defn op-code [[input phase pointer memory]]
   (let [instruction (pad-5 (memory pointer))]
     (case (instruction :e)
@@ -133,7 +118,7 @@
              (assoc memory (param-maker-c instruction pointer memory) phase)
              (assoc memory (param-maker-c instruction pointer memory) input))])
       4 (recur
-          [(memory (param-maker-c instruction pointer memory))
+          [(param-maker-c instruction pointer memory)
            phase
            (+ 2 pointer)
            memory])
