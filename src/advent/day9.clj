@@ -54,8 +54,11 @@
 (defn param-c-ir-pw-iw [pointer memory]
   (memory (+ 1 pointer)))
 
-(defn param-c-pr-rr-rw [pointer memory relative-base]
+(defn param-c-pr-rr [pointer memory relative-base]
   (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
+
+(defn param-c-rw [pointer memory relative-base]
+  (+ (memory (+ 1 pointer)) relative-base))
 
 (defn param-b-pr-rr [pointer memory relative-base]
   (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
@@ -69,24 +72,24 @@
 (defn param-maker-c [instruction pointer memory]
   (case (instruction :e)
     1 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
+        0 (param-c-pr-rr pointer memory 0)
         1 (param-c-ir-pw-iw pointer memory))
     2 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
+        0 (param-c-pr-rr pointer memory 0)
         1 (param-c-ir-pw-iw pointer memory))
     3 (param-c-ir-pw-iw pointer memory)
-    4 (param-c-pr-rr-rw pointer memory 0)
+    4 (param-c-pr-rr pointer memory 0)
     5 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
+        0 (param-c-pr-rr pointer memory 0)
         1 (param-c-ir-pw-iw pointer memory))
     6 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
+        0 (param-c-pr-rr pointer memory 0)
         1 (param-c-ir-pw-iw pointer memory))
     7 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
+        0 (param-c-pr-rr pointer memory 0)
         1 (param-c-ir-pw-iw pointer memory))
     8 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
+        0 (param-c-pr-rr pointer memory 0)
         1 (param-c-ir-pw-iw pointer memory))))
 
 (defn param-maker-b [instruction pointer memory]
