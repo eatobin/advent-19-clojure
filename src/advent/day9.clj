@@ -88,32 +88,32 @@
         1 (c-p-w-c-i-r pointer memory)
         2 (c-p-r-c-r-r pointer memory relative-base))))
 
-(defn param-maker-b [instruction pointer memory]
+(defn param-maker-b [instruction pointer memory relative-base]
   (case (instruction :e)
     1 (case (instruction :b)
         0 (b-p-r-b-r-r pointer memory 0)
         1 (b-i-r pointer memory)
-        2 (b-p-r-b-r-r pointer memory 0))
+        2 (b-p-r-b-r-r pointer memory relative-base))
     2 (case (instruction :b)
         0 (b-p-r-b-r-r pointer memory 0)
         1 (b-i-r pointer memory)
-        2 (b-p-r-b-r-r pointer memory 0))
+        2 (b-p-r-b-r-r pointer memory relative-base))
     5 (case (instruction :b)
         0 (b-p-r-b-r-r pointer memory 0)
         1 (b-i-r pointer memory)
-        2 (b-p-r-b-r-r pointer memory 0))
+        2 (b-p-r-b-r-r pointer memory relative-base))
     6 (case (instruction :b)
         0 (b-p-r-b-r-r pointer memory 0)
         1 (b-i-r pointer memory)
-        2 (b-p-r-b-r-r pointer memory 0))
+        2 (b-p-r-b-r-r pointer memory relative-base))
     7 (case (instruction :b)
         0 (b-p-r-b-r-r pointer memory 0)
         1 (b-i-r pointer memory)
-        2 (b-p-r-b-r-r pointer memory 0))
+        2 (b-p-r-b-r-r pointer memory relative-base))
     8 (case (instruction :b)
         0 (b-p-r-b-r-r pointer memory 0)
         1 (b-i-r pointer memory)
-        2 (b-p-r-b-r-r pointer memory 0))))
+        2 (b-p-r-b-r-r pointer memory relative-base))))
 
 (defn param-maker-a [instruction pointer memory relative-base]
   (case (instruction :e)
@@ -138,27 +138,33 @@
         9 (if (= (instruction :d) 9)
             [input phase pointer relative-base memory true recur?]
             (recur
-              input
-              (+ 2 pointer)
-              (+ (param-mode-c instruction pointer memory relative-base) relative-base)
-              memory
-              stopped?))
+              [input
+               phase
+               (+ 2 pointer)
+               (+ (param-maker-c instruction pointer memory relative-base) relative-base)
+               memory
+               stopped?
+               recur?]))
         1 (recur
-            input
-            (+ 4 pointer)
-            relative-base
-            (assoc memory (param-mode-a instruction pointer memory relative-base)
-                          (+ (param-mode-c instruction pointer memory relative-base)
-                             (param-mode-b instruction pointer memory relative-base)))
-            stopped?)
+            [input
+             phase
+             (+ 4 pointer)
+             relative-base
+             (assoc memory (param-maker-a instruction pointer memory relative-base)
+                           (+ (param-maker-c instruction pointer memory relative-base)
+                              (param-maker-b instruction pointer memory relative-base)))
+             stopped?
+             recur?])
         2 (recur
-            input
-            (+ 4 pointer)
-            relative-base
-            (assoc memory (param-mode-a instruction pointer memory relative-base)
-                          (* (param-mode-c instruction pointer memory relative-base)
-                             (param-mode-b instruction pointer memory relative-base)))
-            stopped?)
+            [input
+             phase
+             (+ 4 pointer)
+             relative-base
+             (assoc memory (param-maker-a instruction pointer memory relative-base)
+                           (* (param-maker-c instruction pointer memory relative-base)
+                              (param-maker-b instruction pointer memory relative-base)))
+             stopped?
+             recur?])
         3 (recur
             input
             (+ 2 pointer)
@@ -173,41 +179,47 @@
             stopped?)
         4 (if recur?
             (recur
-              (param-mode-c instruction pointer memory relative-base)
+              (param-maker-c instruction pointer memory relative-base)
               (+ 2 pointer)
               relative-base
               memory
               stopped?)
-            [(param-mode-c instruction pointer memory relative-base) phase (+ 2 pointer) relative-base memory stopped? recur?])
+            [(param-maker-c instruction pointer memory relative-base) phase (+ 2 pointer) relative-base memory stopped? recur?])
         5 (recur
-            input
-            (if (= 0 (param-mode-c instruction pointer memory relative-base))
-              (+ 3 pointer)
-              (param-mode-b instruction pointer memory relative-base))
-            relative-base
-            memory
-            stopped?)
+            [input
+             phase
+             (if (= 0 (param-maker-c instruction pointer memory relative-base))
+               (+ 3 pointer)
+               (param-maker-b instruction pointer memory relative-base))
+             relative-base
+             memory
+             stopped?
+             recur?])
         6 (recur
-            input
-            (if (not= 0 (param-mode-c instruction pointer memory relative-base))
-              (+ 3 pointer)
-              (param-mode-b instruction pointer memory relative-base))
-            relative-base
-            memory
-            stopped?)
+            [input
+             phase
+             (if (not= 0 (param-maker-c instruction pointer memory relative-base))
+               (+ 3 pointer)
+               (param-maker-b instruction pointer memory relative-base))
+             relative-base
+             memory
+             stopped?
+             recur?])
         7 (recur
-            input
-            (+ 4 pointer)
-            relative-base
-            (if (< (param-mode-c instruction pointer memory relative-base) (param-mode-b instruction pointer memory relative-base))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            stopped?)
+            [input
+             phase
+             (+ 4 pointer)
+             relative-base
+             (if (< (param-maker-c instruction pointer memory relative-base) (param-maker-b instruction pointer memory relative-base))
+               (assoc memory (memory (+ 3 pointer)) 1)
+               (assoc memory (memory (+ 3 pointer)) 0))
+             stopped?
+             recur?])
         8 (recur
             input
             (+ 4 pointer)
             relative-base
-            (if (= (param-mode-c instruction pointer memory relative-base) (param-mode-b instruction pointer memory relative-base))
+            (if (= (param-maker-c instruction pointer memory relative-base) (param-maker-b instruction pointer memory relative-base))
               (assoc memory (memory (+ 3 pointer)) 1)
               (assoc memory (memory (+ 3 pointer)) 0))
             stopped?)))))
