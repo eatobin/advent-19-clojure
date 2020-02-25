@@ -15,19 +15,19 @@
   (zipmap [:a :b :c :d :e]
           (for [n (format "%05d" n)]
             (- (byte n) 48))))
-
+; y4 y6
 (defn param-c-ir-pw-iw [pointer memory]
   (memory (+ 1 pointer)))
-
+; y3
 (defn param-c-pr-rr-rw [pointer memory relative-base]
   (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
-
+; y2
 (defn param-b-pr-rr [pointer memory relative-base]
   (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
-
+; y5
 (defn param-b-ir [pointer memory]
   (memory (+ 2 pointer)))
-
+; y1
 (defn param-a-pw-iw [pointer memory]
   (memory (+ 3 pointer)))
 

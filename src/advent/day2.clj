@@ -20,17 +20,38 @@
           (for [n (format "%05d" n)]
             (- (byte n) 48))))
 
-(defn param-mode-c [instruction pointer memory]
-  (case (instruction :c)
-    0 (memory (memory (+ 1 pointer)))))
+; y1
+(defn a-p-w [pointer memory]
+  (memory (+ 3 pointer)))
 
-(defn param-mode-b [instruction pointer memory]
-  (case (instruction :b)
-    0 (memory (memory (+ 2 pointer)))))
+; y2
+(defn b-p-r [pointer memory relative-base]
+  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
 
-(defn param-mode-a [instruction pointer memory]
-  (case (instruction :a)
-    0 (memory (+ 3 pointer))))
+; y3
+(defn c-p-r [pointer memory relative-base]
+  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
+
+(defn param-maker-c [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :c)
+        0 (c-p-r pointer memory 0))
+    2 (case (instruction :c)
+        0 (c-p-r pointer memory 0))))
+
+(defn param-maker-b [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :b)
+        0 (b-p-r pointer memory 0))
+    2 (case (instruction :b)
+        0 (b-p-r pointer memory 0))))
+
+(defn param-maker-a [instruction pointer memory]
+  (case (instruction :e)
+    1 (case (instruction :a)
+        0 (a-p-w pointer memory))
+    2 (case (instruction :a)
+        0 (a-p-w pointer memory))))
 
 (defn op-code [[pointer memory]]
   (let [instruction (pad-5 (memory pointer))]
@@ -40,14 +61,14 @@
           "not used")
       1 (recur
           [(+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (+ (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))])
+           (assoc memory (param-maker-a instruction pointer memory)
+                         (+ (param-maker-c instruction pointer memory)
+                            (param-maker-b instruction pointer memory)))])
       2 (recur
           [(+ 4 pointer)
-           (assoc memory (param-mode-a instruction pointer memory)
-                         (* (param-mode-c instruction pointer memory)
-                            (param-mode-b instruction pointer memory)))]))))
+           (assoc memory (param-maker-a instruction pointer memory)
+                         (* (param-maker-c instruction pointer memory)
+                            (param-maker-b instruction pointer memory)))]))))
 
 (def fix-op-code (first (last (op-code [0 (updated-memory 12 2)]))))
 
