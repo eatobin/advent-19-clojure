@@ -225,3 +225,10 @@
 (println answer)
 
 ; 3780860499
+
+; part b
+(def answer-2 (first (op-code [2 0 0 0 tv false true])))
+
+(println answer-2)
+
+; 33343
