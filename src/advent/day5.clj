@@ -14,79 +14,80 @@
           (for [n (format "%05d" n)]
             (- (byte n) 48))))
 
-(defn param-c-ir-pw-iw [pointer memory]
-  (memory (+ 1 pointer)))
+; y1
+(defn a-p-w [pointer memory]
+  (memory (+ 3 pointer)))
 
-(defn param-c-pr-rr-rw [pointer memory relative-base]
-  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
-
-(defn param-b-pr-rr [pointer memory relative-base]
+; y2
+(defn b-p-r [pointer memory relative-base]
   (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
 
-(defn param-b-ir [pointer memory]
-  (memory (+ 2 pointer)))
+; y3
+(defn c-p-r [pointer memory relative-base]
+  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
 
-(defn param-a-pw-iw [pointer memory]
-  (memory (+ 3 pointer)))
+; y4, y6
+(defn c-p-w-c-i-r [pointer memory]
+  (memory (+ 1 pointer)))
+
+; y5
+(defn b-i-r [pointer memory]
+  (memory (+ 2 pointer)))
 
 (defn param-maker-c [instruction pointer memory]
   (case (instruction :e)
     1 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
-        1 (param-c-ir-pw-iw pointer memory))
+        0 (c-p-r pointer memory 0)
+        1 (c-p-w-c-i-r pointer memory))
     2 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
-        1 (param-c-ir-pw-iw pointer memory))
-    3 (param-c-ir-pw-iw pointer memory)
-    4 (param-c-pr-rr-rw pointer memory 0)
+        0 (c-p-r pointer memory 0)
+        1 (c-p-w-c-i-r pointer memory))
+    3 (c-p-w-c-i-r pointer memory)
+    4 (c-p-r pointer memory 0)
     5 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
-        1 (param-c-ir-pw-iw pointer memory))
+        0 (c-p-r pointer memory 0)
+        1 (c-p-w-c-i-r pointer memory))
     6 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
-        1 (param-c-ir-pw-iw pointer memory))
+        0 (c-p-r pointer memory 0)
+        1 (c-p-w-c-i-r pointer memory))
     7 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
-        1 (param-c-ir-pw-iw pointer memory))
+        0 (c-p-r pointer memory 0)
+        1 (c-p-w-c-i-r pointer memory))
     8 (case (instruction :c)
-        0 (param-c-pr-rr-rw pointer memory 0)
-        1 (param-c-ir-pw-iw pointer memory))))
+        0 (c-p-r pointer memory 0)
+        1 (c-p-w-c-i-r pointer memory))))
 
 (defn param-maker-b [instruction pointer memory]
   (case (instruction :e)
     1 (case (instruction :b)
-        0 (param-b-pr-rr pointer memory 0)
-        1 (param-b-ir pointer memory))
+        0 (b-p-r pointer memory 0)
+        1 (b-i-r pointer memory))
     2 (case (instruction :b)
-        0 (param-b-pr-rr pointer memory 0)
-        1 (param-b-ir pointer memory))
+        0 (b-p-r pointer memory 0)
+        1 (b-i-r pointer memory))
     5 (case (instruction :b)
-        0 (param-b-pr-rr pointer memory 0)
-        1 (param-b-ir pointer memory))
+        0 (b-p-r pointer memory 0)
+        1 (b-i-r pointer memory))
     6 (case (instruction :b)
-        0 (param-b-pr-rr pointer memory 0)
-        1 (param-b-ir pointer memory))
+        0 (b-p-r pointer memory 0)
+        1 (b-i-r pointer memory))
     7 (case (instruction :b)
-        0 (param-b-pr-rr pointer memory 0)
-        1 (param-b-ir pointer memory))
+        0 (b-p-r pointer memory 0)
+        1 (b-i-r pointer memory))
     8 (case (instruction :b)
-        0 (param-b-pr-rr pointer memory 0)
-        1 (param-b-ir pointer memory))))
+        0 (b-p-r pointer memory 0)
+        1 (b-i-r pointer memory))))
 
 (defn param-maker-a [instruction pointer memory]
   (case (instruction :e)
     1 (case (instruction :a)
-        0 (param-a-pw-iw pointer memory)
-        1 (param-a-pw-iw pointer memory))
+        0 (a-p-w pointer memory))
     2 (case (instruction :a)
-        0 (param-a-pw-iw pointer memory)
-        1 (param-a-pw-iw pointer memory))
+        0 (a-p-w pointer memory))
     7 (case (instruction :a)
-        0 (param-a-pw-iw pointer memory)
-        1 (param-a-pw-iw pointer memory))
+        0 (a-p-w pointer memory))
     8 (case (instruction :a)
-        0 (param-a-pw-iw pointer memory)
-        1 (param-a-pw-iw pointer memory))))
+        0 (a-p-w pointer memory))))
 
 (defn op-code [[input pointer memory]]
   (let [instruction (pad-5 (memory pointer))]
