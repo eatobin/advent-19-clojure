@@ -12,15 +12,6 @@
              (zipmap (range))
              (into (sorted-map-by <))))
 
-(def sample [109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99])
-(def good (into (sorted-map-by <) (zipmap (range) sample)))
-
-(def sample-2 [1102, 34915192, 34915192, 7, 4, 7, 99, 0])
-(def good-2 (into (sorted-map-by <) (zipmap (range) sample-2)))
-
-(def sample-3 [104, 1125899906842624, 99])
-(def good-3 (into (sorted-map-by <) (zipmap (range) sample-3)))
-
 (defn pad-5 [n]
   (zipmap [:a :b :c :d :e]
           (for [n (format "%05d" n)]
@@ -84,6 +75,10 @@
         1 (c-p-w-c-i-r pointer memory)
         2 (c-p-r-c-r-r pointer memory relative-base))
     8 (case (instruction :c)
+        0 (c-p-r-c-r-r pointer memory 0)
+        1 (c-p-w-c-i-r pointer memory)
+        2 (c-p-r-c-r-r pointer memory relative-base))
+    9 (case (instruction :c)
         0 (c-p-r-c-r-r pointer memory 0)
         1 (c-p-w-c-i-r pointer memory)
         2 (c-p-r-c-r-r pointer memory relative-base))))
@@ -166,24 +161,24 @@
              stopped?
              recur?])
         3 (recur
-            input
-            (+ 2 pointer)
-            relative-base
-            (if (= (instruction :c) 2)
-              (if (= 0 pointer)
-                (assoc memory (+ (memory (+ 1 pointer)) relative-base) phase)
-                (assoc memory (+ (memory (+ 1 pointer)) relative-base) input))
-              (if (= 0 pointer)
-                (assoc memory (memory (+ 1 pointer)) phase)
-                (assoc memory (memory (+ 1 pointer)) input)))
-            stopped?)
+            [input
+             phase
+             (+ 2 pointer)
+             relative-base
+             (if (= 0 pointer)
+               (assoc memory (param-maker-c instruction pointer memory relative-base) phase)
+               (assoc memory (param-maker-c instruction pointer memory relative-base) input))
+             stopped?
+             recur?])
         4 (if recur?
             (recur
-              (param-maker-c instruction pointer memory relative-base)
-              (+ 2 pointer)
-              relative-base
-              memory
-              stopped?)
+              [(param-maker-c instruction pointer memory relative-base)
+               phase
+               (+ 2 pointer)
+               relative-base
+               memory
+               stopped?
+               recur?])
             [(param-maker-c instruction pointer memory relative-base) phase (+ 2 pointer) relative-base memory stopped? recur?])
         5 (recur
             [input
@@ -211,15 +206,23 @@
              (+ 4 pointer)
              relative-base
              (if (< (param-maker-c instruction pointer memory relative-base) (param-maker-b instruction pointer memory relative-base))
-               (assoc memory (memory (+ 3 pointer)) 1)
-               (assoc memory (memory (+ 3 pointer)) 0))
+               (assoc memory (param-maker-a instruction pointer memory relative-base) 1)
+               (assoc memory (param-maker-a instruction pointer memory relative-base) 0))
              stopped?
              recur?])
         8 (recur
-            input
-            (+ 4 pointer)
-            relative-base
-            (if (= (param-maker-c instruction pointer memory relative-base) (param-maker-b instruction pointer memory relative-base))
-              (assoc memory (memory (+ 3 pointer)) 1)
-              (assoc memory (memory (+ 3 pointer)) 0))
-            stopped?)))))
+            [input
+             phase
+             (+ 4 pointer)
+             relative-base
+             (if (= (param-maker-c instruction pointer memory relative-base) (param-maker-b instruction pointer memory relative-base))
+               (assoc memory (param-maker-a instruction pointer memory relative-base) 1)
+               (assoc memory (param-maker-a instruction pointer memory relative-base) 0))
+             stopped?
+             recur?])))))
+
+(def answer (first (op-code [1 0 0 0 tv false true])))
+
+(println answer)
+
+; 3780860499
