@@ -3,35 +3,35 @@
 
 ;part a
 (def universe (->>
-                "resources/day10a.txt"
+                "resources/day10-3-4-8.txt"
                 (slurp)
                 (str/split-lines)
                 (into [])
                 (map vec)
                 (into [])))
 
-(defn asteroids [universe]
-  (vec (for [y0 (range 10)
-             x0 (range 10)
+(defn asteroid-points [universe]
+  (vec (for [y0 (range (count universe))
+             x0 (range (count universe))
              :when (= (get-in universe [y0 x0]) \#)]
          [x0 y0])))
+
+(def asteroid-points-vec (asteroid-points universe))
 
 (defn slope [[x0 y0] [x1 y1]]
   (if (= 0 (- x1 x0))
     0
     (/ (- y1 y0) (- x1 x0))))
 
-(defn slopes [source asteroids]
-  (map (partial slope source) asteroids))
+(defn slopes [source asteroid-points]
+  (map (partial slope source) asteroid-points))
 
-(def asteroids (asteroids universe))
-
-(defn distinct-slopes [asteroids]
-  (for [ast asteroids
-        :let [less-a (remove #(= ast %) asteroids)
+(defn distinct-slopes [asteroid-points-vec]
+  (for [ast asteroid-points-vec
+        :let [less-a (remove #(= ast %) asteroid-points-vec)
               slopes (count (distinct (slopes ast less-a)))]]
     [ast slopes]))
 
-(def answer (last (sort-by second (distinct-slopes asteroids))))
+(def answer (last (sort-by second (distinct-slopes asteroid-points-vec))))
 
 (println answer)
