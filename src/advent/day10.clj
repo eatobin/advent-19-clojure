@@ -3,7 +3,7 @@
 
 ;part a
 (def universe (->>
-                "resources/day10-3-4-8.txt"
+                "resources/day10.txt"
                 (slurp)
                 (str/split-lines)
                 (into [])
@@ -41,3 +41,5 @@
 (def answer (last (sort-by second (distinct-slopes asteroid-points-vec))))
 
 (println answer)
+
+;[[17 22] 288]
