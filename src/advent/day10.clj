@@ -19,9 +19,15 @@
 (def asteroid-points-vec (asteroid-points universe))
 
 (defn slope [[x0 y0] [x1 y1]]
-  (if (= 0 (- x1 x0))
-    0
-    (/ (- y1 y0) (- x1 x0))))
+  (cond
+    (and (= y0 y1) (< x0 x1)) [:h :out]
+    (and (= y0 y1) (> x0 x1)) [:h :in]
+    (and (= x0 x1) (< y0 y1)) [:v :out]
+    (and (= x0 x1) (> y0 y1)) [:v :in]
+    (and (< x0 x1) (< y0 y1)) [(/ (- y1 y0) (- x1 x0)) :out]
+    (and (> x0 x1) (> y0 y1)) [(/ (- y1 y0) (- x1 x0)) :in]
+    (and (< x0 x1) (> y0 y1)) [(/ (- y1 y0) (- x1 x0)) :out]
+    (and (> x0 x1) (< y0 y1)) [(/ (- y1 y0) (- x1 x0)) :in]))
 
 (defn slopes [source asteroid-points]
   (map (partial slope source) asteroid-points))
