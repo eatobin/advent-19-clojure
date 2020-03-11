@@ -46,7 +46,7 @@
 ;[[17 22] 288]
 
 ;part b
-(defn degrees [[x0 y0] [x1 y1]]
+(defn degree [[x0 y0] [x1 y1]]
   (cond
     (and (= y0 y1) (< x0 x1)) 0.0
     (and (= y0 y1) (> x0 x1)) 180.0
@@ -61,19 +61,19 @@
     ;x dec, y inc - B
     (and (> x0 x1) (< y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)))
 
-(degrees [0 0] [1 0])
+(degree [0 0] [1 0])
 ;=> 0.0
-(degrees [0 0] [1 1])
+(degree [0 0] [1 1])
 ;=> 45.0
-(degrees [0 0] [0 1])
+(degree [0 0] [0 1])
 ;=> 90.0
-(degrees [0 0] [-1 1])
+(degree [0 0] [-1 1])
 ;=> 135.0
-(degrees [0 0] [-1 0])
+(degree [0 0] [-1 0])
 ;=> 180.0
-(degrees [0 0] [-1 -1])
+(degree [0 0] [-1 -1])
 ;=> 225.0
-(degrees [0 0] [0 -1])
+(degree [0 0] [0 -1])
 ;=> 270.0
-(degrees [0 0] [30000 -1])
+(degree [0 0] [30000 -1])
 ;=> 359.9980901406836
