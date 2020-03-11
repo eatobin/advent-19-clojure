@@ -58,7 +58,7 @@
 ;=> 180.0
 (/ (* (trig/atan2 -1 -1) 180) Math/PI)
 ;=> -135.0
-(/ (* (trig/atan2 -1 0) 180) Math/PI)
+(+ (- (/ (* (trig/atan2 -1 0) 180) Math/PI)) 180)
 ;=> -90.0
 (/ (* (trig/atan2 -1 1) 180) Math/PI)
 ;=> -45.0
