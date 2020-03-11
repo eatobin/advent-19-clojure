@@ -1,5 +1,6 @@
 (ns advent.day10
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.algo.generic.math-functions :as trig]))
 
 ;part a
 (def universe (->>
@@ -43,3 +44,21 @@
 (println answer)
 
 ;[[17 22] 288]
+
+;part b
+(/ (* (trig/atan2 0 1) 180) Math/PI)
+;=> 0.0
+(/ (* (trig/atan2 1 1) 180) Math/PI)
+;=> 45.0
+(/ (* (trig/atan2 1 0) 180) Math/PI)
+;=> 90.0
+(/ (* (trig/atan2 1 -1) 180) Math/PI)
+;=> 135.0
+(/ (* (trig/atan2 0 -1) 180) Math/PI)
+;=> 180.0
+(/ (* (trig/atan2 -1 -1) 180) Math/PI)
+;=> -135.0
+(/ (* (trig/atan2 -1 0) 180) Math/PI)
+;=> -90.0
+(/ (* (trig/atan2 -1 1) 180) Math/PI)
+;=> -45.0

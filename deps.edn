@@ -9,6 +9,7 @@
          org.clojure/data.csv           {:mvn/version "0.1.4"}
          org.clojure/math.numeric-tower {:mvn/version "0.0.4"}
          net.mikera/core.matrix         {:mvn/version "0.62.0"}
+         org.clojure/algo.generic       {:mvn/version "0.1.3"}
          }
  }
 
