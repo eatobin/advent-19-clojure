@@ -46,19 +46,34 @@
 ;[[17 22] 288]
 
 ;part b
-(/ (* (trig/atan2 0 1) 180) Math/PI)
+(defn degrees [[x0 y0] [x1 y1]]
+  (cond
+    (and (= y0 y1) (< x0 x1)) 0.0
+    (and (= y0 y1) (> x0 x1)) 180.0
+    (and (= x0 x1) (< y0 y1)) 90.0
+    (and (= x0 x1) (> y0 y1)) 270.0
+    ;x inc, y inc - A
+    (and (< x0 x1) (< y0 y1)) (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI)
+    ;x dec, y dec - C
+    (and (> x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)
+    ;x inc, y dec - D
+    (and (< x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360)
+    ;x dec, y inc - B
+    (and (> x0 x1) (< y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)))
+
+(degrees [0 0] [1 0])
 ;=> 0.0
-(/ (* (trig/atan2 1 1) 180) Math/PI)
+(degrees [0 0] [1 1])
 ;=> 45.0
-(/ (* (trig/atan2 1 0) 180) Math/PI)
+(degrees [0 0] [0 1])
 ;=> 90.0
-(/ (* (trig/atan2 1 -1) 180) Math/PI)
+(degrees [0 0] [-1 1])
 ;=> 135.0
-(/ (* (trig/atan2 0 -1) 180) Math/PI)
+(degrees [0 0] [-1 0])
 ;=> 180.0
-(/ (* (trig/atan2 -1 -1) 180) Math/PI)
-;=> -135.0
-(+ (- (/ (* (trig/atan2 -1 0) 180) Math/PI)) 180)
-;=> -90.0
-(/ (* (trig/atan2 -1 1) 180) Math/PI)
-;=> -45.0
+(degrees [0 0] [-1 -1])
+;=> 225.0
+(degrees [0 0] [0 -1])
+;=> 270.0
+(degrees [0 0] [30000 -1])
+;=> 359.9980901406836
