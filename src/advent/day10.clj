@@ -70,5 +70,5 @@
 (vec (distinct (slopes [17 22] asteroid-points-vec)))
 (count (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))
 ;=> 288
-(sort (zipmap (range) (sort (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))))
-(sort (group-by identity (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec))))
+(sort (zipmap (range) (sort (vec (distinct (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec)))))))
+(sort (group-by first (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec))))
