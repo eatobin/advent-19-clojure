@@ -4,7 +4,7 @@
 
 ;part a
 (def universe (->>
-                "resources/day10b.txt"
+                "resources/day10-3-2-21.txt"
                 (slurp)
                 (str/split-lines)
                 (into [])
