@@ -21,18 +21,18 @@
 
 (defn slope [[x0 y0] [x1 y1]]
   (cond
-    (and (= y0 y1) (< x0 x1)) [0.0 [x1 y1]]
-    (and (= y0 y1) (> x0 x1)) [180.0 [x1 y1]]
-    (and (= x0 x1) (< y0 y1)) [90.0 [x1 y1]]
-    (and (= x0 x1) (> y0 y1)) [270.0 [x1 y1]]
+    (and (= y0 y1) (< x0 x1)) 0.0
+    (and (= y0 y1) (> x0 x1)) 180.0
+    (and (= x0 x1) (< y0 y1)) 90.0
+    (and (= x0 x1) (> y0 y1)) 270.0
     ;x inc, y inc - A
-    (and (< x0 x1) (< y0 y1)) [(/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) [x1 y1]]
+    (and (< x0 x1) (< y0 y1)) (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI)
     ;x dec, y dec - C
-    (and (> x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]
+    (and (> x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)
     ;x inc, y dec - D
-    (and (< x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360) [x1 y1]]
+    (and (< x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360)
     ;x dec, y inc - B
-    (and (> x0 x1) (< y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]))
+    (and (> x0 x1) (< y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)))
 
 (defn slopes [source asteroid-points]
   (map (partial slope source) asteroid-points))
@@ -67,8 +67,31 @@
 (slope [0 0] [30000 -1])
 ;=> 359.9980901406836
 
-(vec (distinct (slopes [17 22] asteroid-points-vec)))
-(count (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))
+;(vec (distinct (slopes [17 22] asteroid-points-vec)))
+;(count (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))
 ;=> 288
-(sort (zipmap (range) (sort (vec (distinct (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec)))))))
-(sort (group-by first (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec))))
+;(sort (zipmap (range) (sort (vec (distinct (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec)))))))
+
+(defn slope-point [[x0 y0] [x1 y1]]
+  (cond
+    (and (= y0 y1) (< x0 x1)) [0.0 [x1 y1]]
+    (and (= y0 y1) (> x0 x1)) [180.0 [x1 y1]]
+    (and (= x0 x1) (< y0 y1)) [90.0 [x1 y1]]
+    (and (= x0 x1) (> y0 y1)) [270.0 [x1 y1]]
+    ;x inc, y inc - A
+    (and (< x0 x1) (< y0 y1)) [(/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) [x1 y1]]
+    ;x dec, y dec - C
+    (and (> x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]
+    ;x inc, y dec - D
+    (and (< x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360) [x1 y1]]
+    ;x dec, y inc - B
+    (and (> x0 x1) (< y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]))
+
+(defn slopes-point [source asteroid-points]
+  (map (partial slope-point source) asteroid-points))
+
+;(sort (group-by first (slopes-point [0 0] (remove #(= [0 0] %) asteroid-points-vec))))
+
+(defn grouped-slopes [source asteroid-points-vec]
+  (let [less-a (remove #(= source %) asteroid-points-vec)]
+    (sort (group-by first (slopes-point source less-a)))))
