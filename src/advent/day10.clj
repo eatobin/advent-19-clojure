@@ -21,18 +21,18 @@
 
 (defn slope [[x0 y0] [x1 y1]]
   (cond
-    (and (= y0 y1) (< x0 x1)) 0.0
-    (and (= y0 y1) (> x0 x1)) 180.0
-    (and (= x0 x1) (< y0 y1)) 90.0
-    (and (= x0 x1) (> y0 y1)) 270.0
+    (and (= y0 y1) (< x0 x1)) [0.0 [x1 y1]]
+    (and (= y0 y1) (> x0 x1)) [180.0 [x1 y1]]
+    (and (= x0 x1) (< y0 y1)) [90.0 [x1 y1]]
+    (and (= x0 x1) (> y0 y1)) [270.0 [x1 y1]]
     ;x inc, y inc - A
-    (and (< x0 x1) (< y0 y1)) (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI)
+    (and (< x0 x1) (< y0 y1)) [(/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) [x1 y1]]
     ;x dec, y dec - C
-    (and (> x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)
+    (and (> x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]
     ;x inc, y dec - D
-    (and (< x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360)
+    (and (< x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360) [x1 y1]]
     ;x dec, y inc - B
-    (and (> x0 x1) (< y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)))
+    (and (> x0 x1) (< y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]))
 
 (defn slopes [source asteroid-points]
   (map (partial slope source) asteroid-points))
