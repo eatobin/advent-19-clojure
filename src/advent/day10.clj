@@ -4,7 +4,7 @@
 
 ;part a
 (def universe (->>
-                "resources/day10-3-4-8.txt"
+                "resources/day10b.txt"
                 (slurp)
                 (str/split-lines)
                 (into [])
@@ -71,4 +71,4 @@
 (count (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))
 ;=> 288
 (sort (zipmap (range) (sort (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))))
-(sort (group-by identity (slopes [3 4] (remove #(= [3 4] %) asteroid-points-vec))))
+(sort (group-by identity (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec))))
