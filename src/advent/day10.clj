@@ -99,12 +99,7 @@
 (defn convert-it [degrees]
   (cond
     (= degrees 270.0) 0.0
-    (= degrees 0.0) 90.0
-    (= degrees 90.0) 180.0
-    (= degrees 180.0) 270.0
     ;x inc, y inc - old A
     (> degrees 270.0) (- degrees 270.0)
-    ;x inc, y dec - old D
-    (< degrees 90.0) (+ degrees 90.0)
-    ;x dec, y dec - old B and C
-    (and (> degrees 90.0) (< degrees 270.0)) (+ degrees 90.0)))
+    ;all else
+    :else (+ degrees 90.0)))
