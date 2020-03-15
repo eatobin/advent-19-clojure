@@ -106,7 +106,5 @@
     (> degrees 270.0) (- degrees 270.0)
     ;x inc, y dec - old D
     (< degrees 90.0) (+ degrees 90.0)
-    ;x dec, y dec - old C
-    (and (> degrees 90.0) (< degrees 180.0)) (+ degrees 90.0)
-    ;x dec, y inc - old B
-    (and (> degrees 180.0) (< degrees 270.0)) (+ degrees 90.0)))
+    ;x dec, y dec - old B and C
+    (and (> degrees 90.0) (< degrees 270.0)) (+ degrees 90.0)))
