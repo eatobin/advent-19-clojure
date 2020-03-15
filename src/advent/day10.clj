@@ -103,3 +103,9 @@
     (> degrees 270.0) (- degrees 270.0)
     ;all else
     :else (+ degrees 90.0)))
+
+(defn convert-key [[k v]]
+  [(convert-it k) v])
+
+(defn convert-keys [grouped-slopes-map]
+  (sort (map convert-key (into {} grouped-slopes-map))))
