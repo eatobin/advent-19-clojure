@@ -94,4 +94,19 @@
 
 (defn grouped-slopes [source asteroid-points-vec]
   (let [less-a (remove #(= source %) asteroid-points-vec)]
-    (sort (group-by first (slopes-point source less-a)))))
+    (vec (sort (group-by first (slopes-point source less-a))))))
+
+(defn convert-it [degrees]
+  (cond
+    (= degrees 270.0) 0.0
+    (= degrees 0.0) 90.0
+    (= degrees 90.0) 180.0
+    (= degrees 180.0) 270.0
+    ;x inc, y inc - A
+    (> degrees 270.0) (- degrees 270)
+    ;x dec, y dec - C
+    (and (> x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)
+    ;x inc, y dec - D
+    (and (< x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360)
+    ;x dec, y inc - B
+    (and (> x0 x1) (< y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)))
