@@ -1,6 +1,7 @@
 (ns advent.day10
   (:require [clojure.string :as str]
-            [clojure.algo.generic.math-functions :as trig]))
+            [clojure.algo.generic.math-functions :as trig])
+  (:import (clojure.lang MapEntry)))
 
 ;part a
 (def universe (->>
@@ -105,7 +106,7 @@
     :else (+ degrees 90.0)))
 
 (defn convert-key [[k v]]
-  [(convert-it k) v])
+  [(convert-it k) (vec (map #(get % 1) v))])
 
 (defn convert-keys [grouped-slopes-map]
-  (sort (into {} (map convert-key (into {} grouped-slopes-map)))))
+  (vec (sort (map convert-key grouped-slopes-map))))
