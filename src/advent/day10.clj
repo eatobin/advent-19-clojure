@@ -108,4 +108,4 @@
   [(convert-it k) v])
 
 (defn convert-keys [grouped-slopes-map]
-  (sort (map convert-key (into {} grouped-slopes-map))))
+  (sort (into {} (map convert-key (into {} grouped-slopes-map)))))
