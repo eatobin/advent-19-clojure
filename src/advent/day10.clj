@@ -5,7 +5,7 @@
 
 ;part a
 (def universe (->>
-                "resources/day10-3-2-21.txt"
+                "resources/day10b-1.txt"
                 (slurp)
                 (str/split-lines)
                 (into [])
@@ -176,3 +176,9 @@ ss
   (filter (complement nil?) (apply interleave (pad-points points))))
 
 (def nn (interleaved-points cc))
+
+(defn make-pad-line [universe]
+  (map (fn [_] \.) (first universe)))
+
+(defn balance-universe [universe]
+  (pad (count (first universe)) universe (make-pad-line universe)))
