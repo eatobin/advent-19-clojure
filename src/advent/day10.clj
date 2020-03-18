@@ -5,7 +5,7 @@
 
 ;part a
 (def universe (->>
-                "resources/day10b-1.txt"
+                "resources/day10-17-22-288.txt"
                 (slurp)
                 (str/split-lines)
                 (into [])
@@ -120,7 +120,7 @@
 (defn convert-keys [grouped-slopes-map]
   (vec (sort (map convert-key grouped-slopes-map))))
 
-(def ss (grouped-slopes [8 3] asteroid-points-vec))
+(def ss (grouped-slopes [17 22] asteroid-points-vec))
 ;=> #'advent.day10/ss
 ss
 ;=>
@@ -182,3 +182,8 @@ ss
   (vec (filter (complement nil?) (apply interleave (pad-points points)))))
 
 (def nn (interleaved-points cc))
+
+(defn answer-2 [[[x y] _]]
+  (+ (* x 100) y))
+
+(println (answer-2 (nn 199)))
