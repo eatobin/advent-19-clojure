@@ -12,13 +12,24 @@
                 (map vec)
                 (into [])))
 
-(defn asteroid-points [universe]
-  (vec (for [y0 (range (count universe))
-             x0 (range (count universe))
-             :when (= (get-in universe [y0 x0]) \#)]
+(defn make-pad-line [universe]
+  (map (fn [_] \.) (first universe)))
+
+(defn pad [n coll val]
+  (take n (concat coll (repeat val))))
+
+(defn balance-universe [universe]
+  (vec (pad (count (first universe)) universe (make-pad-line universe))))
+
+(def balanced-universe (balance-universe universe))
+
+(defn asteroid-points [balanced-universe]
+  (vec (for [y0 (range (count balanced-universe))
+             x0 (range (count balanced-universe))
+             :when (= (get-in balanced-universe [y0 x0]) \#)]
          [x0 y0])))
 
-(def asteroid-points-vec (asteroid-points universe))
+(def asteroid-points-vec (asteroid-points balanced-universe))
 
 (defn slope [[x0 y0] [x1 y1]]
   (cond
@@ -51,22 +62,22 @@
 ;[[17 22] 288]
 
 ;part b
-(slope [0 0] [1 0])
-;=> 0.0
-(slope [0 0] [1 1])
-;=> 45.0
-(slope [0 0] [0 1])
-;=> 90.0
-(slope [0 0] [-1 1])
-;=> 135.0
-(slope [0 0] [-1 0])
-;=> 180.0
-(slope [0 0] [-1 -1])
-;=> 225.0
-(slope [0 0] [0 -1])
-;=> 270.0
-(slope [0 0] [30000 -1])
-;=> 359.9980901406836
+;(slope [0 0] [1 0])
+;;=> 0.0
+;(slope [0 0] [1 1])
+;;=> 45.0
+;(slope [0 0] [0 1])
+;;=> 90.0
+;(slope [0 0] [-1 1])
+;;=> 135.0
+;(slope [0 0] [-1 0])
+;;=> 180.0
+;(slope [0 0] [-1 -1])
+;;=> 225.0
+;(slope [0 0] [0 -1])
+;;=> 270.0
+;(slope [0 0] [30000 -1])
+;;=> 359.9980901406836
 
 ;(vec (distinct (slopes [17 22] asteroid-points-vec)))
 ;(count (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))
@@ -111,7 +122,7 @@
 (defn convert-keys [grouped-slopes-map]
   (vec (sort (map convert-key grouped-slopes-map))))
 
-(def ss (grouped-slopes [3 2] asteroid-points-vec))
+(def ss (grouped-slopes [8 3] asteroid-points-vec))
 ;=> #'advent.day10/ss
 ss
 ;=>
@@ -163,9 +174,6 @@ ss
 (defn pad-by [points]
   (apply max (map #(count (second %)) points)))
 
-(defn pad [n coll val]
-  (take n (concat coll (repeat val))))
-
 (defn pad-points [points]
   (vec (for [[_ v] points]
          (vec (pad (pad-by points) v nil)))))
@@ -173,12 +181,9 @@ ss
 (def vv (pad-points cc))
 
 (defn interleaved-points [points]
-  (filter (complement nil?) (apply interleave (pad-points points))))
+  (vec (filter (complement nil?) (apply interleave (pad-points points)))))
 
 (def nn (interleaved-points cc))
 
-(defn make-pad-line [universe]
-  (map (fn [_] \.) (first universe)))
-
-(defn balance-universe [universe]
-  (pad (count (first universe)) universe (make-pad-line universe)))
+(defn cbd [[x0 y0] [x1 y1]]
+  (+ (Math/abs (- y1 y0)) (Math/abs (- x1 x0))))
