@@ -136,7 +136,7 @@ ss
 ; [153.43494882292202 [[153.43494882292202 [1 3]]]]
 ; [213.6900675259798 [[213.6900675259798 [0 0]]]]
 ; [270.0 [[270.0 [3 1]]]]]
-(convert-keys ss)
+(def cc (convert-keys ss))
 ;=>
 ;[[0.0 [[3 1]]]
 ; [90.0 [[6 2]]]
@@ -159,3 +159,19 @@ ss
 ; [225.0 [[2 3]]]
 ; [243.43494882292202 [[1 3]]]
 ; [303.69006752597977 [[0 0]]]]
+
+(apply max (map #(count (second %)) cc))
+
+(defn pad [n coll val]
+  (take n (concat coll (repeat val))))
+
+(defn pad-points [n points]
+  (vec (for [[k v] points]
+         [k (vec (pad n v nil))])))
+
+(defn get-points [points]
+  (vec (for [[_ v] points]
+         v)))
+
+(defn interleaved-points [points]
+  (filter (complement nil?) (apply interleave (get-points points))))
