@@ -169,9 +169,13 @@ ss
   (vec (for [[k v] points]
          [k (vec (pad n v nil))])))
 
+(def vv (pad-points 3 cc))
+
 (defn get-points [points]
   (vec (for [[_ v] points]
          v)))
 
 (defn interleaved-points [points]
   (filter (complement nil?) (apply interleave (get-points points))))
+
+(def nn (interleaved-points vv))
