@@ -79,25 +79,23 @@
 ;(slope [0 0] [30000 -1])
 ;;=> 359.9980901406836
 
-;(vec (distinct (slopes [17 22] asteroid-points-vec)))
-;(count (vec (distinct (slopes [17 22] (remove #(= [17 22] %) asteroid-points-vec)))))
-;=> 288
-;(sort (zipmap (range) (sort (vec (distinct (slopes [0 0] (remove #(= [0 0] %) asteroid-points-vec)))))))
+(defn cbd [[x0 y0] [x1 y1]]
+  (+ (Math/abs (- y1 y0)) (Math/abs (- x1 x0))))
 
 (defn slope-point [[x0 y0] [x1 y1]]
   (cond
-    (and (= y0 y1) (< x0 x1)) [0.0 [x1 y1]]
-    (and (= y0 y1) (> x0 x1)) [180.0 [x1 y1]]
-    (and (= x0 x1) (< y0 y1)) [90.0 [x1 y1]]
-    (and (= x0 x1) (> y0 y1)) [270.0 [x1 y1]]
+    (and (= y0 y1) (< x0 x1)) [0.0 [x1 y1] (cbd [x0 y0] [x1 y1])]
+    (and (= y0 y1) (> x0 x1)) [180.0 [x1 y1] (cbd [x0 y0] [x1 y1])]
+    (and (= x0 x1) (< y0 y1)) [90.0 [x1 y1] (cbd [x0 y0] [x1 y1])]
+    (and (= x0 x1) (> y0 y1)) [270.0 [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x inc, y inc - A
-    (and (< x0 x1) (< y0 y1)) [(/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) [x1 y1]]
+    (and (< x0 x1) (< y0 y1)) [(/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x dec, y dec - C
-    (and (> x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]
+    (and (> x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x inc, y dec - D
-    (and (< x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360) [x1 y1]]
+    (and (< x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360) [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x dec, y inc - B
-    (and (> x0 x1) (< y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1]]))
+    (and (> x0 x1) (< y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1] (cbd [x0 y0] [x1 y1])]))
 
 (defn slopes-point [source asteroid-points]
   (map (partial slope-point source) asteroid-points))
@@ -117,7 +115,7 @@
     :else (+ degrees 90.0)))
 
 (defn convert-key [[k v]]
-  [(convert-it k) (vec (map #(get % 1) v))])
+  [(convert-it k) (vec (sort-by last (vec (map #(vec (rest %)) v))))])
 
 (defn convert-keys [grouped-slopes-map]
   (vec (sort (map convert-key grouped-slopes-map))))
@@ -184,6 +182,3 @@ ss
   (vec (filter (complement nil?) (apply interleave (pad-points points)))))
 
 (def nn (interleaved-points cc))
-
-(defn cbd [[x0 y0] [x1 y1]]
-  (+ (Math/abs (- y1 y0)) (Math/abs (- x1 x0))))
