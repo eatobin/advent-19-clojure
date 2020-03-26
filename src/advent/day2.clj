@@ -10,11 +10,9 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
-(ic/op-code [0 0 0 0 (updated-memory 12 2) false true])
+(def answer (((ic/op-code [0 0 0 0 (updated-memory 12 2) false true]) 4) 0))
 
-;(def fix-op-code (first (last (op-code [0 (updated-memory 12 2)]))))
-;
-;(println fix-op-code)
+(println answer)
 
 ;2890696
 
