@@ -2,14 +2,14 @@
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]))
 
-;part a
-(def tv (->> (first (with-open [reader (io/reader "resources/day11.csv")]
-                      (doall
-                        (csv/read-csv reader))))
-             (map #(Long/parseLong %))
-             (into [])
-             (zipmap (range))
-             (into (sorted-map-by <))))
+(defn make-tv [file]
+  (->> (first (with-open [reader (io/reader file)]
+                (doall
+                  (csv/read-csv reader))))
+       (map #(Long/parseLong %))
+       (into [])
+       (zipmap (range))
+       (into (sorted-map-by <))))
 
 (defn pad-5 [n]
   (zipmap [:a :b :c :d :e]
@@ -219,9 +219,3 @@
                (assoc memory (param-maker-a instruction pointer memory relative-base) 0))
              stopped?
              recur?])))))
-
-(def answer (first (op-code [1 0 0 0 tv false true])))
-
-(println answer)
-
-; 3780860499
