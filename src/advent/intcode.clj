@@ -17,70 +17,70 @@
             (- (byte n) 48))))
 
 ; y1
-(defn a-p-w [pointer memory]
+(defn a-p-w [{:keys [pointer memory]}]
   (memory (+ 3 pointer)))
 
 ; y2, y9
-(defn b-p-r-b-r-r [pointer memory relative-base]
+(defn b-p-r-b-r-r [{:keys [pointer memory relative-base]}]
   (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
 
 ; y3, y10
-(defn c-p-r-c-r-r [pointer memory relative-base]
+(defn c-p-r-c-r-r [{:keys [pointer memory relative-base]}]
   (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
 
 ; y4, y6
-(defn c-p-w-c-i-r [pointer memory]
+(defn c-p-w-c-i-r [{:keys [pointer memory]}]
   (memory (+ 1 pointer)))
 
 ; y5
-(defn b-i-r [pointer memory]
+(defn b-i-r [{:keys [pointer memory]}]
   (memory (+ 2 pointer)))
 
 ; y7
-(defn a-r-w [pointer memory relative-base]
+(defn a-r-w [{:keys [pointer memory relative-base]}]
   (+ (memory (+ 3 pointer)) relative-base))
 
 ; y8
-(defn c-r-w [pointer memory relative-base]
+(defn c-r-w [{:keys [pointer memory relative-base]}]
   (+ (memory (+ 1 pointer)) relative-base))
 
-(defn param-maker-c [instruction pointer memory relative-base]
+(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :e)
     1 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     2 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     3 (case (instruction :c)
-        0 (c-p-w-c-i-r pointer memory)
-        2 (c-r-w pointer memory relative-base))
+        0 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-r-w {:pointer pointer :memory memory :relative-base relative-base}))
     4 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     5 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     6 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     7 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     8 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     9 (case (instruction :c)
-        0 (c-p-r-c-r-r pointer memory 0)
-        1 (c-p-w-c-i-r pointer memory)
-        2 (c-p-r-c-r-r pointer memory relative-base))))
+        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
+        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
+        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))))
 
 (defn param-maker-b [instruction pointer memory relative-base]
   (case (instruction :e)
