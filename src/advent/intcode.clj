@@ -95,7 +95,7 @@
     5 (case (instruction :b)
         0 (b-p-r-b-r-r {:pointer pointer :memory memory :relative-base 0})
         1 (b-i-r {:pointer pointer :memory memory})
-        2 (b-p-r-b-r-r pointer memory relative-base))
+        2 (b-p-r-b-r-r {:pointer pointer :memory memory :relative-base relative-base}))
     6 (case (instruction :b)
         0 (b-p-r-b-r-r {:pointer pointer :memory memory :relative-base 0})
         1 (b-i-r {:pointer pointer :memory memory})
@@ -109,20 +109,20 @@
         1 (b-i-r {:pointer pointer :memory memory})
         2 (b-p-r-b-r-r {:pointer pointer :memory memory :relative-base relative-base}))))
 
-(defn param-maker-a [instruction pointer memory relative-base]
+(defn param-maker-a [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :e)
     1 (case (instruction :a)
-        0 (a-p-w pointer memory)
-        2 (a-r-w pointer memory relative-base))
+        0 (a-p-w {:pointer pointer :memory memory})
+        2 (a-r-w {:pointer pointer :memory memory :relative-base relative-base}))
     2 (case (instruction :a)
-        0 (a-p-w pointer memory)
-        2 (a-r-w pointer memory relative-base))
+        0 (a-p-w {:pointer pointer :memory memory})
+        2 (a-r-w {:pointer pointer :memory memory :relative-base relative-base}))
     7 (case (instruction :a)
-        0 (a-p-w pointer memory)
-        2 (a-r-w pointer memory relative-base))
+        0 (a-p-w {:pointer pointer :memory memory})
+        2 (a-r-w {:pointer pointer :memory memory :relative-base relative-base}))
     8 (case (instruction :a)
-        0 (a-p-w pointer memory)
-        2 (a-r-w pointer memory relative-base))))
+        0 (a-p-w {:pointer pointer :memory memory})
+        2 (a-r-w {:pointer pointer :memory memory :relative-base relative-base}))))
 
 (defn op-code [[input phase pointer relative-base memory stopped? recur?]]
   (if stopped?
