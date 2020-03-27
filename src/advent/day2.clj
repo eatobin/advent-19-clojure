@@ -17,13 +17,13 @@
 ;2890696
 
 ;part b
-;(def noun-verb
-;  (for [noun (range 0 100)
-;        verb (range 0 100)
-;        :let [candidate (first (last (op-code [0 (updated-memory noun verb)])))]
-;        :when (= candidate 19690720)]
-;    [candidate noun verb (+ (* 100 noun) verb)]))
-;
-;(println noun-verb)
+(def noun-verb
+  (vec (for [noun (range 0 100)
+             verb (range 0 100)
+             :let [candidate (((ic/op-code {:input 0 :phase 0 :pointer 0 :relative-base 0 :memory (updated-memory noun verb) :stopped? false :recur? true}) :memory) 0)]
+             :when (= candidate 19690720)]
+         [candidate noun verb (+ (* 100 noun) verb)])))
 
-;[19690720 82 26 8226]
+(println (last (first noun-verb)))
+
+;8226
