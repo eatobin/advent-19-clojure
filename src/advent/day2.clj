@@ -10,7 +10,7 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
-(def answer (((ic/op-code [0 0 0 0 (updated-memory 12 2) false true]) 4) 0))
+(def answer (((ic/op-code {:input 0 :phase 0 :pointer 0 :relative-base 0 :memory (updated-memory 12 2) :stopped? false :recur? true}) :memory) 0))
 
 (println answer)
 
