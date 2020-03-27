@@ -126,19 +126,19 @@
 
 (defn op-code [{:keys [input phase pointer relative-base memory stopped? recur?]}]
   (if stopped?
-    [input phase pointer relative-base memory stopped? recur?]
+    {:input input :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?}
     (let [instruction (pad-5 (memory pointer))]
       (case (instruction :e)
         9 (if (= (instruction :d) 9)
-            [input phase pointer relative-base memory true recur?]
+            {:input input :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? true :recur? recur?}
             (recur
-              [input
-               phase
-               (+ 2 pointer)
-               (+ (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) relative-base)
-               memory
-               stopped?
-               recur?]))
+              {:input         input
+               :phase         phase
+               :pointer       (+ 2 pointer)
+               :relative-base (+ (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) relative-base)
+               :memory        memory
+               :stopped?      stopped?
+               :recur?        recur?}))
         1 (recur
             [input
              phase
@@ -178,7 +178,7 @@
                memory
                stopped?
                recur?])
-            [(param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) phase (+ 2 pointer) relative-base memory stopped? recur?])
+            {:input (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) :phase phase :pointer (+ 2 pointer) :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?})
         5 (recur
             [input
              phase
@@ -219,3 +219,8 @@
                (assoc memory (param-maker-a {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 0))
              stopped?
              recur?])))))
+;(defn op-code [{:keys [input phase pointer relative-base memory stopped? recur?]}]
+;  (if stopped?
+;    [input phase pointer relative-base memory stopped? recur?]
+;    (let [instruction (pad-5 (memory pointer))]
+;      [input phase pointer relative-base memory stopped? recur? instruction])))
