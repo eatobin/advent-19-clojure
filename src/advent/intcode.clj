@@ -164,7 +164,7 @@
              :phase         phase
              :pointer       (+ 2 pointer)
              :relative-base relative-base
-             :memory        (if (complement (nil? :phase))
+             :memory        (if (some? :phase)
                               (if (= 0 pointer)
                                 (assoc memory (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) phase)
                                 (assoc memory (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) input))
