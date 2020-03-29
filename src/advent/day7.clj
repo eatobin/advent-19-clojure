@@ -1,6 +1,7 @@
 (ns advent.day7
   (:require [clojure.data.csv :as csv]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [advent.intcode :as ic]))
 
 ;part a
 (def tv (->> (first (with-open [reader (io/reader "resources/day7.csv")]
@@ -160,16 +161,14 @@
                  [a b c d e]))
 
 (defn pass [[a b c d e] i-code]
-  (first (op-code [
-                   (first (op-code [
-                                    (first (op-code [
-                                                     (first (op-code [
-                                                                      (first (op-code [
-                                                                                       0 a 0 i-code]))
-                                                                      b 0 i-code]))
-                                                     c 0 i-code]))
-                                    d 0 i-code]))
-                   e 0 i-code])))
+  (:input (ic/op-code {:input (:input (ic/op-code {:input (:input (ic/op-code {:input (:input (ic/op-code {:input (:input (ic/op-code {:input 0 :phase a :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})) :phase b :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})) :phase c :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})) :phase d :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})) :phase e :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})))
+
+
+
+
+
+
+
 
 (defn passes [i-code]
   (vec (map #(pass % i-code) possibles)))
