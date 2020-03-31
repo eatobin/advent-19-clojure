@@ -221,3 +221,12 @@
                               (assoc memory (param-maker-a {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 0))
              :stopped?      stopped?
              :recur?        recur?})))))
+
+(case 22
+  (22 33 44) "x, y, or z"
+  "default")
+;=> "x, y, or z"
+(case 222
+  (22 33 44) "x, y, or z"
+  "default")
+;=> "default"
