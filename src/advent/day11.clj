@@ -20,4 +20,11 @@
     2 {:x x :y (+ y -1)}
     3 {:x (+ x -1) :y y}))
 
-{:pt {:x 0 :y 0} :h 0 :c :b :p :w :t 0}
+(def state {:pt {:x 0 :y 0} :h 0 :c nil})
+
+(defn new-state [{:keys [pt h p t]}]
+  {:orig {:pt pt :h h :c p}
+   :dest {:pt (new-point pt h) :h (new-heading h t) :c nil}})
+
+(new-state {:pt {:x 0 :y 0} :h 0 :p :w :t 1})
+;=> {:orig {:pt {:x 0, :y 0}, :h 0, :c :w}, :dest {:pt {:x 0, :y 1}, :h 1, :c nil}}
