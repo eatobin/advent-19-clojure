@@ -15,8 +15,8 @@
 
 (defn new-point [{:keys [x y]} h]
   (case h
-    0 {:x x :y (+ 1 y)}
-    1 {:x (+ 1 x) :y y}
+    0 {:x x :y (+ y 1)}
+    1 {:x (+ x 1) :y y}
     2 {:x x :y (+ y -1)}
     3 {:x (+ x -1) :y y}))
 
