@@ -28,3 +28,5 @@
 
 (new-state {:pt {:x 0 :y 0} :h 0 :p :w :t 1})
 ;=> {:orig {:pt {:x 0, :y 0}, :h 0, :c :w}, :dest {:pt {:x 0, :y 1}, :h 1, :c nil}}
+
+(def states (atom {0 {:pt {:x 0, :y 0}, :h 0, :c nil}}))
