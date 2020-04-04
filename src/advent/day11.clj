@@ -30,6 +30,7 @@
 
 (def states (atom [{:pt {:x 0, :y 0}, :h 0, :c nil}]))
 
-(defn update-atom [coll p]
-  (let [{:keys [pt h c]} (last coll)]
-    {:pt pt :h h :c p}))
+(defn update-atom [coll p t]
+  (let [{:keys [pt h]} (last coll)]
+    [{:pt pt :h h :c p}
+     {:pt (new-point pt h) :h (new-heading h t) :c nil}]))
