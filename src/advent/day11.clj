@@ -22,11 +22,11 @@
 
 (def state {:pt {:x 0 :y 0} :h 0 :c nil})
 
-(defn new-state [{:keys [pt h p t]}]
-  {:orig {:pt pt :h h :c p}
-   :dest {:pt (new-point pt h) :h (new-heading h t) :c nil}})
+(defn new-state [k {:keys [pt h p t]}]
+  {{k {:pt pt :h h :c p}}
+   {(inc k) {:pt (new-point pt h) :h (new-heading h t) :c nil}}})
 
-(new-state {:pt {:x 0 :y 0} :h 0 :p :w :t 1})
-;=> {:orig {:pt {:x 0, :y 0}, :h 0, :c :w}, :dest {:pt {:x 0, :y 1}, :h 1, :c nil}}
+(new-state 0 {:pt {:x 0 :y 0} :h 0 :p :w :t 1})
+;=> {{0 {:pt {:x 0, :y 0}, :h 0, :c :w}} {1 {:pt {:x 0, :y 1}, :h 1, :c nil}}}
 
 (def states (atom {0 {:pt {:x 0, :y 0}, :h 0, :c nil}}))
