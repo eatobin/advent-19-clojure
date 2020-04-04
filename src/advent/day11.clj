@@ -22,12 +22,6 @@
 
 (def state {:pt {:x 0 :y 0} :h 0 :c nil})
 
-(defn revise-last [{:keys [pt h p]}]
-  {:pt pt :h h :c p})
-
-(defn new-last [{:keys [pt h t]}]
-  {:pt (new-point pt h) :h (new-heading h t) :c nil})
-
 (def states (atom [{:pt {:x 0, :y 0}, :h 0, :c nil} {:pt {:x 1, :y 0}, :h 0, :c nil}
                    {:pt {:x 2, :y 0}, :h 0, :c nil} {:pt {:x 3, :y 0}, :h 3, :c nil}]))
 
