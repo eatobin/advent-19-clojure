@@ -32,10 +32,5 @@
 
 (defn update-atom [coll p t]
   (let [{:keys [pt h]} (last coll)
-               new-2 [{:pt pt :h h :c p} {:pt (new-point pt h) :h (new-heading h t) :c nil}]]
-           (conj (vec (butlast coll)) new-2)))
-
-;(defn update-atom [coll p t]
-;  (let [{:keys [pt h]} (last coll)
-;               new-2 {:pt (new-point pt h) :h (new-heading h t) :c nil}]
-;           new-2))
+        new-2 [{:pt pt :h h :c p} {:pt (new-point pt h) :h (new-heading h t) :c nil}]]
+    (into (vec (butlast coll)) new-2)))
