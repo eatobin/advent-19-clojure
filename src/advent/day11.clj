@@ -22,11 +22,10 @@
 
 (def state {:pt {:x 0 :y 0} :h 0 :c nil})
 
-(defn new-state [k {:keys [pt h p t]}]
-  {{k {:pt pt :h h :c p}}
-   {(inc k) {:pt (new-point pt h) :h (new-heading h t) :c nil}}})
+(defn revise-last [{:keys [pt h p]}]
+  {:pt pt :h h :c p})
 
-(new-state 0 {:pt {:x 0 :y 0} :h 0 :p :w :t 1})
-;=> {{0 {:pt {:x 0, :y 0}, :h 0, :c :w}} {1 {:pt {:x 0, :y 1}, :h 1, :c nil}}}
+(defn new-last [{:keys [pt h t]}]
+  {:pt (new-point pt h) :h (new-heading h t) :c nil})
 
-(def states (atom {0 {:pt {:x 0, :y 0}, :h 0, :c nil}}))
+(def states (atom [{:pt {:x 0, :y 0}, :h 0, :c nil}]))
