@@ -22,13 +22,16 @@
     2 {:x x :y (+ y -1)}
     3 {:x (+ x -1) :y y}))
 
-(def state {:pt {:x 0 :y 0} :h 0 :c nil})
+(def state {:pt {:x 0 :y 0} :c 0})
 
 (def states (atom [{:pt {:x 0, :y 0}, :h 0, :c 0}]))
 
 (defn update-atom [coll p t]
   (let [{:keys [pt h]} (last coll)
-        new-2 [{:pt pt :h h :c p} {:pt (new-point pt h) :h (new-heading h t) :c 0}]]
+        new-2 [{:pt pt :c p} {:pt (new-point pt (new-heading h t)) :h (new-heading h t) :c 0}]]
     (into (vec (butlast coll)) new-2)))
 
+(swap! states update-atom 1 0)
+(swap! states update-atom 0 0)
+(swap! states update-atom 1 0)
 (swap! states update-atom 1 0)
