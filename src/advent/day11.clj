@@ -35,3 +35,14 @@
 (swap! states update-atom 0 0)
 (swap! states update-atom 1 0)
 (swap! states update-atom 1 0)
+
+(defn eq-pts [{tpt :pt} {pt :pt c :c}]
+  (if (= tpt pt)
+    c
+    nil))
+
+(defn map-eq-pts [{tpt :pt} pts]
+  (vec (map (fn [{pt :pt c :c}] (if (= tpt pt) c nil)) pts)))
+
+(map-eq-pts {:pt {:x 0, :y 0}} [{:pt {:x 0, :y 0}, :c 1} {:pt {:x 0, :y 90}, :c 1} {:pt {:x 0, :y 0}, :c 19}])
+;=> [1 nil 19]
