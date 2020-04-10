@@ -45,6 +45,11 @@
       0
       c)))
 
+;First, it will output a value indicating the color to paint the panel the robot is over:
+;   0 means to paint the panel black, and 1 means to paint the panel white.
+;Second, it will output a value indicating the direction the robot should turn:
+;   0 means it should turn left 90 degrees, and 1 means it should turn right 90 degrees.
+
 (defn update-atom [coll p t]
   (let [{:keys [pt h]} (last coll)
         npt (new-point pt (new-heading h t))
