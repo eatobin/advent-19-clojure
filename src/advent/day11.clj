@@ -61,6 +61,6 @@
 (swap! states update-atom 1 0)
 (swap! states update-atom 1 0)
 
-(swap! states update-atom 0 1)
-(swap! states update-atom 1 0)
-(swap! states update-atom 1 0)
+;(swap! states update-atom 0 1)
+;(swap! states update-atom 1 0)
+;(swap! states update-atom 1 0)
