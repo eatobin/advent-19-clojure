@@ -33,9 +33,9 @@
                   {:pt {:x 2, :y 2}, :c 0}
                   {:pt {:x 3, :y 3}, :h :s, :c 0}])
 
-;(defn map-eq-pts [tpt pts]
-;  (vec (map (fn [{pt :pt c :c}] (if (= tpt pt) c nil)) pts)))
-;
+(defn map-eq-pts [{tpt :pt} pts]
+  (vec (map (fn [{pt :pt c :c}] (if (= tpt pt) c nil)) pts)))
+
 ;(defn dups-check [tpt pts]
 ;  (let [c (->>
 ;            pts
