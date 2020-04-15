@@ -33,7 +33,7 @@
                   {:pt {:x 2, :y 2}, :c 0}
                   {:pt {:x 3, :y 3}, :h :s, :c 0}])
 
-(defn map-eq-pts [{tpt :pt} pts]
+(defn map-eq-pts [tpt pts]
   (vec (map (fn [{pt :pt c :c}] (if (= tpt pt) c nil)) pts)))
 
 (defn dups-check [tpt pts]
@@ -52,21 +52,28 @@
 ;Second, it will output a value indicating the direction the robot should turn:
 ;   0 means it should turn left 90 degrees, and 1 means it should turn right 90 degrees.
 
-(defn update-atom [coll p t]
-  (let [{:keys [pt h]} (last coll)
-        npt (new-point pt (new-heading h t))
-        new-2 [{:pt pt :c p} {:pt npt :h (new-heading h t) :c (dups-check npt coll)}]]
-    (into (vec (butlast coll)) new-2)))
+;(defn update-atom [coll p t]
+;  (let [{:keys [pt h]} (last coll)
+;        npt (new-point pt (new-heading h t))
+;        new-2 [{:pt pt :c p} {:pt npt :h (new-heading h t) :c (dups-check npt coll)}]]
+;    (into (vec (butlast coll)) new-2)))
+
+;TODO add repainted key
 
 (defn paint-atom [coll p]
-  (let [{pt :pt} (last coll)
-        painted [{:pt pt :c p}]]
+  (let [{:keys [pt h]} (last coll)
+        painted [{:pt pt :h h :c p}]]
     (into (vec (butlast coll)) painted)))
 
-(swap! states update-atom 1 0)
-(swap! states update-atom 0 0)
-(swap! states update-atom 1 0)
-(swap! states update-atom 1 0)
+(defn turn-atom [coll t]
+  (let [{:keys [pt h]} (last coll)
+        turned [{:pt (new-point pt (new-heading h t)) :h (new-heading h t) :c (dups-check pt coll)}]]
+    (into (vec coll) turned)))
+
+;(swap! states update-atom 1 0)
+;(swap! states update-atom 0 0)
+;(swap! states update-atom 1 0)
+;(swap! states update-atom 1 0)
 
 ;(swap! states update-atom 0 1)
 ;(swap! states update-atom 1 0)
