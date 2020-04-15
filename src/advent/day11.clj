@@ -17,18 +17,18 @@
     (and (= heading :w) (= turn 0)) :s
     (and (= heading :w) (= turn 1)) :n))
 
-(defn new-point [{:keys [x y]} h]
+(defn new-point [{x :x y :y} h]
   (case h
-    0 {:x x :y (+ y 1)}
-    1 {:x (+ x 1) :y y}
-    2 {:x x :y (+ y -1)}
-    3 {:x (+ x -1) :y y}))
+    :n {:x x :y (inc y)}
+    :e {:x (inc x) :y y}
+    :s {:x x :y (dec y)}
+    :w {:x (dec x) :y y}))
 
 (def state {:pt {:x 0 :y 0} :c 0})
 
 (def states (atom [{:pt {:x 0, :y 0}, :h :n, :c 0}]))
 
-(def many-states [{:pt {:x 0, :y 0}, :c 1}
+(def many-states [{:pt {:x 0, :y 0}, :c 99}
                   {:pt {:x 1, :y 1}, :c 1}
                   {:pt {:x 2, :y 2}, :c 0}
                   {:pt {:x 3, :y 3}, :h :s, :c 0}])
@@ -52,16 +52,21 @@
 ;Second, it will output a value indicating the direction the robot should turn:
 ;   0 means it should turn left 90 degrees, and 1 means it should turn right 90 degrees.
 
-;(defn update-atom [coll p t]
-;  (let [{:keys [pt h]} (last coll)
-;        npt (new-point pt (new-heading h t))
-;        new-2 [{:pt pt :c p} {:pt npt :h (new-heading h t) :c (dups-check npt coll)}]]
-;    (into (vec (butlast coll)) new-2)))
-;
-;(swap! states update-atom 1 0)
-;(swap! states update-atom 0 0)
-;(swap! states update-atom 1 0)
-;(swap! states update-atom 1 0)
+(defn update-atom [coll p t]
+  (let [{:keys [pt h]} (last coll)
+        npt (new-point pt (new-heading h t))
+        new-2 [{:pt pt :c p} {:pt npt :h (new-heading h t) :c (dups-check npt coll)}]]
+    (into (vec (butlast coll)) new-2)))
+
+(defn paint-atom [coll p]
+  (let [{pt :pt} (last coll)
+        painted [{:pt pt :c p}]]
+    (into (vec (butlast coll)) painted)))
+
+(swap! states update-atom 1 0)
+(swap! states update-atom 0 0)
+(swap! states update-atom 1 0)
+(swap! states update-atom 1 0)
 
 ;(swap! states update-atom 0 1)
 ;(swap! states update-atom 1 0)
