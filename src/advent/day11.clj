@@ -36,16 +36,16 @@
 (defn map-eq-pts [{tpt :pt} pts]
   (vec (map (fn [{pt :pt c :c}] (if (= tpt pt) c nil)) pts)))
 
-;(defn dups-check [tpt pts]
-;  (let [c (->>
-;            pts
-;            (map-eq-pts tpt)
-;            (butlast)
-;            (remove nil?)
-;            (last))]
-;    (if (nil? c)
-;      0
-;      c)))
+(defn dups-check [tpt pts]
+  (let [c (->>
+            pts
+            (map-eq-pts tpt)
+            (butlast)
+            (remove nil?)
+            (last))]
+    (if (nil? c)
+      0
+      c)))
 
 ;First, it will output a value indicating the color to paint the panel the robot is over:
 ;   0 means to paint the panel black, and 1 means to paint the panel white.
