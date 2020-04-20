@@ -24,19 +24,29 @@
     :s {:x x :y (dec y)}
     :w {:x (dec x) :y y}))
 
-(def state {:pt {:x 0 :y 0} :c 0})
+(defn repainted? [{c :c} p]
+  (cond
+    (and (= c 0) (= p 1)) 1
+    (and (= c 1) (= p 0)) 0
+    :else nil))
 
-(def states (atom [{:pt {:x 0, :y 0}, :h :n, :c 0}]))
+(def state {:pt {:x 0 :y 0} :h :n :c 0 :rp nil})
 
-(def many-states [{:pt {:x 0, :y 0}, :c 99}
-                  {:pt {:x 1, :y 1}, :c 1}
-                  {:pt {:x 2, :y 2}, :c 0}
-                  {:pt {:x 3, :y 3}, :h :s, :c 0}])
+(def states (atom [{:pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}]))
 
-(defn map-eq-pts [tpt pts]
+(def many-states [{:pt {:x 0, :y 0}, :h :n :c 99 :rp nil}
+                  {:pt {:x 1, :y 1}, :h :n :c 0 :rp nil}
+                  {:pt {:x 2, :y 2}, :h :n :c 0 :rp nil}
+                  {:pt {:x 3, :y 3}, :h :n :c 0 :rp nil}])
+
+(defn map-eq-pts
+  "Takes a {:x 3 :y 3} as target point (tpt)"
+  [tpt pts]
   (vec (map (fn [{pt :pt c :c}] (if (= tpt pt) c nil)) pts)))
 
-(defn dups-check [tpt pts]
+(defn dups-check
+  "Takes a {:x 3 :y 3} as target point (tpt)"
+  [tpt pts]
   (let [c (->>
             pts
             (map-eq-pts tpt)
