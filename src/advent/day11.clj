@@ -24,7 +24,7 @@
     :s {:x x :y (dec y)}
     :w {:x (dec x) :y y}))
 
-(defn repainted? [{c :c} p]
+(defn repainted? [c p]
   (cond
     (and (= c 0) (= p 1)) 1
     (and (= c 1) (= p 0)) 0
@@ -34,7 +34,7 @@
 
 (def states (atom [{:pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}]))
 
-(def many-states [{:pt {:x 0, :y 0}, :h :n :c 99 :rp nil}
+(def many-states [{:pt {:x 0, :y 0}, :h :n :c 0 :rp nil}
                   {:pt {:x 1, :y 1}, :h :n :c 0 :rp nil}
                   {:pt {:x 2, :y 2}, :h :n :c 0 :rp nil}
                   {:pt {:x 3, :y 3}, :h :n :c 0 :rp nil}])
@@ -68,11 +68,9 @@
 ;        new-2 [{:pt pt :c p} {:pt npt :h (new-heading h t) :c (dups-check npt coll)}]]
 ;    (into (vec (butlast coll)) new-2)))
 
-;TODO add repainted key
-
 (defn paint-atom [coll p]
-  (let [{:keys [pt h]} (last coll)
-        painted [{:pt pt :h h :c p}]]
+  (let [{:keys [pt h c]} (last coll)
+        painted [{:pt pt :h h :c p :rp (repainted? c p)}]]
     (into (vec (butlast coll)) painted)))
 
 (defn turn-atom [coll t]
