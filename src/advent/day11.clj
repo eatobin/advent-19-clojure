@@ -1,6 +1,11 @@
 (ns advent.day11
   (:require [advent.intcode :as ic]))
 
+;First, it will output a value indicating the color to paint the panel the robot is over:
+;   0 means to paint the panel black, and 1 means to paint the panel white.
+;Second, it will output a value indicating the direction the robot should turn:
+;   0 means it should turn left 90 degrees, and 1 means it should turn right 90 degrees.
+
 ;part a
 (def tv (ic/make-tv "resources/day11.csv"))
 
@@ -57,17 +62,6 @@
       0
       c)))
 
-;First, it will output a value indicating the color to paint the panel the robot is over:
-;   0 means to paint the panel black, and 1 means to paint the panel white.
-;Second, it will output a value indicating the direction the robot should turn:
-;   0 means it should turn left 90 degrees, and 1 means it should turn right 90 degrees.
-
-;(defn update-atom [coll p t]
-;  (let [{:keys [pt h]} (last coll)
-;        npt (new-point pt (new-heading h t))
-;        new-2 [{:pt pt :c p} {:pt npt :h (new-heading h t) :c (dups-check npt coll)}]]
-;    (into (vec (butlast coll)) new-2)))
-
 (defn paint-atom [coll p]
   (let [{:keys [pt h c]} (last coll)
         painted [{:pt pt :h h :c p :rp (repainted? c p)}]]
@@ -75,14 +69,27 @@
 
 (defn turn-atom [coll t]
   (let [{:keys [pt h]} (last coll)
-        turned [{:pt (new-point pt (new-heading h t)) :h (new-heading h t) :c (dups-check pt coll)}]]
+        new-point (new-point pt (new-heading h t))
+        turned [{:pt new-point :h (new-heading h t) :c (dups-check new-point coll) :rp nil}]]
     (into (vec coll) turned)))
 
-;(swap! states update-atom 1 0)
-;(swap! states update-atom 0 0)
-;(swap! states update-atom 1 0)
-;(swap! states update-atom 1 0)
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
 
-;(swap! states update-atom 0 1)
-;(swap! states update-atom 1 0)
-;(swap! states update-atom 1 0)
+(swap! states paint-atom 0)
+(swap! states turn-atom 0)
+
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
+
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
+
+(swap! states paint-atom 0)
+(swap! states turn-atom 1)
+
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
+
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
