@@ -9,7 +9,7 @@
 ;part a
 (def tv (ic/make-tv "resources/day11.csv"))
 
-(ic/op-code {:input 1 :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
+(ic/op-code {:input 0 :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
 
 (defn new-heading [heading turn]
   (cond
@@ -76,38 +76,65 @@
 (defn count-repaints [coll]
   (count (filter #(some? (% :rp)) coll)))
 
-;[1 0]
-(swap! states paint-atom 1)
-(swap! states turn-atom 0)
-
-;[0 0]
-(swap! states paint-atom 0)
-(swap! states turn-atom 0)
-
-;[1 0]
-(swap! states paint-atom 1)
-(swap! states turn-atom 0)
-
-;[1 0]
-(swap! states paint-atom 1)
-(swap! states turn-atom 0)
-
-;[0 1]
-(swap! states paint-atom 0)
-(swap! states turn-atom 1)
-
-;[1 0]
-(swap! states paint-atom 1)
-(swap! states turn-atom 0)
-
-;[1 0]
-(swap! states paint-atom 1)
-(swap! states turn-atom 0)
-
-;6 repaints - count first just once
+;;[1 0]
+;(swap! states paint-atom 1)
+;(swap! states turn-atom 0)
+;
+;;[0 0]
+;(swap! states paint-atom 0)
+;(swap! states turn-atom 0)
+;
+;;[1 0]
+;(swap! states paint-atom 1)
+;(swap! states turn-atom 0)
+;
+;;[1 0]
+;(swap! states paint-atom 1)
+;(swap! states turn-atom 0)
+;
+;;[0 1]
+;(swap! states paint-atom 0)
+;(swap! states turn-atom 1)
+;
+;;[1 0]
+;(swap! states paint-atom 1)
+;(swap! states turn-atom 0)
+;
+;;[1 0]
+;(swap! states paint-atom 1)
+;(swap! states turn-atom 0)
+;
+;(count-repaints @states)
 
 ;.....
 ;..<#.
 ;...#.
 ;.##..
 ;.....
+
+;(defn runner [five-amps]
+;  (loop [amps five-amps
+;         current-amp-no 1
+;         next-amp-no (+ 1 (mod current-amp-no 5))]
+;    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
+;      (:input @(amps current-amp-no))
+;      (let [op-this (atom (swap! (amps current-amp-no) ic/op-code))
+;            op-next (atom (swap! (amps next-amp-no) assoc :input (:input @op-this)))]
+;        (recur
+;          (assoc amps current-amp-no op-this next-amp-no op-next)
+;          next-amp-no
+;          (+ 1 (mod next-amp-no 5)))))))
+
+((last @states) :c)
+
+;(defn runner [states]
+;  (let [states states
+;        over-color ((last @states) :c)
+;        answer-1 ((ic/op-code {:input over-color :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}) :input)
+;        painted-atom (swap! states paint-atom answer-1)]
+;    [@states over-color answer-1 @painted-atom]))
+(defn runner [states]
+  (let [states states
+        over-color ((last @states) :c)
+        answer-1 ((ic/op-code {:input over-color :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}) :input)]
+    [over-color answer-1 @(atom (swap! states paint-atom answer-1))]))
