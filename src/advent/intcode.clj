@@ -65,15 +65,16 @@
     0 (a-p-w {:pointer pointer :memory memory})
     2 (a-r-w {:pointer pointer :memory memory :relative-base relative-base})))
 
-(defn op-code [{:keys [input phase pointer relative-base memory stopped? recur?]}]
+(defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
   (if stopped?
-    {:input input :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?}
+    {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?}
     (let [instruction (pad-5 (memory pointer))]
       (case (instruction :e)
         9 (if (= (instruction :d) 9)
-            {:input input :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? true :recur? recur?}
+            {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? true :recur? recur?}
             (recur
               {:input         input
+               :output        output
                :phase         phase
                :pointer       (+ 2 pointer)
                :relative-base (+ (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) relative-base)
@@ -82,6 +83,7 @@
                :recur?        recur?}))
         1 (recur
             {:input         input
+             :output        output
              :phase         phase
              :pointer       (+ 4 pointer)
              :relative-base relative-base
@@ -92,6 +94,7 @@
              :recur?        recur?})
         2 (recur
             {:input         input
+             :output        output
              :phase         phase
              :pointer       (+ 4 pointer)
              :relative-base relative-base
@@ -102,6 +105,7 @@
              :recur?        recur?})
         3 (recur
             {:input         input
+             :output        output
              :phase         phase
              :pointer       (+ 2 pointer)
              :relative-base relative-base
@@ -126,18 +130,20 @@
         4 (if recur?
             (recur
               {:input         (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+               :output        output
                :phase         phase
                :pointer       (+ 2 pointer)
                :relative-base relative-base
                :memory        memory
                :stopped?      stopped?
                :recur?        recur?})
-            {:input (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) :phase phase :pointer (+ 2 pointer) :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?})
+            {:input input :output (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) :phase phase :pointer (+ 2 pointer) :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?})
 
 
 
         5 (recur
             {:input         input
+             :output        output
              :phase         phase
              :pointer       (if (= 0 (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
                               (+ 3 pointer)
@@ -148,6 +154,7 @@
              :recur?        recur?})
         6 (recur
             {:input         input
+             :output        output
              :phase         phase
              :pointer       (if (not= 0 (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
                               (+ 3 pointer)
@@ -158,6 +165,7 @@
              :recur?        recur?})
         7 (recur
             {:input         input
+             :output        output
              :phase         phase
              :pointer       (+ 4 pointer)
              :relative-base relative-base
@@ -168,6 +176,7 @@
              :recur?        recur?})
         8 (recur
             {:input         input
+             :output        output
              :phase         phase
              :pointer       (+ 4 pointer)
              :relative-base relative-base
