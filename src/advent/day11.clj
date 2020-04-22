@@ -127,14 +127,13 @@
 
 ((last @states) :c)
 
-;(defn runner [states]
-;  (let [states states
-;        over-color ((last @states) :c)
-;        answer-1 ((ic/op-code {:input over-color :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}) :input)
-;        painted-atom (swap! states paint-atom answer-1)]
-;    [@states over-color answer-1 @painted-atom]))
 (defn runner [states]
   (let [states states
         over-color ((last @states) :c)
-        answer-1 ((ic/op-code {:input over-color :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}) :input)]
-    [over-color answer-1 @(atom (swap! states paint-atom answer-1))]))
+        op-code-1 (ic/op-code {:input over-color :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
+        answer-1 (op-code-1 :input)
+        atom-update-1 (atom (swap! states paint-atom answer-1))
+        op-code-2 (ic/op-code (assoc op-code-1 :input over-color))
+        answer-2 (op-code-2 :input)
+        atom-update-2 (atom (swap! states turn-atom answer-2))]
+    [over-color op-code-1 answer-1 @atom-update-1 over-color op-code-2 answer-2 @atom-update-2]))
