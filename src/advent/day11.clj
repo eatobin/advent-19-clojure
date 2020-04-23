@@ -9,7 +9,7 @@
 ;part a
 (def tv (ic/make-tv "resources/day11.csv"))
 
-(ic/op-code {:input 0 :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
+(ic/op-code {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
 
 (defn new-heading [heading turn]
   (cond
