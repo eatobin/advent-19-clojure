@@ -34,23 +34,23 @@
 ;368584
 
 ;part b
-;(def possibles-2 (for [a (range 5 10)
-;                       b (range 5 10)
-;                       c (range 5 10)
-;                       d (range 5 10)
-;                       e (range 5 10)
-;                       :when (distinct? a b c d e)]
-;                   [a b c d e]))
-;
-;(defn to-amps-vector [phases-vector memory]
-;  (vec (letfn [(to-amps [phases]
-;                 {1 (atom {:input 0 :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;                  2 (atom {:input nil :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;                  3 (atom {:input nil :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;                  4 (atom {:input nil :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;                  5 (atom {:input nil :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
-;         (map to-amps phases-vector))))
-;
+(def possibles-2 (for [a (range 5 10)
+                       b (range 5 10)
+                       c (range 5 10)
+                       d (range 5 10)
+                       e (range 5 10)
+                       :when (distinct? a b c d e)]
+                   [a b c d e]))
+
+(defn to-amps-vector [phases-vector memory]
+  (vec (letfn [(to-amps [phases]
+                 {1 (atom {:input 0 :output nil :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  2 (atom {:input nil :output nil :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  3 (atom {:input nil :output nil :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  4 (atom {:input nil :output nil :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  5 (atom {:input nil :output nil :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
+         (map to-amps phases-vector))))
+
 ;(defn runner [five-amps]
 ;  (loop [amps five-amps
 ;         current-amp-no 1
