@@ -129,8 +129,8 @@
 
         4 (if recur?
             (recur
-              {:input         (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-               :output        output
+              {:input         input
+               :output        (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
                :phase         phase
                :pointer       (+ 2 pointer)
                :relative-base relative-base
