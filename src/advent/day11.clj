@@ -37,7 +37,11 @@
 
 (def state {:pt {:x 0 :y 0} :h :n :c 0 :rp nil})
 
-(def states (atom [{:pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}]))
+;(def robots-vector [(atom [{:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false?} :pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}])])
+
+(def robot (atom {:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true} :visits [{:pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}]}))
+
+(def two-robots {1 robot 2 robot})
 
 (def many-states [{:pt {:x 0, :y 0}, :h :n :c 0 :rp nil}
                   {:pt {:x 1, :y 1}, :h :n :c 0 :rp nil}
@@ -112,16 +116,40 @@
 ;.##..
 ;.....
 
-(defn runnerX [states]
-  (let [states states
-        over-color ((last @states) :c)
-        op-code-1 (ic/op-code {:input over-color :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
-        answer-1 (op-code-1 :output)
-        atom-update-1 (atom (swap! states paint-atom answer-1))
-        op-code-2 (ic/op-code (assoc op-code-1 :input over-color))
-        answer-2 (op-code-2 :output)
-        atom-update-2 (atom (swap! states turn-atom answer-2))]
-    [[over-color op-code-1 answer-1 @atom-update-1] [over-color op-code-2 answer-2 @atom-update-2]]))
+;(defn runnerX [states]
+;  (let [states states
+;        over-color ((last @states) :c)
+;        op-code-1 (ic/op-code {:input over-color :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
+;        answer-1 (op-code-1 :output)
+;        atom-update-1 (atom (swap! states paint-atom answer-1))
+;        op-code-2 (ic/op-code (assoc op-code-1 :input over-color))
+;        answer-2 (op-code-2 :output)
+;        atom-update-2 (atom (swap! states turn-atom answer-2))]
+;    [[over-color op-code-1 answer-1 @atom-update-1] [over-color op-code-2 answer-2 @atom-update-2]]))
+
+(defn to-amps-vector [phases-vector memory]
+  (vec (letfn [(to-amps [phases]
+                 {1 (atom {:input 0 :output nil :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  2 (atom {:input nil :output nil :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  3 (atom {:input nil :output nil :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  4 (atom {:input nil :output nil :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+                  5 (atom {:input nil :output nil :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
+         (map to-amps phases-vector))))
+
+(defn runner [two-robots]
+  (loop [robots two-robots
+         current-robot-no 1
+         next-robot-no (+ 1 (mod current-robot-no 2))]
+    (if (and (= 2 current-robot-no) (:stopped? @(robots current-robot-no)))
+      (:output @(robots current-robot-no))
+      (let [op-this (atom (swap! (robots current-robot-no) ic/op-code))
+            op-next (atom (swap! (robots next-robot-no) assoc :input (:output @op-this)))]
+        (recur
+          (assoc robots current-robot-no op-this next-robot-no op-next)
+          next-robot-no
+          (+ 1 (mod next-robot-no 5)))))))
+
+
 
 (defn runner [states]
   (loop [states states
@@ -143,3 +171,13 @@
         (ic/op-code (assoc op-code-1 :input over-color))
         (op-code-2 :output)
         (atom (swap! states turn-atom answer-2))))))
+
+
+(get-in @(two-robots 1) [:ic :memory 677])
+;=> -5
+(get-in @(two-robots 1) [:ic :input])
+;=> 0
+(get-in @(two-robots 1) [:visits 0 :pt])
+;=> {:x 0, :y 0}
+(get-in @(two-robots 2) [:visits 0 :pt])
+;=> {:x 0, :y 0}
