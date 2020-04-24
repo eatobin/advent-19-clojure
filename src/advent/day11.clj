@@ -140,8 +140,8 @@
   (loop [robots two-robots
          current-robot-no 1
          next-robot-no (+ 1 (mod current-robot-no 2))]
-    (if (and (= 2 current-robot-no) (:stopped? @(robots current-robot-no)))
-      (:output @(robots current-robot-no))
+    (if (and (= 2 current-robot-no) (get-in @(robots current-robot-no) [:ic :stopped?]))
+      (get-in @(robots current-robot-no) [:visits])
       (let [op-this (atom (swap! (robots current-robot-no) ic/op-code))
             op-next (atom (swap! (robots next-robot-no) assoc :input (:output @op-this)))]
         (recur
