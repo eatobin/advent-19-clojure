@@ -116,17 +116,6 @@
                               (assoc memory (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) input))
              :stopped?      stopped?
              :recur?        recur?})
-        ;4 (if recur?
-        ;    (recur
-        ;      {:input         (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-        ;       :phase         phase
-        ;       :pointer       (+ 2 pointer)
-        ;       :relative-base relative-base
-        ;       :memory        memory
-        ;       :stopped?      stopped?
-        ;       :recur?        recur?})
-        ;    {:input (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) :phase phase :pointer (+ 2 pointer) :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?})
-
         4 (if recur?
             (recur
               {:input         input
@@ -138,9 +127,6 @@
                :stopped?      stopped?
                :recur?        recur?})
             {:input input :output (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) :phase phase :pointer (+ 2 pointer) :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?})
-
-
-
         5 (recur
             {:input         input
              :output        output
