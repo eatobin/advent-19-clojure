@@ -112,31 +112,27 @@
 ;.##..
 ;.....
 
-(defn runnerX [five-amps]
-  (loop [amps five-amps
-         current-amp-no 1
-         next-amp-no (+ 1 (mod current-amp-no 5))]
-    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
-      (:input @(amps current-amp-no))
-      (let [op-this (atom (swap! (amps current-amp-no) ic/op-code))
-            op-next (atom (swap! (amps next-amp-no) assoc :input (:input @op-this)))]
-        (recur
-          (assoc amps current-amp-no op-this next-amp-no op-next)
-          next-amp-no
-          (+ 1 (mod next-amp-no 5)))))))
-
-((last @states) :c)
+(defn runnerX [states]
+  (let [states states
+        over-color ((last @states) :c)
+        op-code-1 (ic/op-code {:input over-color :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
+        answer-1 (op-code-1 :output)
+        atom-update-1 (atom (swap! states paint-atom answer-1))
+        op-code-2 (ic/op-code (assoc op-code-1 :input over-color))
+        answer-2 (op-code-2 :output)
+        atom-update-2 (atom (swap! states turn-atom answer-2))]
+    [[over-color op-code-1 answer-1 @atom-update-1] [over-color op-code-2 answer-2 @atom-update-2]]))
 
 (defn runner [states]
   (loop [states states
          over-color ((last @states) :c)
-         op-code-1 (ic/op-code {:input over-color :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false})
+         op-code-1 (ic/op-code {:input over-color :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true})
          answer-1 (op-code-1 :output)
          atom-update-1 (atom (swap! states paint-atom answer-1))
          op-code-2 (ic/op-code (assoc op-code-1 :input over-color))
          answer-2 (op-code-2 :output)
          atom-update-2 (atom (swap! states turn-atom answer-2))]
-    (if (:stopped? op-code-1)
+    (if (or (:stopped? op-code-1) (:stopped? op-code-2))
       [over-color op-code-1 answer-1 @atom-update-1 over-color op-code-2 answer-2 @atom-update-2]
       (recur
         states
