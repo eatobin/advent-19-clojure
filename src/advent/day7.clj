@@ -13,16 +13,16 @@
                  [a b c d e]))
 
 (defn pass [[a b c d e] i-code]
-  (:input (ic/op-code {:input
-                               (:input (ic/op-code {:input
-                                                            (:input (ic/op-code {:input
-                                                                                         (:input (ic/op-code {:input
-                                                                                                                      (:input (ic/op-code {:input  0
-                                                                                                                                           :output nil :phase a :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                                                                                                              :output nil :phase b :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                                                                                 :output nil :phase c :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                                                    :output nil :phase d :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                       :output nil :phase e :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})))
+  (:output (ic/op-code {:input
+                                (:output (ic/op-code {:input
+                                                              (:output (ic/op-code {:input
+                                                                                            (:output (ic/op-code {:input
+                                                                                                                          (:output (ic/op-code {:input  0
+                                                                                                                                                :output nil :phase a :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
+                                                                                                                  :output nil :phase b :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
+                                                                                    :output nil :phase c :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
+                                                      :output nil :phase d :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
+                        :output nil :phase e :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})))
 
 (defn passes [i-code]
   (vec (map #(pass % i-code) possibles)))
