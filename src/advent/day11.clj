@@ -39,7 +39,7 @@
 
 ;(def robots-vector [(atom [{:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false?} :pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}])])
 
-(def robot (atom {:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true} :visits [{:pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}]}))
+(def robot (atom {:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
 
 (def two-robots {1 robot 2 robot})
 
