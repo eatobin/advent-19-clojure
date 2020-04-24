@@ -39,7 +39,7 @@
 
 ;(def robots-vector [(atom [{:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false?} :pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}])])
 
-(def robot (atom {:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
+(def robot (atom {:ic {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
 
 (def two-robots {1 robot 2 robot})
 
@@ -143,11 +143,9 @@
     (if (and (= 2 current-robot-no) (get-in @(robots current-robot-no) [:ic :stopped?]))
       (get-in @(robots current-robot-no) [:visits])
       (let [over-color ((last (get-in @(robots current-robot-no) [:visits])) :c)
-
-
-
-
-            op-this (atom (swap! (robots current-robot-no) ic/op-code))
+            robot-init (atom (swap! (robots current-robot-no) assoc-in [:ic :input] over-color))
+            visits-this (get-in @robot-init [:visits])
+            paint-this (paint-atom visits-this (robot-init :output))
             op-next (atom (swap! (robots next-robot-no) assoc :input (:output @op-this)))]
         (recur
           (assoc robots current-robot-no op-this next-robot-no op-next)
