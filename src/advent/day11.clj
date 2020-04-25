@@ -41,7 +41,7 @@
 
 (def robot (atom {:ic {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 99} :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 4, 3 0, 4 99} :stopped? false :recur? true}))
+(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 4, 3 5, 4 99, 5 1} :stopped? false :recur? true}))
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
@@ -123,8 +123,9 @@
 (defn runnerX [oc visits]
   (let [on-paint? true
         c ((last @visits) :c)
-        painter-oc (atom (reset! oc (ic/op-code (assoc @oc :input c))))]
-    [[on-paint? c @painter-oc]]))
+        painter-oc (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+        painter-visits (atom (reset! visits (paint-atom @visits (@painter-oc :output))))]
+    [[on-paint? c @painter-oc @painter-visits]]))
 
 
 ;(defn runner [robot]
