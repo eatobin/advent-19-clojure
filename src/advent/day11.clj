@@ -132,12 +132,12 @@
 
 
 (defn runnerX [oc visits]
-  (if (@oc :stopped?)
-    [@oc @visits]
     (loop [oc oc
            visits visits
            on-paint? true
            c ((last @visits) :c)]
+     (if (@oc :stopped?)
+      [@oc @visits]
       (if on-paint?
         (do
           (atom (reset! oc (ic/op-code (assoc @oc :input c))))
