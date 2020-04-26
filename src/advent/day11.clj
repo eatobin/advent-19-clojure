@@ -39,13 +39,13 @@
 
 ;(def robots-vector [(atom [{:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false?} :pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}])])
 
-(def robot (atom {:ic {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 99} :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
+;(def robot (atom {:ic {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 99} :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 4, 3 5, 4 99, 5 1} :stopped? false :recur? true}))
+(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) {0 3, 1 0, 2 4, 3 9, 4 3, 5 0, 6 4, 7 10, 8 99, 9 1, 10 0}) :stopped? false :recur? true}))
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def two-robots {1 robot 2 robot})
+;(def two-robots {1 robot 2 robot})
 
 (def many-states [{:pt {:x 0, :y 0}, :h :n :c 0 :rp nil}
                   {:pt {:x 1, :y 1}, :h :n :c 0 :rp nil}
@@ -120,12 +120,38 @@
 ;.##..
 ;.....
 
+;(defn runnerX [oc visits]
+;  (let [c ((last @visits) :c)]
+;    (do
+;      (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+;      (atom (reset! visits (paint-atom @visits (@oc :output))))
+;      (atom (reset! oc (ic/op-code @oc)))
+;      ;turn-visits (atom (reset! visits (turn-atom @visits (@painter-visits :output))))]
+;      [c @oc @visits])))
+
+
+
 (defn runnerX [oc visits]
-  (let [on-paint? true
-        c ((last @visits) :c)
-        painter-oc (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-        painter-visits (atom (reset! visits (paint-atom @visits (@painter-oc :output))))]
-    [[on-paint? c @painter-oc @painter-visits]]))
+  (if (@oc :stopped?)
+    [@oc @visits]
+    (loop [oc oc
+           visits visits
+           on-paint? true
+           c ((last @visits) :c)]
+      (if on-paint?
+        (do
+          (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+          (atom (reset! visits (paint-atom @visits (@oc :output)))))
+        (do
+          (atom (reset! oc (ic/op-code @oc)))
+          (atom (reset! visits (turn-atom @visits (@oc :output))))))
+      (recur
+        oc
+        visits
+        false
+        ((last @visits) :c)))))
+
+
 
 
 ;(defn runner [robot]
@@ -168,11 +194,11 @@
 ;        (atom (swap! states turn-atom answer-2))))))
 
 
-(get-in @(two-robots 1) [:ic :memory 677])
-;=> -5
-(get-in @(two-robots 1) [:ic :input])
-;=> 0
-(get-in @(two-robots 1) [:visits 0 :pt])
-;=> {:x 0, :y 0}
-(get-in @(two-robots 2) [:visits 0 :pt])
+;(get-in @(two-robots 1) [:ic :memory 677])
+;;=> -5
+;(get-in @(two-robots 1) [:ic :input])
+;;=> 0
+;(get-in @(two-robots 1) [:visits 0 :pt])
+;;=> {:x 0, :y 0}
+;(get-in @(two-robots 2) [:visits 0 :pt])
 ;=> {:x 0, :y 0}
