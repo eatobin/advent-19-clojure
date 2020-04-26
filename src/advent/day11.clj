@@ -41,9 +41,9 @@
 
 ;(def robot (atom {:ic {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 99} :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) {0 3, 1 0, 2 4, 3 9, 4 3, 5 0, 6 4, 7 10, 8 99, 9 1, 10 0}) :stopped? false :recur? false}))
-
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
+
+(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) {0 3, 1 0, 2 4, 3 9, 4 3, 5 0, 6 4, 7 10, 8 99, 9 1, 10 0}) :stopped? false :recur? false}))
 
 ;(def two-robots {1 robot 2 robot})
 
