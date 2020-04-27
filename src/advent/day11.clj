@@ -122,14 +122,18 @@
 ;.##..
 ;.....
 
-;(defn runnerX [oc visits]
-;  (let [c ((last @visits) :c)]
-;    (do
-;      (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-;      (atom (reset! visits (paint-atom @visits (@oc :output))))
-;      (atom (reset! oc (ic/op-code @oc)))
-;      ;turn-visits (atom (reset! visits (turn-atom @visits (@painter-visits :output))))]
-;      [c @oc @visits])))
+(defn runner [five-amps]
+  (loop [amps five-amps
+         current-amp-no 1
+         next-amp-no (+ 1 (mod current-amp-no 5))]
+    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
+      (:output @(amps current-amp-no))
+      (let [op-this (atom (swap! (amps current-amp-no) ic/op-code))
+            op-next (atom (swap! (amps next-amp-no) assoc :input (:output @op-this)))]
+        (recur
+          (assoc amps current-amp-no op-this next-amp-no op-next)
+          next-amp-no
+          (+ 1 (mod next-amp-no 5)))))))
 
 
 
@@ -154,45 +158,6 @@
 
 
 
-
-;(defn runner [robot]
-;    (if (get-in @robot [:ic :stopped?])
-;      (get-in @robot [:visits])
-;      (let [on-paint true
-;            {:keys [ic visits]} @robot
-;            c (visits :c)
-;            paint-answer ()
-;            robot-init (atom (swap! (robots current-robot-no) assoc-in [:ic :input] over-color))
-;            visits-this (get-in @robot-init [:visits])
-;            paint-this (paint-atom visits-this (robot-init :output))
-;            op-next (atom (swap! (robots next-robot-no) assoc :input (:output @op-this)))]
-;        (recur
-;          (assoc robots current-robot-no op-this next-robot-no op-next)
-;          next-robot-no
-;          (+ 1 (mod next-robot-no 5))))))
-
-
-
-;(defn runner [states]
-;  (loop [states states
-;         over-color ((last @states) :c)
-;         op-code-1 (ic/op-code {:input over-color :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true})
-;         answer-1 (op-code-1 :output)
-;         atom-update-1 (atom (swap! states paint-atom answer-1))
-;         op-code-2 (ic/op-code (assoc op-code-1 :input over-color))
-;         answer-2 (op-code-2 :output)
-;         atom-update-2 (atom (swap! states turn-atom answer-2))]
-;    (if (or (:stopped? op-code-1) (:stopped? op-code-2))
-;      [over-color op-code-1 answer-1 @atom-update-1 over-color op-code-2 answer-2 @atom-update-2]
-;      (recur
-;        states
-;        ((last @states) :c)
-;        (ic/op-code (assoc op-code-2 :input over-color))
-;        (op-code-1 :output)
-;        (atom (swap! states paint-atom answer-1))
-;        (ic/op-code (assoc op-code-1 :input over-color))
-;        (op-code-2 :output)
-;        (atom (swap! states turn-atom answer-2))))))
 
 
 ;(get-in @(two-robots 1) [:ic :memory 677])
