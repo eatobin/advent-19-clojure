@@ -41,9 +41,11 @@
 
 ;(def robot (atom {:ic {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 99} :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
 
+(def memory {0 3, 1 33, 2 4, 3 34, 4 3, 5 35, 6 4, 7 36, 8 3, 9 37, 10 4, 11 38, 12 3, 13 39, 14 4, 15 40, 16 3, 17 41, 18 4, 19 42, 20 3, 21 43, 22 4, 23 44, 24 3, 25 45, 26 4, 27 46, 28 3, 29 47, 30 4, 31 48, 32 99, 33 0, 34 1, 35 0, 36 0, 37 0, 38 0, 39 0, 40 0, 41 0, 42 1, 43 0, 44 0, 45 0, 46 1, 47 0, 48 0})
+
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) {0 3, 1 0, 2 4, 3 9, 4 3, 5 0, 6 4, 7 10, 8 99, 9 1, 10 0}) :stopped? false :recur? false}))
+(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) memory) :stopped? false :recur? false}))
 
 ;(def two-robots {1 robot 2 robot})
 
@@ -139,13 +141,16 @@
       (if on-paint?
         (do
           (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-          (atom (reset! visits (paint-atom @visits (@oc :output)))))
+          (atom (reset! visits (paint-atom @visits (@oc :output))))
+          (recur
+            (not on-paint?)
+            c))
         (do
-          (atom (reset! oc (ic/op-code @oc)))
-          (atom (reset! visits (turn-atom @visits (@oc :output)))))))
-    (recur
-      (not on-paint?)
-      ((last @visits) :c))))
+          (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+          (atom (reset! visits (turn-atom @visits (@oc :output))))
+          (recur
+            (not on-paint?)
+            c))))))
 
 
 
