@@ -37,22 +37,11 @@
 
 (def state {:pt {:x 0 :y 0} :h :n :c 0 :rp nil})
 
-;(def robots-vector [(atom [{:ic {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false?} :pt {:x 0, :y 0}, :h :n, :c 0 :rp nil}])])
-
-;(def robot (atom {:ic {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory {0 3, 1 0, 2 99} :stopped? false :recur? true} :visits [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]}))
-
 (def memory {0 3, 1 33, 2 4, 3 34, 4 3, 5 35, 6 4, 7 36, 8 3, 9 37, 10 4, 11 38, 12 3, 13 39, 14 4, 15 40, 16 3, 17 41, 18 4, 19 42, 20 3, 21 43, 22 4, 23 44, 24 3, 25 45, 26 4, 27 46, 28 3, 29 47, 30 4, 31 48, 32 99, 33 0, 34 1, 35 0, 36 0, 37 0, 38 0, 39 0, 40 0, 41 0, 42 1, 43 0, 44 0, 45 0, 46 1, 47 0, 48 0})
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
 (def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) memory) :stopped? false :recur? false}))
-
-;(def two-robots {1 robot 2 robot})
-
-(def many-states [{:pt {:x 0, :y 0}, :h :n :c 0 :rp nil}
-                  {:pt {:x 1, :y 1}, :h :n :c 0 :rp nil}
-                  {:pt {:x 2, :y 2}, :h :n :c 0 :rp nil}
-                  {:pt {:x 3, :y 3}, :h :n :c 0 :rp nil}])
 
 (defn map-eq-pts
   "Takes a {:x 3 :y 3} as target point (tpt)"
@@ -87,21 +76,23 @@
   (count (filter #(some? (% :rp)) coll)))
 
 ;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
+;(swap! visits paint-atom 1)
+;(swap! visits turn-atom 0)
 ;
 ;;[0 0]
-;(swap! states paint-atom 0)
-;(swap! states turn-atom 0)
+;(swap! visits paint-atom 0)
+;(swap! visits turn-atom 0)
 ;
 ;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
+;(swap! visits paint-atom 1)
+;(swap! visits turn-atom 0)
 ;
 ;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
-;
+;(swap! visits paint-atom 1)
+;(swap! visits turn-atom 0)
+
+;Back to start
+
 ;;[0 1]
 ;(swap! states paint-atom 0)
 ;(swap! states turn-atom 1)
@@ -122,39 +113,32 @@
 ;.##..
 ;.....
 
-(defn runner [five-amps]
-  (loop [amps five-amps
-         current-amp-no 1
-         next-amp-no (+ 1 (mod current-amp-no 5))]
-    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
-      (:output @(amps current-amp-no))
-      (let [op-this (atom (swap! (amps current-amp-no) ic/op-code))
-            op-next (atom (swap! (amps next-amp-no) assoc :input (:output @op-this)))]
-        (recur
-          (assoc amps current-amp-no op-this next-amp-no op-next)
-          next-amp-no
-          (+ 1 (mod next-amp-no 5)))))))
+;(defn runner [five-amps]
+;  (loop [amps five-amps
+;         current-amp-no 1
+;         next-amp-no (+ 1 (mod current-amp-no 5))]
+;    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
+;      (:output @(amps current-amp-no))
+;      (let [op-this (atom (swap! (amps current-amp-no) ic/op-code))
+;            op-next (atom (swap! (amps next-amp-no) assoc :input (:output @op-this)))]
+;        (recur
+;          (assoc amps current-amp-no op-this next-amp-no op-next)
+;          next-amp-no
+;          (+ 1 (mod next-amp-no 5)))))))
 
 
 
 (defn runnerX [oc visits]
-  (loop [on-paint? true
-         c ((last @visits) :c)]
+  (loop [c ((last @visits) :c)]
     (if (@oc :stopped?)
       [@oc @visits]
-      (if on-paint?
-        (do
-          (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-          (atom (reset! visits (paint-atom @visits (@oc :output))))
-          (recur
-            (not on-paint?)
-            c))
-        (do
-          (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-          (atom (reset! visits (turn-atom @visits (@oc :output))))
-          (recur
-            (not on-paint?)
-            c))))))
+      (do
+        (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+        (atom (reset! visits (paint-atom @visits (@oc :output))))
+        (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+        (atom (reset! visits (turn-atom @visits (@oc :output))))
+        (recur
+          ((last @visits) :c))))))
 
 
 
