@@ -46,7 +46,7 @@
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) short-memory) :stopped? false :recur? false}))
+(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory (into (sorted-map) memory) :stopped? false :recur? false}))
 
 (defn map-eq-pts
   "Takes a {:x 3 :y 3} as target point (tpt)"
@@ -88,13 +88,13 @@
 (swap! states paint-atom 0)
 (swap! states turn-atom 0)
 
-;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
-;
-;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
+;[1 0]
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
+
+;[1 0]
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
 
 ;Back to start
 
