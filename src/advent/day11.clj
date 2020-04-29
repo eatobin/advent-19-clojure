@@ -7,8 +7,8 @@
 ;   0 means it should turn left 90 degrees, and 1 means it should turn right 90 degrees.
 
 ;part a
-;(def tv (ic/make-tv "resources/day11.csv"))
-(def tv (ic/make-tv "resources/day11-test.csv"))
+(def tv (ic/make-tv "resources/day11.csv"))
+;(def tv (ic/make-tv "resources/day11-test.csv"))
 
 (ic/op-code {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true})
 
@@ -39,13 +39,6 @@
 (def state {:pt {:x 0 :y 0} :h :n :c 0 :rp nil})
 
 (def states (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
-
-;(def short-memory {0 104, 1 1, 2 104, 3 0, 4 99})
-(def short-memory {0 104, 1 1, 2 104, 3 0, 4 104, 5 0, 6 104, 7 0, 8 99})
-
-;(def memory {0 3, 1 33, 2 4, 3 34, 4 3, 5 35, 6 4, 7 36, 8 3, 9 37, 10 4, 11 38, 12 3, 13 39, 14 4, 15 40, 16 3, 17 41, 18 4, 19 42, 20 3, 21 43, 22 4, 23 44, 24 3, 25 45, 26 4, 27 46, 28 3, 29 47, 30 4, 31 48, 32 99, 33 0, 34 1, 35 0, 36 0, 37 0, 38 0, 39 0, 40 0, 41 0, 42 1, 43 0, 44 0, 45 0, 46 1, 47 0, 48 0})
-
-;(def memory {0 3, 1 33, 2 4, 3 34, 4 3, 5 35, 6 4, 7 36, 8 3, 9 37, 10 4, 11 38, 12 3, 13 39, 14 4, 15 40, 16 3, 17 41, 18 4, 19 42, 20 3, 21 43, 22 4, 23 44, 24 3, 25 45, 26 4, 27 46, 28 3, 29 47, 30 4, 31 48, 32 99, 33 0, 34 1, 35 0, 36 0, 37 0, 38 0, 39 0, 40 0, 41 0, 42 1, 43 0, 44 0, 45 0, 46 1, 47 0, 48 0})
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
