@@ -34,7 +34,8 @@
   (cond
     (and (= c 0) (= p 1)) 1
     (and (= c 1) (= p 0)) 0
-    :else nil))
+    (and (= c 1) (= p 1)) 1
+    (and (= c 0) (= p 0)) 0))
 
 (def state {:pt {:x 0 :y 0} :h :n :c 0 :rp nil})
 
@@ -128,4 +129,6 @@
 
 (def run-done (runner visits oc))
 
-(def answer (count-repaints @visits))
+(def answer (count (distinct (map :pt (vec (remove #(nil? (% :rp)) @visits))))))
+
+(println answer)
