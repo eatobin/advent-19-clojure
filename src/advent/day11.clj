@@ -7,8 +7,8 @@
 ;   0 means it should turn left 90 degrees, and 1 means it should turn right 90 degrees.
 
 ;part a
-(def tv (ic/make-tv "resources/day11.csv"))
-;(def tv (ic/make-tv "resources/day11-test.csv"))
+;(def tv (ic/make-tv "resources/day11.csv"))
+(def tv (ic/make-tv "resources/day11-test.csv"))
 
 (ic/op-code {:input 0 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true})
 
@@ -114,34 +114,7 @@
 ;.##..
 ;.....
 
-;(defn runner [five-amps]
-;  (loop [amps five-amps
-;         current-amp-no 1
-;         next-amp-no (+ 1 (mod current-amp-no 5))]
-;    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
-;      (:output @(amps current-amp-no))
-;      (let [op-this (atom (swap! (amps current-amp-no) ic/op-code))
-;            op-next (atom (swap! (amps next-amp-no) assoc :input (:output @op-this)))]
-;        (recur
-;          (assoc amps current-amp-no op-this next-amp-no op-next)
-;          next-amp-no
-;          (+ 1 (mod next-amp-no 5)))))))
-
-
-
-;(defn runnerX [oc visits]
-;  (loop [c ((last @visits) :c)]
-;    (if (@oc :stopped?)
-;      [@oc @visits]
-;      (do
-;        (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-;        (atom (reset! visits (paint-atom @visits (@oc :output))))
-;        (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-;        (atom (reset! visits (turn-atom @visits (@oc :output))))
-;        (recur
-;          ((last @visits) :c))))))
-
-(defn runnerX [visits oc]
+(defn runner [visits oc]
   (loop [c ((last @visits) :c)]
     (atom (reset! oc (ic/op-code (assoc @oc :input c))))
     (if (@oc :stopped?)
@@ -153,14 +126,6 @@
         (recur
           ((last @visits) :c))))))
 
+(def run-done (runner visits oc))
 
-
-
-;(get-in @(two-robots 1) [:ic :memory 677])
-;;=> -5
-;(get-in @(two-robots 1) [:ic :input])
-;;=> 0
-;(get-in @(two-robots 1) [:visits 0 :pt])
-;;=> {:x 0, :y 0}
-;(get-in @(two-robots 2) [:visits 0 :pt])
-;=> {:x 0, :y 0}
+(def answer (count-repaints @visits))
