@@ -37,7 +37,10 @@
 
 (def state {:pt {:x 0 :y 0} :h :n :c 0 :rp nil})
 
-(def short-memory {0 3, 1 0, 2 4, 3 7, 4 4, 5 8, 6 99, 7 1, 8 0})
+(def states (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
+
+;(def short-memory {0 3, 1 0, 2 4, 3 7, 4 4, 5 8, 6 99, 7 1, 8 0})
+(def short-memory {0 3, 1 0, 2 4, 3 13, 4 4, 5 14, 6 3, 7 0, 8 4, 9 15, 10 4, 11 16, 12 99, 13 1, 14 0, 15 0, 16 0})
 
 (def memory {0 3, 1 33, 2 4, 3 34, 4 3, 5 35, 6 4, 7 36, 8 3, 9 37, 10 4, 11 38, 12 3, 13 39, 14 4, 15 40, 16 3, 17 41, 18 4, 19 42, 20 3, 21 43, 22 4, 23 44, 24 3, 25 45, 26 4, 27 46, 28 3, 29 47, 30 4, 31 48, 32 99, 33 0, 34 1, 35 0, 36 0, 37 0, 38 0, 39 0, 40 0, 41 0, 42 1, 43 0, 44 0, 45 0, 46 1, 47 0, 48 0})
 
@@ -77,14 +80,14 @@
 (defn count-repaints [coll]
   (count (filter #(some? (% :rp)) coll)))
 
-;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
-;
-;;[0 0]
-;(swap! states paint-atom 0)
-;(swap! states turn-atom 0)
-;
+;[1 0]
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
+
+;[0 0]
+(swap! states paint-atom 0)
+(swap! states turn-atom 0)
+
 ;;[1 0]
 ;(swap! states paint-atom 1)
 ;(swap! states turn-atom 0)
@@ -147,16 +150,12 @@
     (atom (reset! oc (ic/op-code (assoc @oc :input c))))
     (if (@oc :stopped?)
       [@oc @visits]
-      (atom (reset! visits (paint-atom @visits (@oc :output)))))
-    (recur
-      ((last @visits) :c))
-    (atom (swap! oc ic/op-code))
-    (if (@oc :stopped?)
-      [@oc @visits]
-      (atom (reset! visits (turn-atom @visits (@oc :output))))
-      (recur
-        ((last @visits) :c)))))
-
+      (do
+        (atom (reset! visits (paint-atom @visits (@oc :output))))
+        (atom (swap! oc ic/op-code))
+        (atom (reset! visits (turn-atom @visits (@oc :output))))
+        (recur
+          ((last @visits) :c))))))
 
 
 
