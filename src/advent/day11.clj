@@ -101,17 +101,17 @@
 
 ;Back to start
 
-;;[0 1]
-;(swap! states paint-atom 0)
-;(swap! states turn-atom 1)
-;
-;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
-;
-;;[1 0]
-;(swap! states paint-atom 1)
-;(swap! states turn-atom 0)
+;[0 1]
+(swap! states paint-atom 0)
+(swap! states turn-atom 1)
+
+;[1 0]
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
+
+;[1 0]
+(swap! states paint-atom 1)
+(swap! states turn-atom 0)
 
 ;6 repaints
 
