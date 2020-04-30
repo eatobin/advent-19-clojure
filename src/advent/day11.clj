@@ -3,6 +3,7 @@
 
 ;part a
 (def tv (ic/make-tv "resources/day11.csv"))
+(def tv-test (ic/make-tv "resources/day11-test.csv"))
 
 (defn new-heading [heading turn]
   (cond
@@ -31,7 +32,7 @@
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
+(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv-test :stopped? false :recur? false}))
 
 (defn map-eq-pts
   "Takes a {:x 3 :y 3} as target point (tpt)"
@@ -79,3 +80,16 @@
 (println answer)
 
 ;1771
+
+;part b
+(defn runner-2 [visits oc]
+  (loop [c ((last @visits) :c)]
+    (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+    (if (@oc :stopped?)
+      [@visits @oc]
+      (do
+        (atom (reset! visits (paint-atom @visits (@oc :output))))
+        (atom (swap! oc ic/op-code))
+        (atom (reset! visits (turn-atom @visits (@oc :output))))
+        (recur
+          ((last @visits) :c))))))
