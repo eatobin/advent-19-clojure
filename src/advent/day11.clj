@@ -86,10 +86,19 @@
   (loop [c ((last @visits) :c)]
     (atom (reset! oc (ic/op-code (assoc @oc :input c))))
     (if (@oc :stopped?)
-      [@visits @oc]
+      (map #(select-keys % [:pt :c]) @visits)
       (do
         (atom (reset! visits (paint-atom @visits (@oc :output))))
         (atom (swap! oc ic/op-code))
         (atom (reset! visits (turn-atom @visits (@oc :output))))
         (recur
           ((last @visits) :c))))))
+
+(def raw-visits (runner-2 visits oc))
+
+(def closest-x (apply min (map #(get-in % [:pt :x]) raw-visits)))
+
+(def closest-y (apply max (map #(get-in % [:pt :y]) raw-visits)))
+
+(defn correcter [{{x :x, y :y} :pt c :c} closest-x closest-y]
+  {:x (+ x (- closest-x)) :y (+ y (- closest-y)) :c c})
