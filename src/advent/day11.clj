@@ -97,16 +97,10 @@
 
 (def raw-visits (vec (runner-2 visits oc)))
 
-(def closest-x (apply min (map #(get-in % [:pt :x]) raw-visits)))
+(defn corrector [{{x :x, y :y} :pt c :c}]
+  (let [closest-x (apply min (map #(get-in % [:pt :x]) raw-visits))
+        closest-y (apply max (map #(get-in % [:pt :y]) raw-visits))]
+    {:row (if (<= y 0) (+ (math/abs y) closest-y) (- closest-y y))
+     :col (+ (math/abs closest-x) x) :c c}))
 
-(def closest-y (apply max (map #(get-in % [:pt :y]) raw-visits)))
-
-;(defn correcter [{{x :x, y :y} :pt c :c} closest-x closest-y]
-;  {:x (+ x (- closest-x)) :y (+ y (- closest-y)) :c c})
-
-(defn corrector [closest-x closest-y {{x :x, y :y} :pt c :c}]
-  {:row (if (<= y 0) (+ (math/abs y) closest-y) (- closest-y y))
-   :col (+ (math/abs closest-x) x) :c c})
-
-(defn correct [closest-x closest-y raw-visits]
-  (map (partial corrector closest-x closest-y) raw-visits))
+(def corrected (vec (map corrector raw-visits)))
