@@ -103,5 +103,4 @@
     {:row (if (<= y 0) (+ (math/abs y) closest-y) (- closest-y y))
      :col (+ (math/abs closest-x) x) :c c}))
 
-(def corrected (vec (map corrector raw-visits)))
-(def corrected-sorted (vec (sort-by :row (map corrector raw-visits))))
+(def corrected (into (sorted-map) (zipmap (range) (map corrector raw-visits))))
