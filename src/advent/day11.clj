@@ -110,7 +110,7 @@
 (println \u25A1)
 ;□
 ;=> nil
-assoc-in [] [0] \h)
+(assoc-in [] [0] \h)
 ;=> [\h]
 (assoc-in [] [0 0] \h)
 ;=> [{0 \h}]
