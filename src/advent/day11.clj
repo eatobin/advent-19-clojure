@@ -104,3 +104,15 @@
      :col (+ (math/abs closest-x) x) :c c}))
 
 (def corrected (into (sorted-map) (zipmap (range) (map corrector raw-visits))))
+(println \u25A0)
+;■
+;=> nil
+(println \u25A1)
+;□
+;=> nil
+assoc-in [] [0] \h)
+;=> [\h]
+(assoc-in [] [0 0] \h)
+;=> [{0 \h}]
+(assoc-in [] [0 0 0] \h)
+;=> [{0 {0 \h}}]
