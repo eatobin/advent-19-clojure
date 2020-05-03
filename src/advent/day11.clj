@@ -33,7 +33,7 @@
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv-test :stopped? false :recur? false}))
+(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
 
 (defn map-eq-pts
   "Takes a {:x 3 :y 3} as target point (tpt)"
@@ -116,3 +116,10 @@
 ;=> [{0 \h}]
 (assoc-in [[] []] [1 0] \h)
 ;=> [[] [\h]]
+
+(clojure.pprint/print-table [{0 \u25A0 1 \u25A1 2 \u25A0} {0 \u25A1 1 \u25A0 2 \u25A1} {0 \u25A0 1 \u25A1 2 \u25A0}])
+(clojure.pprint/print-table [{0 \u25A0 1 "" 2 \u25A0} {0 "" 1 \u25A0 2 ""} {0 \u25A0 1 "" 2 \u25A0}])
+(def my-vals (map val corrected))
+(def num-rows (apply max (map #(get % :row) my-vals)))
+(def num-cols (apply max (map #(get % :col) my-vals)))
+(def my-grid (map #(hash-map % 0) (range num-rows)))
