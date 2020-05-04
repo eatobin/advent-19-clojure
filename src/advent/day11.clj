@@ -83,19 +83,23 @@
 ;1771
 
 ;part b
-(defn runner-2 [visits oc]
-  (loop [c ((last @visits) :c)]
-    (atom (reset! oc (ic/op-code (assoc @oc :input c))))
-    (if (@oc :stopped?)
-      (map #(select-keys % [:pt :c]) @visits)
-      (do
-        (atom (reset! visits (paint-atom @visits (@oc :output))))
-        (atom (swap! oc ic/op-code))
-        (atom (reset! visits (turn-atom @visits (@oc :output))))
-        (recur
-          ((last @visits) :c))))))
+(def visits-2 (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def raw-visits (vec (runner-2 visits oc)))
+(def oc-2 (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
+
+(defn runner-2 [visits-2 oc-2]
+  (loop [c ((last @visits-2) :c)]
+    (atom (reset! oc-2 (ic/op-code (assoc @oc-2 :input c))))
+    (if (@oc-2 :stopped?)
+      (map #(select-keys % [:pt :c]) @visits-2)
+      (do
+        (atom (reset! visits-2 (paint-atom @visits-2 (@oc-2 :output))))
+        (atom (swap! oc-2 ic/op-code))
+        (atom (reset! visits-2 (turn-atom @visits-2 (@oc-2 :output))))
+        (recur
+          ((last @visits-2) :c))))))
+
+(def raw-visits (vec (runner-2 visits-2 oc-2)))
 
 (defn corrector [{{x :x, y :y} :pt c :c}]
   (let [closest-x (apply min (map #(get-in % [:pt :x]) raw-visits))
@@ -132,7 +136,7 @@
 
 (clojure.pprint/print-table [{0 \u25A0 1 \u25A1 2 \u25A0} {0 \u25A1 1 \u25A0 2 \u25A1} {0 \u25A0 1 \u25A1 2 \u25A0}])
 (clojure.pprint/print-table table)
-(def num-rows (inc (apply max (map #(get-in % [1 :row]) scrambled))))
-(def num-cols (inc (apply max (map #(get-in % [1 :col]) scrambled))))
-(def blank-row (zipmap (range num-cols) (repeat "")))
+(def num-rows (inc (apply max (map #(get-in % [1 :row]) corrected))))
+(def num-cols (inc (apply max (map #(get-in % [1 :col]) corrected))))
+(def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat ""))))
 (def my-grid (vec (vals (zipmap (range num-rows) (repeat blank-row)))))
