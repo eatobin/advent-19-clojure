@@ -117,9 +117,22 @@
 (assoc-in [[] []] [1 0] \h)
 ;=> [[] [\h]]
 
+(map #(get-in % [0]) {19 {:row 1, :col 0, :c ""}})
+(map #(get-in % [1 :c]) {19 {:row 1, :col 0, :c ""}})
+
+(def scrambled {0 {:row 1, :col 0, :c ""},
+                1 {:row 0, :col 0, :c \u25A0},
+                2 {:row 1, :col 2, :c ""},
+                3 {:row 0, :col 2, :c \u25A0},
+                4 {:row 0, :col 1, :c ""},
+                5 {:row 1, :col 1, :c "X"}
+                6 {:row 1, :col 1, :c \u25A0}})
+
+(def table [{0 \u25A0 1 "" 2 \u25A0} {0 "" 1 \u25A0 2 ""}])
+
 (clojure.pprint/print-table [{0 \u25A0 1 \u25A1 2 \u25A0} {0 \u25A1 1 \u25A0 2 \u25A1} {0 \u25A0 1 \u25A1 2 \u25A0}])
-(clojure.pprint/print-table [{0 \u25A0 1 "" 2 \u25A0} {0 "" 1 \u25A0 2 ""} {0 \u25A0 1 "" 2 \u25A0}])
-(def my-vals (map val corrected))
-(def num-rows (apply max (map #(get % :row) my-vals)))
-(def num-cols (apply max (map #(get % :col) my-vals)))
-(def my-grid (map #(hash-map % 0) (range num-rows)))
+(clojure.pprint/print-table table)
+(def num-rows (inc (apply max (map #(get-in % [1 :row]) scrambled))))
+(def num-cols (inc (apply max (map #(get-in % [1 :col]) scrambled))))
+(def blank-row (zipmap (range num-cols) (repeat "")))
+(def my-grid (vec (vals (zipmap (range num-rows) (repeat blank-row)))))
