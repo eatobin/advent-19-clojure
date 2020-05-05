@@ -93,10 +93,11 @@
 (def raw-visits (runner-2 (swap! visits butlast)))
 
 (defn corrector [{{x :x, y :y} :pt c :c}]
-  (let [closest-x (apply min (map #(get-in % [:pt :x]) raw-visits))
-        closest-y (apply max (map #(get-in % [:pt :y]) raw-visits))]
-    {:row (if (<= y 0) (+ (math/abs y) closest-y) (- closest-y y))
-     :col (+ (math/abs closest-x) x) :c c}))
+  (let [col-adj (math/abs (apply min (map #(get-in % [:pt :x]) raw-visits)))
+        row-adj (math/abs (apply max (map #(get-in % [:pt :y]) raw-visits)))]
+    {:row (if (= y 0) row-adj (+ (- y) row-adj))
+     :col (if (= x 0) col-adj (+ x col-adj))
+     :c   c}))
 
 (def corrected (into (sorted-map) (zipmap (range) (map corrector raw-visits))))
 ;(println \u25A0)
