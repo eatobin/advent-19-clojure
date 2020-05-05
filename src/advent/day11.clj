@@ -109,6 +109,8 @@
 
 (clojure.pprint/print-table @my-grid)
 
+(assoc-in {0 {:row 1, :col 1, :c 1}} [0 :grid] my-grid)
+
 ;(println \u25A0)
 ;;■
 ;;=> nil
