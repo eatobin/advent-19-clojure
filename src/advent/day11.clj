@@ -103,7 +103,7 @@
 (def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat 0))))
 (def my-grid (atom (vec (vals (zipmap (range num-rows) (repeat blank-row))))))
 
-(def my-grid-w-atom (map #(assoc-in % [1 :grid] my-grid) corrected))
+(def my-grid-w-atom (into (sorted-map) (map #(assoc-in % [1 :grid] my-grid) corrected)))
 
 
 
