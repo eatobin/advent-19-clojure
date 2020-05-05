@@ -105,7 +105,8 @@
 
 (def my-grid-w-atom (into (sorted-map) (map #(assoc-in % [1 :grid] my-grid) corrected)))
 
-
+;(defn update-grid [{:keys [row col c grid]}]
+;  (reset! grid (assoc-in @grid [(get-in scrambled [6 :row]) (get-in scrambled [6 :col])] \u25A1)))
 
 
 ;(clojure.pprint/print-table @my-grid)
