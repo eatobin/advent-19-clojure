@@ -146,3 +146,8 @@ my-grid
 (reset! my-grid (assoc-in @my-grid [(get-in scrambled [0 :row]) (get-in scrambled [0 :col])] \u25A0))
 (reset! my-grid (assoc-in @my-grid [(get-in scrambled [6 :row]) (get-in scrambled [6 :col])] \u25A1))
 (reset! my-grid (assoc-in @my-grid [(get-in scrambled [2 :row]) (get-in scrambled [2 :col])] \u25A0))
+
+(def me {0 {:row 0 :col 0 :c 0 :grid my-grid}})
+@(get-in me [0 :grid])
+;=> [{0 0, 1 0, 2 0} {0 0, 1 0, 2 0}]
+(get-in me [0 :c])
