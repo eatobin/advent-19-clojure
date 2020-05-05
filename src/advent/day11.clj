@@ -100,6 +100,15 @@
      :c   c}))
 
 (def corrected (into (sorted-map) (zipmap (range) (map corrector raw-visits))))
+
+(def num-rows (inc (apply max (map #(get-in % [1 :row]) corrected))))
+(def num-cols (inc (apply max (map #(get-in % [1 :col]) corrected))))
+
+(def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat 0))))
+(def my-grid (atom (vec (vals (zipmap (range num-rows) (repeat blank-row))))))
+
+(clojure.pprint/print-table @my-grid)
+
 ;(println \u25A0)
 ;;■
 ;;=> nil
@@ -127,9 +136,8 @@
 ;(def table [{0 \u25A0 1 "" 2 \u25A0} {0 "" 1 \u25A0 2 ""}])
 ;
 ;(clojure.pprint/print-table [{0 \u25A0 1 \u25A1 2 \u25A0} {0 \u25A1 1 \u25A0 2 \u25A1} {0 \u25A0 1 \u25A1 2 \u25A0}])
-;(clojure.pprint/print-table table)
-;(def num-rows (inc (apply max (map #(get-in % [1 :row]) scrambled))))
-;(def num-cols (inc (apply max (map #(get-in % [1 :col]) scrambled))))
+
+
 ;(def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat 0))))
 ;(def my-grid (atom (vec (vals (zipmap (range num-rows) (repeat blank-row))))))
 ;; my-grid
