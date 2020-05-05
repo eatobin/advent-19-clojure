@@ -83,10 +83,6 @@
 ;1771
 
 ;part b
-;(def visits-2 (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
-;
-;(def oc-2 (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv-test :stopped? false :recur? false}))
-;
 (defn runner-2 [visits-2]
   (vec (map #(select-keys % [:pt :c]) visits-2)))
 
@@ -107,9 +103,20 @@
 (def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat 0))))
 (def my-grid (atom (vec (vals (zipmap (range num-rows) (repeat blank-row))))))
 
-(clojure.pprint/print-table @my-grid)
+(def my-grid-w-atom (map #(assoc-in % [1 :grid] my-grid) corrected))
 
-(assoc-in {0 {:row 1, :col 1, :c 1}} [0 :grid] my-grid)
+
+
+
+;(clojure.pprint/print-table @my-grid)
+;
+;(assoc-in {0 {:row 1, :col 1, :c 1}} [0 :grid] my-grid)
+;
+;(map #(assoc-in % [1 :grid] my-grid) corrected)
+;
+;(reset! my-grid (assoc-in @my-grid [0 0] \u25A0))
+;(reset! my-grid (assoc-in @my-grid [0 1] \u25A0))
+;(reset! my-grid (assoc-in @my-grid [0 2] \u25A0))
 
 ;(println \u25A0)
 ;;■
@@ -145,7 +152,7 @@
 ;; my-grid
 ;;=> [{0 "", 1 "", 2 ""} {0 "", 1 "", 2 ""}]
 ;(assoc-in @my-grid [(get-in scrambled [0 :row]) (get-in scrambled [0 :col])] 1)
-;(reset! my-grid (assoc-in @my-grid [(get-in scrambled [0 :row]) (get-in scrambled [0 :col])] \u25A0))
+
 ;(reset! my-grid (assoc-in @my-grid [(get-in scrambled [6 :row]) (get-in scrambled [6 :col])] \u25A1))
 ;(reset! my-grid (assoc-in @my-grid [(get-in scrambled [2 :row]) (get-in scrambled [2 :col])] \u25A0))
 ;
