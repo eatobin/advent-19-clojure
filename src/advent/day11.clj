@@ -83,23 +83,14 @@
 ;1771
 
 ;part b
-(def visits-2 (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
+;(def visits-2 (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
+;
+;(def oc-2 (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv-test :stopped? false :recur? false}))
+;
+(defn runner-2 [visits-2]
+  (vec (map #(select-keys % [:pt :c]) visits-2)))
 
-(def oc-2 (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv-test :stopped? false :recur? false}))
-
-(defn runner-2 [visits-2 oc-2]
-  (loop [c ((last @visits-2) :c)]
-    (atom (reset! oc-2 (ic/op-code (assoc @oc-2 :input c))))
-    (if (@oc-2 :stopped?)
-      (map #(select-keys % [:pt :c]) @visits-2)
-      (do
-        (atom (reset! visits-2 (paint-atom @visits-2 (@oc-2 :output))))
-        (atom (swap! oc-2 ic/op-code))
-        (atom (reset! visits-2 (turn-atom @visits-2 (@oc-2 :output))))
-        (recur
-          ((last @visits-2) :c))))))
-
-(def raw-visits (vec (runner-2 visits-2 oc-2)))
+(def raw-visits (runner-2 (swap! visits butlast)))
 
 (defn corrector [{{x :x, y :y} :pt c :c}]
   (let [closest-x (apply min (map #(get-in % [:pt :x]) raw-visits))
@@ -108,46 +99,46 @@
      :col (+ (math/abs closest-x) x) :c c}))
 
 (def corrected (into (sorted-map) (zipmap (range) (map corrector raw-visits))))
-(println \u25A0)
-;■
-;=> nil
-(println \u25A1)
-;□
-;=> nil
-(assoc-in [] [0] \h)
-;=> [\h]
-(assoc-in [] [0 0] \h)
-;=> [{0 \h}]
-(assoc-in [[] []] [1 0] \h)
-;=> [[] [\h]]
-
-(map #(get-in % [0]) {19 {:row 1, :col 0, :c ""}})
-(map #(get-in % [1 :c]) {19 {:row 1, :col 0, :c ""}})
-
-(def scrambled {0 {:row 1, :col 0, :c ""},
-                1 {:row 0, :col 0, :c \u25A0},
-                2 {:row 1, :col 2, :c ""},
-                3 {:row 0, :col 2, :c \u25A0},
-                4 {:row 0, :col 1, :c ""},
-                5 {:row 1, :col 1, :c "X"}
-                6 {:row 1, :col 1, :c \u25A0}})
-
-(def table [{0 \u25A0 1 "" 2 \u25A0} {0 "" 1 \u25A0 2 ""}])
-
-(clojure.pprint/print-table [{0 \u25A0 1 \u25A1 2 \u25A0} {0 \u25A1 1 \u25A0 2 \u25A1} {0 \u25A0 1 \u25A1 2 \u25A0}])
-(clojure.pprint/print-table table)
-(def num-rows (inc (apply max (map #(get-in % [1 :row]) scrambled))))
-(def num-cols (inc (apply max (map #(get-in % [1 :col]) scrambled))))
-(def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat 0))))
-(def my-grid (atom (vec (vals (zipmap (range num-rows) (repeat blank-row))))))
-my-grid
-;=> [{0 "", 1 "", 2 ""} {0 "", 1 "", 2 ""}]
-(assoc-in my-grid [(get-in scrambled [0 :row]) (get-in scrambled [0 :col])] 1)
-(reset! my-grid (assoc-in @my-grid [(get-in scrambled [0 :row]) (get-in scrambled [0 :col])] \u25A0))
-(reset! my-grid (assoc-in @my-grid [(get-in scrambled [6 :row]) (get-in scrambled [6 :col])] \u25A1))
-(reset! my-grid (assoc-in @my-grid [(get-in scrambled [2 :row]) (get-in scrambled [2 :col])] \u25A0))
-
-(def me {0 {:row 0 :col 0 :c 0 :grid my-grid}})
-@(get-in me [0 :grid])
-;=> [{0 0, 1 0, 2 0} {0 0, 1 0, 2 0}]
-(get-in me [0 :c])
+;(println \u25A0)
+;;■
+;;=> nil
+;(println \u25A1)
+;;□
+;;=> nil
+;(assoc-in [] [0] \h)
+;;=> [\h]
+;(assoc-in [] [0 0] \h)
+;;=> [{0 \h}]
+;(assoc-in [[] []] [1 0] \h)
+;;=> [[] [\h]]
+;
+;(map #(get-in % [0]) {19 {:row 1, :col 0, :c ""}})
+;(map #(get-in % [1 :c]) {19 {:row 1, :col 0, :c ""}})
+;
+;(def scrambled {0 {:row 1, :col 0, :c ""},
+;                1 {:row 0, :col 0, :c \u25A0},
+;                2 {:row 1, :col 2, :c ""},
+;                3 {:row 0, :col 2, :c \u25A0},
+;                4 {:row 0, :col 1, :c ""},
+;                5 {:row 1, :col 1, :c "X"}
+;                6 {:row 1, :col 1, :c \u25A0}})
+;
+;(def table [{0 \u25A0 1 "" 2 \u25A0} {0 "" 1 \u25A0 2 ""}])
+;
+;(clojure.pprint/print-table [{0 \u25A0 1 \u25A1 2 \u25A0} {0 \u25A1 1 \u25A0 2 \u25A1} {0 \u25A0 1 \u25A1 2 \u25A0}])
+;(clojure.pprint/print-table table)
+;(def num-rows (inc (apply max (map #(get-in % [1 :row]) scrambled))))
+;(def num-cols (inc (apply max (map #(get-in % [1 :col]) scrambled))))
+;(def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat 0))))
+;(def my-grid (atom (vec (vals (zipmap (range num-rows) (repeat blank-row))))))
+;; my-grid
+;;=> [{0 "", 1 "", 2 ""} {0 "", 1 "", 2 ""}]
+;(assoc-in @my-grid [(get-in scrambled [0 :row]) (get-in scrambled [0 :col])] 1)
+;(reset! my-grid (assoc-in @my-grid [(get-in scrambled [0 :row]) (get-in scrambled [0 :col])] \u25A0))
+;(reset! my-grid (assoc-in @my-grid [(get-in scrambled [6 :row]) (get-in scrambled [6 :col])] \u25A1))
+;(reset! my-grid (assoc-in @my-grid [(get-in scrambled [2 :row]) (get-in scrambled [2 :col])] \u25A0))
+;
+;(def me {0 {:row 0 :col 0 :c 0 :grid my-grid}})
+;@(get-in me [0 :grid])
+;;=> [{0 0, 1 0, 2 0} {0 0, 1 0, 2 0}]
+;(get-in me [0 :c])
