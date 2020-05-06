@@ -93,28 +93,22 @@
         row-adj (math/abs (apply max (map #(get-in % [:pt :y]) raw-visits)))]
     {:row (if (= y 0) row-adj (+ (- y) row-adj))
      :col (if (= x 0) col-adj (+ x col-adj))
-     :c   c}))
+     :c   (if (= c 0) "" \u25A0)}))
 
-;(def corrected (into (sorted-map) (zipmap (range) (map corrector raw-visits))))
 (def corrected (vec (map corrector raw-visits)))
 
-;(def num-rows (inc (apply max (map #(get-in % [1 :row]) corrected))))
-;(def num-cols (inc (apply max (map #(get-in % [1 :col]) corrected))))
 (def num-rows (inc (apply max (map #(get % :row) corrected))))
 (def num-cols (inc (apply max (map #(get % :col) corrected))))
 
-(def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat 0))))
+(def blank-row (into (sorted-map) (zipmap (range num-cols) (repeat ""))))
 (def my-grid (atom (vec (vals (zipmap (range num-rows) (repeat blank-row))))))
 
-;(def my-grid-w-atom (into (sorted-map) (map #(assoc-in % [1 :grid] my-grid) corrected)))
-(def my-grid-w-atom (vec (map #(assoc % :grid my-grid) corrected)))
-
-;(def my-grid-w-atom (into (sorted-map) (map #(assoc % :grid my-grid) corrected)))
+(def my-corrected-w-atom (vec (map #(assoc % :grid my-grid) corrected)))
 
 (defn update-grid [{:keys [row col c grid]}]
   (vec (reset! grid (assoc-in @grid [row col] c))))
 
-(def updated-grid (vec (map update-grid my-grid-w-atom)))
+(vec (map update-grid my-corrected-w-atom))
 
 (clojure.pprint/print-table @my-grid)
 ;
