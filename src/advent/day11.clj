@@ -120,8 +120,8 @@
 (defn update-grid [{:keys [row col c grid]}]
   (vec (reset! grid (assoc-in @grid [row col] c))))
 
-(vec (map update-grid my-corrected-w-atom))
-
-(clojure.pprint/print-table @my-grid)
+(do
+  (vec (map update-grid my-corrected-w-atom))
+  (clojure.pprint/print-table @my-grid))
 
 ;HGEHJHUZ
