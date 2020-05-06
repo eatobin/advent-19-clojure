@@ -4,7 +4,6 @@
 
 ;part a
 (def tv (ic/make-tv "resources/day11.csv"))
-(def tv-test (ic/make-tv "resources/day11-test.csv"))
 
 (defn new-heading [heading turn]
   (cond
