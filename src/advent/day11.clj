@@ -83,10 +83,23 @@
 ;1771
 
 ;part b
-(defn runner-2 [visits-2]
-  (vec (map #(select-keys % [:pt :c]) visits-2)))
+(def visits-2 (atom [{:pt {:x 0 :y 0} :h :n :c 1 :rp nil}]))
 
-(def raw-visits (runner-2 (swap! visits butlast)))
+(def oc-2 (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv-test :stopped? false :recur? false}))
+
+(defn runner-2 [visits oc]
+  (loop [c ((last @visits) :c)]
+    (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+    (if (@oc :stopped?)
+      (vec (map #(select-keys % [:pt :c]) @visits))
+      (do
+        (atom (reset! visits (paint-atom @visits (@oc :output))))
+        (atom (swap! oc ic/op-code))
+        (atom (reset! visits (turn-atom @visits (@oc :output))))
+        (recur
+          ((last @visits) :c))))))
+
+(def raw-visits (runner-2 visits-2 oc-2))
 
 (defn corrector [{{x :x, y :y} :pt c :c}]
   (let [col-adj (math/abs (apply min (map #(get-in % [:pt :x]) raw-visits)))
