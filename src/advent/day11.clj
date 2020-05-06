@@ -111,11 +111,12 @@
 
 ;(def my-grid-w-atom (into (sorted-map) (map #(assoc % :grid my-grid) corrected)))
 
-;(defn update-grid [{:keys [row col c grid]}]
-;  (reset! grid (assoc-in @grid [(get-in scrambled [6 :row]) (get-in scrambled [6 :col])] \u25A1)))
+(defn update-grid [{:keys [row col c grid]}]
+  (vec (reset! grid (assoc-in @grid [row col] c))))
 
+(def updated-grid (vec (map update-grid my-grid-w-atom)))
 
-;(clojure.pprint/print-table @my-grid)
+(clojure.pprint/print-table @my-grid)
 ;
 ;(assoc-in {0 {:row 1, :col 1, :c 1}} [0 :grid] my-grid)
 ;
