@@ -64,6 +64,19 @@
           next-amp-no
           (+ 1 (mod next-amp-no 5)))))))
 
+(defn runner [five-amps]
+  (loop [amps five-amps
+         current-amp-no 1
+         next-amp-no (+ 1 (mod current-amp-no 5))]
+    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
+      (:output @(amps current-amp-no))
+      (do (swap! (amps current-amp-no) ic/op-code)
+          (swap! (amps next-amp-no) assoc :input (:output @(amps current-amp-no)))
+          (recur
+            (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
+            next-amp-no
+            (+ 1 (mod next-amp-no 5)))))))
+
 (def answer-2 (apply max (vec (map runner (to-amps-vector possibles-2 tv)))))
 
 (println answer-2)
