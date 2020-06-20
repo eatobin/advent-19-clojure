@@ -65,13 +65,13 @@
 
 (defn runner [visits oc]
   (loop [c ((last @visits) :c)]
-    (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+    (reset! oc (ic/op-code (assoc @oc :input c)))
     (if (@oc :stopped?)
       (count (distinct (map :pt (vec (remove #(nil? (% :rp)) @visits)))))
       (do
-        (atom (reset! visits (paint-atom @visits (@oc :output))))
-        (atom (swap! oc ic/op-code))
-        (atom (reset! visits (turn-atom @visits (@oc :output))))
+        (reset! visits (paint-atom @visits (@oc :output)))
+        (swap! oc ic/op-code)
+        (reset! visits (turn-atom @visits (@oc :output)))
         (recur
           ((last @visits) :c))))))
 
@@ -88,13 +88,13 @@
 
 (defn runner-2 [visits oc]
   (loop [c ((last @visits) :c)]
-    (atom (reset! oc (ic/op-code (assoc @oc :input c))))
+    (reset! oc (ic/op-code (assoc @oc :input c)))
     (if (@oc :stopped?)
       (vec (map #(select-keys % [:pt :c]) @visits))
       (do
-        (atom (reset! visits (paint-atom @visits (@oc :output))))
-        (atom (swap! oc ic/op-code))
-        (atom (reset! visits (turn-atom @visits (@oc :output))))
+        (reset! visits (paint-atom @visits (@oc :output)))
+        (swap! oc ic/op-code)
+        (reset! visits (turn-atom @visits (@oc :output)))
         (recur
           ((last @visits) :c))))))
 

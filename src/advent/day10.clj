@@ -1,7 +1,6 @@
 (ns advent.day10
   (:require [clojure.string :as str]
-            [clojure.algo.generic.math-functions :as trig])
-  (:import (clojure.lang MapEntry)))
+            [clojure.algo.generic.math-functions :as trig]))
 
 ;part a
 (def universe (->>
