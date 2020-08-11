@@ -1,6 +1,6 @@
 (ns advent.day10
   (:require [clojure.string :as str]
-            [clojure.algo.generic.math-functions :as trig]))
+            [clojure.math.numeric-tower :as nt]))
 
 ;part a
 (def universe (->>
@@ -37,13 +37,13 @@
     (and (= x0 x1) (< y0 y1)) 90.0
     (and (= x0 x1) (> y0 y1)) 270.0
     ;x inc, y inc - A
-    (and (< x0 x1) (< y0 y1)) (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI)
+    (and (< x0 x1) (< y0 y1)) (/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI)
     ;x dec, y dec - C
-    (and (> x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)
+    (and (> x0 x1) (> y0 y1)) (+ (/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)
     ;x inc, y dec - D
-    (and (< x0 x1) (> y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360)
+    (and (< x0 x1) (> y0 y1)) (+ (/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360)
     ;x dec, y inc - B
-    (and (> x0 x1) (< y0 y1)) (+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)))
+    (and (> x0 x1) (< y0 y1)) (+ (/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180)))
 
 (defn slopes [source asteroid-points]
   (map (partial slope source) asteroid-points))
@@ -62,7 +62,7 @@
 
 ;part b
 (defn cbd [[x0 y0] [x1 y1]]
-  (+ (Math/abs (- y1 y0)) (Math/abs (- x1 x0))))
+  (+ (nt/abs (- y1 y0)) (nt/abs (- x1 x0))))
 
 (defn slope-point [[x0 y0] [x1 y1]]
   (cond
@@ -71,13 +71,13 @@
     (and (= x0 x1) (< y0 y1)) [90.0 [x1 y1] (cbd [x0 y0] [x1 y1])]
     (and (= x0 x1) (> y0 y1)) [270.0 [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x inc, y inc - A
-    (and (< x0 x1) (< y0 y1)) [(/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) [x1 y1] (cbd [x0 y0] [x1 y1])]
+    (and (< x0 x1) (< y0 y1)) [(/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x dec, y dec - C
-    (and (> x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1] (cbd [x0 y0] [x1 y1])]
+    (and (> x0 x1) (> y0 y1)) [(+ (/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x inc, y dec - D
-    (and (< x0 x1) (> y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360) [x1 y1] (cbd [x0 y0] [x1 y1])]
+    (and (< x0 x1) (> y0 y1)) [(+ (/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 360) [x1 y1] (cbd [x0 y0] [x1 y1])]
     ;x dec, y inc - B
-    (and (> x0 x1) (< y0 y1)) [(+ (/ (* (trig/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1] (cbd [x0 y0] [x1 y1])]))
+    (and (> x0 x1) (< y0 y1)) [(+ (/ (* (Math/atan (/ (- y1 y0) (- x1 x0))) 180) Math/PI) 180) [x1 y1] (cbd [x0 y0] [x1 y1])]))
 
 (defn slopes-point [source asteroid-points]
   (map (partial slope-point source) asteroid-points))
