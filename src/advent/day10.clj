@@ -1,15 +1,15 @@
 (ns advent.day10
   (:require [clojure.string :as str]
-            [clojure.math.numeric-tower :as nt]))
+            [clojure.math.numeric-tower :as math]))
 
 ;part a
 (def universe (->>
-                "resources/day10-17-22-288.txt"
-                (slurp)
-                (str/split-lines)
-                (into [])
-                (map vec)
-                (into [])))
+               "resources/day10-17-22-288.txt"
+               (slurp)
+               (str/split-lines)
+               (into [])
+               (map vec)
+               (into [])))
 
 (defn make-pad-line [universe]
   (map (fn [_] \.) (first universe)))
@@ -62,7 +62,7 @@
 
 ;part b
 (defn cbd [[x0 y0] [x1 y1]]
-  (+ (nt/abs (- y1 y0)) (nt/abs (- x1 x0))))
+  (+ (math/abs (- y1 y0)) (math/abs (- x1 x0))))
 
 (defn slope-point [[x0 y0] [x1 y1]]
   (cond
