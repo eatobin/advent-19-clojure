@@ -1,7 +1,7 @@
 (ns advent.day1
   (:require [clojure.string :as str]))
 
-;part aX
+;part a
 (defn gas [m]
   (- (quot m 3) 2))
 
