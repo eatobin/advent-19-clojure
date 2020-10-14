@@ -1,5 +1,5 @@
-(ns advent.day5
-  (:require [advent.intcode :as ic]))
+(ns eatobin.advent.day5
+  (:require [eatobin.advent.intcode :as ic]))
 
 ;part a
 (def tv (ic/make-tv "resources/day5.csv"))

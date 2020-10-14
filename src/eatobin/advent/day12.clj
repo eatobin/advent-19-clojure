@@ -1,4 +1,4 @@
-(ns advent.day12
+(ns eatobin.advent.day12
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
             [clojure.string :as str]))

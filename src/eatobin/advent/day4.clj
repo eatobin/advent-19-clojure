@@ -1,4 +1,4 @@
-(ns advent.day4)
+(ns eatobin.advent.day4)
 
 (def pass (range 234208 765870))
 

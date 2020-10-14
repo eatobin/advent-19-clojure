@@ -1,4 +1,4 @@
-(ns advent.day1
+(ns eatobin.advent.day1
   (:require [clojure.string :as str]))
 
 ;part a

@@ -1,4 +1,4 @@
-(ns advent.day10
+(ns eatobin.advent.day10
   (:require [clojure.string :as str]
             [clojure.math.numeric-tower :as math]))
 

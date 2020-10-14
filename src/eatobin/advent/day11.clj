@@ -1,5 +1,5 @@
-(ns advent.day11
-  (:require [advent.intcode :as ic]
+(ns eatobin.advent.day11
+  (:require [eatobin.advent.intcode :as ic]
             [clojure.math.numeric-tower :as math]
             [clojure.pprint :as pp]))
 
