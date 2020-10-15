@@ -1,4 +1,4 @@
-(ns eatobin.advent.day3
+(ns advent.day3
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
             [clojure.math.numeric-tower :as math]

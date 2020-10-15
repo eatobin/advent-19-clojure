@@ -1,4 +1,4 @@
-(ns eatobin.advent.day8
+(ns advent.day8
   (:require [clojure.core.matrix :as m]))
 
 ;part a
