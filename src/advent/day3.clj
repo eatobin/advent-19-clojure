@@ -1,7 +1,8 @@
 (ns advent.day3
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
-            [clojure.math.numeric-tower :as math]))
+            [clojure.math.numeric-tower :as math]
+            [clojure.set :as s]))
 
 ;part a
 ;(def both (with-open [reader (io/reader "resources/day3b.csv")]
@@ -10,7 +11,7 @@
 
 (def both (with-open [reader (io/reader "resources/day3.csv")]
             (doall
-              (csv/read-csv reader))))
+             (csv/read-csv reader))))
 
 (def red (->> (first both)
               (into [])))
@@ -44,9 +45,9 @@
     (if (empty? units)
       path
       (recur
-        (rest units)
-        (last (make-path (first units) start))
-        (into [] (concat path (rest (make-path (first units) start))))))))
+       (rest units)
+       (last (make-path (first units) start))
+       (into [] (concat path (rest (make-path (first units) start))))))))
 
 (defn abs-dist [[x y]]
   (+ (math/abs x) (math/abs y)))
@@ -54,7 +55,7 @@
 (def answer
   (let [red-set (into #{} (make-paths red [0 0]))
         blue-set (into #{} (make-paths blue [0 0]))
-        red-blue-intersect (clojure.set/intersection red-set blue-set)]
+        red-blue-intersect (s/intersection red-set blue-set)]
     (apply min (map abs-dist (disj red-blue-intersect [0 0])))))
 
 (println answer)

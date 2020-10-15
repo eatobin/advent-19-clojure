@@ -1,6 +1,7 @@
 (ns advent.day11
   (:require [advent.intcode :as ic]
-            [clojure.math.numeric-tower :as math]))
+            [clojure.math.numeric-tower :as math]
+            [clojure.pprint :as pp]))
 
 ;part a
 (def tv (ic/make-tv "resources/day11.csv"))
@@ -43,11 +44,11 @@
   "Takes a {:x 3 :y 3} as target point (tpt)"
   [tpt pts]
   (let [c (->>
-            pts
-            (map-eq-pts tpt)
-            (butlast)
-            (remove nil?)
-            (last))]
+           pts
+           (map-eq-pts tpt)
+           (butlast)
+           (remove nil?)
+           (last))]
     (if (nil? c)
       0
       c)))
@@ -73,7 +74,7 @@
         (swap! oc ic/op-code)
         (reset! visits (turn-atom @visits (@oc :output)))
         (recur
-          ((last @visits) :c))))))
+         ((last @visits) :c))))))
 
 (def answer (runner visits oc))
 
@@ -96,7 +97,7 @@
         (swap! oc ic/op-code)
         (reset! visits (turn-atom @visits (@oc :output)))
         (recur
-          ((last @visits) :c))))))
+         ((last @visits) :c))))))
 
 (def raw-visits (runner-2 visits-2 oc-2))
 
@@ -122,6 +123,6 @@
 
 (do
   (vec (map update-grid my-corrected-w-atom))
-  (clojure.pprint/print-table @my-grid))
+  (pp/print-table @my-grid))
 
 ;HGEHJHUZ
