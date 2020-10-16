@@ -2,7 +2,7 @@
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def tv (ic/make-tv "resources/day9.csv"))
+(def tv (ic/make-tv "resources/day09.csv"))
 
 
 (def answer ((ic/op-code {:input 1 :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true}) :output))

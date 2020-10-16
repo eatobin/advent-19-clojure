@@ -2,7 +2,7 @@
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def tv (ic/make-tv "resources/day7.csv"))
+(def tv (ic/make-tv "resources/day07.csv"))
 
 (def possibles (for [a (range 0 5)
                      b (range 0 5)

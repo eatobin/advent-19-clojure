@@ -1,4 +1,4 @@
-(ns advent.day4)
+(ns advent.day04)
 
 (def pass (range 234208 765870))
 
