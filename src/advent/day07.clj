@@ -1,4 +1,4 @@
-(ns advent.day7
+(ns advent.day07
   (:require [advent.intcode :as ic]))
 
 ;part a

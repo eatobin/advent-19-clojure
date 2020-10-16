@@ -1,4 +1,4 @@
-(ns advent.day6
+(ns advent.day06
   (:require [clojure.string :as str]))
 
 ;part 1
