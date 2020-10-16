@@ -1,4 +1,4 @@
-(ns advent.day1
+(ns advent.day01
   (:require [clojure.string :as str]))
 
 ;part a
@@ -6,7 +6,7 @@
   (- (quot m 3) 2))
 
 (def modules-sum (->>
-                   "resources/day1.txt"
+                   "resources/day01.txt"
                    (slurp)
                    (str/split-lines)
                    (map #(Integer/parseInt %))
@@ -30,7 +30,7 @@
         acc))))
 
 (def modules-gas-sum (->>
-                       "resources/day1.txt"
+                       "resources/day01.txt"
                        (slurp)
                        (str/split-lines)
                        (map #(Integer/parseInt %))

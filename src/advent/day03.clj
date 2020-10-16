@@ -1,15 +1,15 @@
-(ns advent.day3
+(ns advent.day03
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]
             [clojure.math.numeric-tower :as math]
             [clojure.set :as s]))
 
 ;part a
-;(def both (with-open [reader (io/reader "resources/day3b.csv")]
+;(def both (with-open [reader (io/reader "resources/day03b.csv")]
 ;            (doall
 ;              (csv/read-csv reader))))
 
-(def both (with-open [reader (io/reader "resources/day3.csv")]
+(def both (with-open [reader (io/reader "resources/day03.csv")]
             (doall
              (csv/read-csv reader))))
 

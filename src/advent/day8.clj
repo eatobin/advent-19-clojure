@@ -9,7 +9,7 @@
 
 (defn input [layer-size num-rows]
   (->>
-    "resources/day8.txt"
+    "resources/day08.txt"
     (slurp)
     (partition layer-size)
     (m/matrix)
@@ -63,7 +63,7 @@
 
 (def input-2
   (->>
-    "resources/day8.txt"
+    "resources/day08.txt"
     (slurp)
     (partition 150)
     (m/matrix)

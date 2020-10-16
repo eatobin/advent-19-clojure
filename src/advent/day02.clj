@@ -1,8 +1,8 @@
-(ns advent.day2
+(ns advent.day02
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def tv (ic/make-tv "resources/day2.csv"))
+(def tv (ic/make-tv "resources/day02.csv"))
 
 (defn updated-memory [noun verb]
   (->
