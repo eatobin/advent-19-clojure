@@ -1,1 +1,2 @@
 clojure -X:eat/new :template app :name advent/advent
+yup!
