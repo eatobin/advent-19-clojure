@@ -5,3 +5,4 @@ macbook test
 and mac mini
 and tab6
 and tab2
+and phone
