@@ -2,3 +2,4 @@ clojure -X:eat/new :template app :name advent/advent
 yup!
 gone
 macbook test
+and mac mini
