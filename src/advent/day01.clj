@@ -22,7 +22,7 @@
 (defn gas-plus [module]
   (loop [m module
          acc 0]
-    (let [new-gas (max (- (quot m 3) 2) 0)]
+    (let [new-gas (gas m)]
       (if (pos? new-gas)
         (recur
           new-gas
