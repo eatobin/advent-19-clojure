@@ -1,3 +1,7 @@
+; a- b- or c- = right-to-left position after 2 digit opcode
+; -p- -i- or -r- = position, immediate or relative mode
+; -r or -w = read or write
+
 (ns advent.intcode
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]))
