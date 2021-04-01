@@ -17,8 +17,8 @@
 
 (defn pad-5 [n]
   (zipmap [:a :b :c :d :e]
-          (for [n (format "%05d" n)]
-            (- (byte n) 48))))
+          (for [d (format "%05d" n)]
+            (- (byte d) 48))))
 
 ; y1
 (defn a-p-w [{:keys [pointer memory]}]
