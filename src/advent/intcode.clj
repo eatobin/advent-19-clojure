@@ -18,10 +18,10 @@
        (zipmap (range))
        (into (sorted-map-by <))))
 
-(defn pad-5 [n]
+(defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
-          (for [d (format "%05d" n)]
-            (- (byte d) 48))))
+          (for [character (format "%05d" instruction)]
+            (- (byte character) 48))))
 
 ; y1
 (defn a-p-w [{:keys [pointer memory]}]
