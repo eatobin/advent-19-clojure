@@ -1,4 +1,7 @@
-; a- b- or c- = right-to-left position after 2 digit opcode
+; ABCDE
+;  1002
+
+; a- b- or c- = left-to-right position after 2 digit opcode
 ; -p- -i- or -r- = position, immediate or relative mode
 ; -r or -w = read or write
 
