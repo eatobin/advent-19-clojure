@@ -1,13 +1,13 @@
+(ns advent.intcode
+  (:require [clojure.data.csv :as csv]
+            [clojure.java.io :as io]))
+
 ; ABCDE
 ;  1002
 
 ; a- b- or c- = left-to-right position after 2 digit opcode
 ; -p- -i- or -r- = position, immediate or relative mode
 ; -r or -w = read or write
-
-(ns advent.intcode
-  (:require [clojure.data.csv :as csv]
-            [clojure.java.io :as io]))
 
 (defn make-tv [file]
   (->> (first (with-open [reader (io/reader file)]
