@@ -1,7 +1,7 @@
 (ns advent.domain
   (:require [clojure.spec.alpha :as s]))
 
-(s/def ::m int?)
+(s/def ::module int?)
 (s/def ::gas int?)
 ;(s/def :unq/gift-pair (s/keys :req-un [::givee ::giver]))
 ;

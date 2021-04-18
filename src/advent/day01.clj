@@ -5,10 +5,10 @@
             [orchestra.spec.test :as ostest]))
 
 ;part a
-(defn gas [m]
-  (- (quot m 3) 2))
+(defn gas [module]
+  (- (quot module 3) 2))
 (s/fdef gas
-        :args (s/cat :m ::dom/m)
+        :args (s/cat :module ::dom/module)
         :ret ::dom/gas)
 
 (def modules-sum (->>
@@ -34,6 +34,9 @@
           new-gas
           (+ acc new-gas))
         acc))))
+(s/fdef gas-plus
+        :args (s/cat :module ::dom/module)
+        :ret ::dom/gas)
 
 (def modules-gas-sum (->>
                        "resources/day01.txt"
