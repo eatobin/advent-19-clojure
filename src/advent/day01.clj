@@ -1,9 +1,15 @@
 (ns advent.day01
-  (:require [clojure.string :as str]))
+  (:require [advent.domain :as dom]
+            [clojure.string :as str]
+            [clojure.spec.alpha :as s]
+            [orchestra.spec.test :as ostest]))
 
 ;part a
 (defn gas [m]
   (- (quot m 3) 2))
+(s/fdef gas
+        :args (s/cat :m ::dom/m)
+        :ret ::dom/gas)
 
 (def modules-sum (->>
                    "resources/day01.txt"
@@ -41,3 +47,5 @@
 (println modules-gas-sum)
 
 ;; 5003788
+
+(ostest/instrument)
