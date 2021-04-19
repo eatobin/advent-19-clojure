@@ -183,4 +183,5 @@
                               (assoc memory (param-maker-a {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 1)
                               (assoc memory (param-maker-a {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 0))
              :stopped?      stopped?
-             :recur?        recur?})))))
+             :recur?        recur?})
+        "Unknown opcode"))))
