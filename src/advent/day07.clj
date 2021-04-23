@@ -13,16 +13,42 @@
                  [a b c d e]))
 
 (defn pass [[a b c d e] i-code]
-  (:output (ic/op-code {:input
-                        (:output (ic/op-code {:input
-                                              (:output (ic/op-code {:input
-                                                                    (:output (ic/op-code {:input
-                                                                                          (:output (ic/op-code {:input  0
-                                                                                                                :output nil :phase a :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                                                                                          :output nil :phase b :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                                                                    :output nil :phase c :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                                              :output nil :phase d :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true}))
-                        :output nil :phase e :pointer 0 :relative-base 0 :memory i-code :stopped? false :recur? true})))
+  ((ic/op-code {:input         ((ic/op-code {:input         ((ic/op-code {:input         ((ic/op-code {:input         ((ic/op-code {:input         0
+                                                                                                                                    :output        nil
+                                                                                                                                    :phase         a
+                                                                                                                                    :pointer       0
+                                                                                                                                    :relative-base 0
+                                                                                                                                    :memory        i-code
+                                                                                                                                    :stopped?      false
+                                                                                                                                    :recur?        true}) :output)
+                                                                                                       :output        nil
+                                                                                                       :phase         b
+                                                                                                       :pointer       0
+                                                                                                       :relative-base 0
+                                                                                                       :memory        i-code
+                                                                                                       :stopped?      false
+                                                                                                       :recur?        true}) :output)
+                                                                          :output        nil
+                                                                          :phase         c
+                                                                          :pointer       0
+                                                                          :relative-base 0
+                                                                          :memory        i-code
+                                                                          :stopped?      false
+                                                                          :recur?        true}) :output)
+                                             :output        nil
+                                             :phase         d
+                                             :pointer       0
+                                             :relative-base 0
+                                             :memory        i-code
+                                             :stopped?      false
+                                             :recur?        true}) :output)
+                :output        nil
+                :phase         e
+                :pointer       0
+                :relative-base 0
+                :memory        i-code
+                :stopped?      false
+                :recur?        true}) :output))
 
 (defn passes [i-code]
   (vec (map #(pass % i-code) possibles)))
@@ -60,9 +86,9 @@
       (do (swap! (amps current-amp-no) ic/op-code)
           (swap! (amps next-amp-no) assoc :input (:output @(amps current-amp-no)))
           (recur
-           (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
-           next-amp-no
-           (+ 1 (mod next-amp-no 5)))))))
+            (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
+            next-amp-no
+            (+ 1 (mod next-amp-no 5)))))))
 
 (def answer-2 (apply max (vec (map runner (to-amps-vector possibles-2 tv)))))
 
