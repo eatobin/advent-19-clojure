@@ -4,6 +4,10 @@
 ;part a
 (def tv (ic/make-tv "resources/day07.csv"))
 
+(def short-tv (ic/make-short-tv [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]))
+
+(println short-tv)
+
 (def possibles (for [a (range 0 5)
                      b (range 0 5)
                      c (range 0 5)

@@ -18,11 +18,11 @@
        (zipmap (range))
        (into (sorted-map-by <))))
 
-;(defn make-short-tv [an-array]
-;  (->>
-;    an-array
-;    (zipmap (range))
-;    (into (sorted-map-by <))))
+(defn make-short-tv [an-array]
+  (->>
+    an-array
+    (zipmap (range))
+    (into (sorted-map-by <))))
 
 (defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
