@@ -101,7 +101,7 @@
 ;35993240
 
 
-
+;(def mv [((vec possibles-2) 0)])
 ;(to-amps-vector mv short-tv)
 ;=>
 ;[{1 #object[clojure.lang.Atom
