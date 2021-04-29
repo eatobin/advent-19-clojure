@@ -239,3 +239,13 @@
 ;                            16 0},
 ;                   :stopped? false,
 ;                   :recur? false}}]}]
+;@(get (mmvv 0) 5)
+;=>
+;{:input nil,
+; :output nil,
+; :phase 9,
+; :pointer 0,
+; :relative-base 0,
+; :memory {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0},
+; :stopped? false,
+; :recur? false}
