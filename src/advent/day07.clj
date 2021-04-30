@@ -239,6 +239,9 @@
 ;                            16 0},
 ;                   :stopped? false,
 ;                   :recur? false}}]}]
+
+;(def mv [((vec possibles-2) 0)])
+;(def mmvv (to-amps-vector mv short-tv))
 ;@(get (mmvv 0) 5)
 ;=>
 ;{:input nil,
