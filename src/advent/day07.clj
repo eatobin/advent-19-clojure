@@ -55,7 +55,7 @@
                 :recur?        true}) :output))
 
 (defn passes [i-code]
-  (vec (map #(pass % i-code) possibles)))
+  (map #(pass % i-code) possibles))
 
 (def answer (apply max (passes tv)))
 
