@@ -72,14 +72,14 @@
                        :when (distinct? a b c d e)]
                    [a b c d e]))
 
-(defn to-amps-vector [phases-vector memory]
-  (vec (letfn [(to-amps [phases]
-                 {1 (atom {:input 0 :output nil :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-                  2 (atom {:input nil :output nil :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-                  3 (atom {:input nil :output nil :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-                  4 (atom {:input nil :output nil :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-                  5 (atom {:input nil :output nil :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
-         (map to-amps phases-vector))))
+(defn to-amps-list [phases-vector memory]
+  (letfn [(to-amps [phases]
+            {1 (atom {:input 0 :output nil :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             2 (atom {:input nil :output nil :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             3 (atom {:input nil :output nil :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             4 (atom {:input nil :output nil :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             5 (atom {:input nil :output nil :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
+    (map to-amps phases-vector)))
 
 (defn runner [five-amps]
   (loop [amps five-amps
@@ -94,7 +94,7 @@
             next-amp-no
             (+ 1 (mod next-amp-no 5)))))))
 
-(def answer-2 (apply max (vec (map runner (to-amps-vector possibles-2 tv)))))
+(def answer-2 (apply max (map runner (to-amps-list possibles-2 tv))))
 
 (println answer-2)
 
