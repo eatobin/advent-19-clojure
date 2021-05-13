@@ -18,7 +18,7 @@
        (zipmap (range))
        (into (sorted-map-by <))))
 
-(defn make-short-tv [an-array]
+(defn make-shorty [an-array]
   (->>
     an-array
     (zipmap (range))

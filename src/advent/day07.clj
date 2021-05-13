@@ -4,7 +4,7 @@
 ;part a
 (def tv (ic/make-tv "resources/day07.csv"))
 
-(def short-tv (ic/make-short-tv [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]))
+(def short-tv (ic/make-shorty [3, 15, 3, 16, 1002, 16, 10, 16, 1, 16, 15, 15, 4, 15, 99, 0, 0]))
 
 (println short-tv)
 
@@ -241,8 +241,8 @@
 ;                   :recur? false}}]}]
 
 ;(def mv [((vec possibles-2) 0)])
-;(def mmvv (to-amps-vector mv short-tv))
-;@(get (mmvv 0) 5)
+;(def moved (to-amps-vector mv short-tv))
+;@(get (moved 0) 5)
 ;=>
 ;{:input nil,
 ; :output nil,
