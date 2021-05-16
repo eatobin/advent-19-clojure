@@ -107,3 +107,8 @@
   (def five-amps (first (to-amps-list mv tv)))
   (runner five-amps)
   33807717)
+
+(comment
+  (to-amps-list
+    [[5 6 7 8 9]]
+    {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
