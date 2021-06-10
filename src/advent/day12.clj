@@ -38,4 +38,4 @@
     (assoc-in [:g :pos] (get moon-maps 2))
     (assoc-in [:c :pos] (get moon-maps 3))))
 
-(println moon-meld)
+moon-meld
