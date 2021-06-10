@@ -18,7 +18,7 @@
     (map #(Integer/parseInt %))
     (zipmap [:x :y :z])))
 
-(def moon-maps (map make-moon-map vcs))
+(def moon-maps (into [] (map make-moon-map vcs)))
 
 (def moon-template
   {:i {:pos {:x 0, :y 0, :z 0},
@@ -30,22 +30,12 @@
    :c {:pos {:x 0, :y 0, :z 0},
        :vel {:x 0, :y 0, :z 0}}})
 
-;(def tv (let [vcs (with-open [reader (io/reader "resources/day12.csv")]
-;                    (doall
-;                      (csv/read-csv reader)))]
-;          (vec (map vec (map #(map str/trim %) vcs)))))
+(def moon-meld
+  (->
+    moon-template
+    (assoc-in [:i :pos] (get moon-maps 0))
+    (assoc-in [:e :pos] (get moon-maps 1))
+    (assoc-in [:g :pos] (get moon-maps 2))
+    (assoc-in [:c :pos] (get moon-maps 3))))
 
-
-
-
-
-;(def i (first vcs))
-
-;(defn make-moon-map [moon-pos]
-;  (zipmap [:x :y :z] (map #(Integer/parseInt %)(map #(get % 1) (map #(str/split % #"=") (map #(str/replace % ">" "") moon-pos))))))
-
-
-
-;(zipmap [:x :y :z] (map #(Integer/parseInt %) (map #(get % 1) (map #(str/split % #"=") (map #(str/replace % ">" "") i)))))
-;
-;(println tv)
+(println moon-meld)
