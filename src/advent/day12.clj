@@ -39,15 +39,15 @@
           (assoc-in [3 :pos] (get moon-maps 2))
           (assoc-in [4 :pos] (get moon-maps 3)))))
 
-(defn velocity-calc [moons axis current-moon]
-  (let [next-moon (+ 1 (mod current-moon 4))
-        current-moon-pos (math/abs (get-in @moons [current-moon :pos axis]))
-        next-moon-pos (math/abs (get-in @moons [next-moon :pos axis]))]
+(defn velocity-calc [moons-atom axis-keyword current-moon-number]
+  (let [next-moon-number (+ 1 (mod current-moon-number 4))
+        current-moon-pos (math/abs (get-in @moons-atom [current-moon-number :pos axis-keyword]))
+        next-moon-pos (math/abs (get-in @moons-atom [next-moon-number :pos axis-keyword]))]
     (cond
-      (< current-moon-pos next-moon-pos) (do (swap! moons assoc-in [current-moon :vel axis] 1)
-                                             (swap! moons assoc-in [next-moon :vel axis] -1))
-      (> current-moon-pos next-moon-pos) (do (swap! moons assoc-in [current-moon :vel axis] -1)
-                                             (swap! moons assoc-in [next-moon :vel axis] 1))
-      :else @moons)))
+      (< current-moon-pos next-moon-pos) (do (swap! moons-atom assoc-in [current-moon-number :vel axis-keyword] 1)
+                                             (swap! moons-atom assoc-in [next-moon-number :vel axis-keyword] -1))
+      (> current-moon-pos next-moon-pos) (do (swap! moons-atom assoc-in [current-moon-number :vel axis-keyword] -1)
+                                             (swap! moons-atom assoc-in [next-moon-number :vel axis-keyword] 1))
+      :else @moons-atom)))
 
 moon-meld
