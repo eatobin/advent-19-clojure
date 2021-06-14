@@ -21,21 +21,21 @@
 (def moon-maps (into [] (map make-moon-map vcs)))
 
 (def moon-template
-  {:i {:pos {:x 0, :y 0, :z 0},
+  {:0 {:pos {:x 0, :y 0, :z 0},
        :vel {:x 0, :y 0, :z 0}}
-   :e {:pos {:x 0, :y 0, :z 0},
+   :1 {:pos {:x 0, :y 0, :z 0},
        :vel {:x 0, :y 0, :z 0}}
-   :g {:pos {:x 0, :y 0, :z 0},
+   :2 {:pos {:x 0, :y 0, :z 0},
        :vel {:x 0, :y 0, :z 0}}
-   :c {:pos {:x 0, :y 0, :z 0},
+   :3 {:pos {:x 0, :y 0, :z 0},
        :vel {:x 0, :y 0, :z 0}}})
 
 (def moon-meld
   (->
    moon-template
-   (assoc-in [:i :pos] (get moon-maps 0))
-   (assoc-in [:e :pos] (get moon-maps 1))
-   (assoc-in [:g :pos] (get moon-maps 2))
-   (assoc-in [:c :pos] (get moon-maps 3))))
+   (assoc-in [:0 :pos] (get moon-maps 0))
+   (assoc-in [:1 :pos] (get moon-maps 1))
+   (assoc-in [:2 :pos] (get moon-maps 2))
+   (assoc-in [:3 :pos] (get moon-maps 3))))
 
 moon-meld
