@@ -44,10 +44,11 @@
         current-moon-pos (math/abs (get-in @moons-atom [current-moon-number :pos axis-keyword]))
         next-moon-pos (math/abs (get-in @moons-atom [next-moon-number :pos axis-keyword]))]
     (cond
-      (< current-moon-pos next-moon-pos) (do (swap! moons-atom assoc-in [current-moon-number :vel axis-keyword] 1)
-                                             (swap! moons-atom assoc-in [next-moon-number :vel axis-keyword] -1))
-      (> current-moon-pos next-moon-pos) (do (swap! moons-atom assoc-in [current-moon-number :vel axis-keyword] -1)
-                                             (swap! moons-atom assoc-in [next-moon-number :vel axis-keyword] 1))
+      (and (< current-moon-pos next-moon-pos)
+           (pos-int? (get-in @moons-atom [current-moon-number :pos axis-keyword]))
+           (pos-int? (get-in @moons-atom [next-moon-number :pos axis-keyword]))) (do
+                                                                                   (swap! moons-atom update-in [current-moon-number :vel axis-keyword] dec)
+                                                                                   (swap! moons-atom update-in [next-moon-number :vel axis-keyword] inc))
       :else @moons-atom)))
 
 moon-meld
