@@ -22,22 +22,22 @@
 (def moon-maps (into [] (map make-moon-map vcs)))
 
 (def moon-template
-  {1 {:pos {:x 0, :y 0, :z 0},
+  {:i {:pos {:x 0, :y 0, :z 0},
       :vel {:x 0, :y 0, :z 0}}
-   2 {:pos {:x 0, :y 0, :z 0},
+   :e {:pos {:x 0, :y 0, :z 0},
       :vel {:x 0, :y 0, :z 0}}
-   3 {:pos {:x 0, :y 0, :z 0},
+   :g {:pos {:x 0, :y 0, :z 0},
       :vel {:x 0, :y 0, :z 0}}
-   4 {:pos {:x 0, :y 0, :z 0},
+   :c {:pos {:x 0, :y 0, :z 0},
       :vel {:x 0, :y 0, :z 0}}})
 
 (def moon-meld
   (atom (->
           moon-template
-          (assoc-in [1 :pos] (get moon-maps 0))
-          (assoc-in [2 :pos] (get moon-maps 1))
-          (assoc-in [3 :pos] (get moon-maps 2))
-          (assoc-in [4 :pos] (get moon-maps 3)))))
+          (assoc-in [:i :pos] (get moon-maps 0))
+          (assoc-in [:e :pos] (get moon-maps 1))
+          (assoc-in [:g :pos] (get moon-maps 2))
+          (assoc-in [:c :pos] (get moon-maps 3)))))
 
 (defn velocity-calc [moons-atom current-moon-number axis-keyword]
   (let [next-moon-number (+ 1 (mod current-moon-number 4))
