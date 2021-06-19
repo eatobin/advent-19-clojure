@@ -46,18 +46,29 @@
    [[:e :pos :x] [:g :pos :x]]
    [[:e :pos :x] [:c :pos :x]]
    [[:g :pos :x] [:c :pos :x]]
+
    [[:i :pos :y] [:e :pos :y]]
    [[:i :pos :y] [:g :pos :y]]
    [[:i :pos :y] [:c :pos :y]]
    [[:e :pos :y] [:g :pos :y]]
    [[:e :pos :y] [:c :pos :y]]
    [[:g :pos :y] [:c :pos :y]]
+
    [[:i :pos :z] [:e :pos :z]]
-   [[:i :pos :z] [:e :pos :z]]
-   [[:i :pos :z] [:e :pos :z]]
-   [[:i :pos :z] [:e :pos :z]]
-   [[:i :pos :z] [:e :pos :z]]
-   [[:i :pos :z] [:e :pos :z]]])
+   [[:i :pos :z] [:g :pos :z]]
+   [[:i :pos :z] [:c :pos :z]]
+   [[:e :pos :z] [:g :pos :z]]
+   [[:e :pos :z] [:c :pos :z]]
+   [[:g :pos :z] [:c :pos :z]]])
+
+(defn moon-getter [moon]
+  (get-in @moon-meld moon))
+
+(defn moons-pair [moons]
+  (vec (map moon-getter moons)))
+
+(def all-candidates
+  (vec (map moons-pair candidates)))
 
 (defn velocity-calc [moons-atom current-moon-number axis-keyword]
   (let [next-moon-number (+ 1 (mod current-moon-number 4))
