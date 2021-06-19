@@ -23,13 +23,13 @@
 
 (def moon-template
   {:i {:pos {:x 0, :y 0, :z 0},
-      :vel {:x 0, :y 0, :z 0}}
+       :vel {:x 0, :y 0, :z 0}}
    :e {:pos {:x 0, :y 0, :z 0},
-      :vel {:x 0, :y 0, :z 0}}
+       :vel {:x 0, :y 0, :z 0}}
    :g {:pos {:x 0, :y 0, :z 0},
-      :vel {:x 0, :y 0, :z 0}}
+       :vel {:x 0, :y 0, :z 0}}
    :c {:pos {:x 0, :y 0, :z 0},
-      :vel {:x 0, :y 0, :z 0}}})
+       :vel {:x 0, :y 0, :z 0}}})
 
 (def moon-meld
   (atom (->
@@ -38,6 +38,26 @@
           (assoc-in [:e :pos] (get moon-maps 1))
           (assoc-in [:g :pos] (get moon-maps 2))
           (assoc-in [:c :pos] (get moon-maps 3)))))
+
+(def candidates
+  [[[:i :pos :x] [:e :pos :x]]
+   [[:i :pos :x] [:g :pos :x]]
+   [[:i :pos :x] [:c :pos :x]]
+   [[:e :pos :x] [:g :pos :x]]
+   [[:e :pos :x] [:c :pos :x]]
+   [[:g :pos :x] [:c :pos :x]]
+   [[:i :pos :y] [:e :pos :y]]
+   [[:i :pos :y] [:g :pos :y]]
+   [[:i :pos :y] [:c :pos :y]]
+   [[:e :pos :y] [:g :pos :y]]
+   [[:e :pos :y] [:c :pos :y]]
+   [[:g :pos :y] [:c :pos :y]]
+   [[:i :pos :z] [:e :pos :z]]
+   [[:i :pos :z] [:e :pos :z]]
+   [[:i :pos :z] [:e :pos :z]]
+   [[:i :pos :z] [:e :pos :z]]
+   [[:i :pos :z] [:e :pos :z]]
+   [[:i :pos :z] [:e :pos :z]]])
 
 (defn velocity-calc [moons-atom current-moon-number axis-keyword]
   (let [next-moon-number (+ 1 (mod current-moon-number 4))
