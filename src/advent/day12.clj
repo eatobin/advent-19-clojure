@@ -62,7 +62,7 @@
    [[:g :pos :z] [:c :pos :z]]])
 
 (defn moon-getter [moon]
-  (get-in @moon-meld moon))
+  [(get-in @moon-meld moon) (moon 0) (moon 2)])
 
 (defn moons-pair [moons]
   (vec (map moon-getter moons)))
