@@ -77,6 +77,7 @@
         moon-1 (get moon-vec-1 1)
         axis (get moon-vec-0 2)]
     (cond
+      (= moon-pos-0 moon-pos-1) @moon-meld
       (and (> (math/abs moon-pos-0) (math/abs moon-pos-1))
            (pos-int? moon-pos-0)) (do (swap! moon-meld update-in [moon-0 :vel axis] dec)
                                       (swap! moon-meld update-in [moon-1 :vel axis] inc))
@@ -98,7 +99,6 @@
                                       (swap! moon-meld update-in [moon-1 :vel axis] inc))
       (and (= (math/abs moon-pos-0) (math/abs moon-pos-1))
            (pos-int? moon-pos-1)) (do (swap! moon-meld update-in [moon-1 :vel axis] dec)
-                                      (swap! moon-meld update-in [moon-0 :vel axis] inc))
-      :else [moon-vec-0 moon-vec-1])))
+                                      (swap! moon-meld update-in [moon-0 :vel axis] inc)))))
 
 moon-meld
