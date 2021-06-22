@@ -100,5 +100,6 @@
       (and (= (math/abs moon-pos-0) (math/abs moon-pos-1))
            (>= moon-pos-1 0)) (do (swap! moon-meld update-in [moon-1 :vel axis] dec)
                                   (swap! moon-meld update-in [moon-0 :vel axis] inc)))))
-
-moon-meld
+(def gravity
+  (for [candidate all-candidates]
+    (velocity-calc candidate)))
