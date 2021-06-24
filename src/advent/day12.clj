@@ -79,8 +79,11 @@
               axis (get moon-vec-0 2)
               moon-0-velocity (cond (> (math/abs moon-pos-0) (math/abs moon-pos-1)) -1
                                     (> (math/abs moon-pos-1) (math/abs moon-pos-0)) 1
+                                    :else 0)
+              moon-1-velocity (cond (> (math/abs moon-pos-1) (math/abs moon-pos-0)) -1
+                                    (> (math/abs moon-pos-0) (math/abs moon-pos-1)) 1
                                     :else 0)]]
-    [moon-pos-0 moon-pos-1 moon-0 moon-1 axis moon-0-velocity]))
+    [moon-pos-0 moon-pos-1 moon-0 moon-1 axis moon-0-velocity moon-1-velocity]))
 
 ;(defn velocity-calc [[moon-vec-0 moon-vec-1]]
 ;  (let [moon-pos-0 (get moon-vec-0 0)
