@@ -2,11 +2,10 @@
   (:require
     [clojure.data.csv :as csv]
     [clojure.java.io :as io]
-    [clojure.string :as str]
-    [clojure.math.numeric-tower :as math]))
+    [clojure.string :as str]))
 
 ;part a
-(def vcs (with-open [reader (io/reader "resources/day12.csv")]
+(def vcs (with-open [reader (io/reader "resources/day12a.csv")]
            (doall
              (csv/read-csv reader))))
 
@@ -77,11 +76,11 @@
               moon-0 (get moon-vec-0 1)
               moon-1 (get moon-vec-1 1)
               axis (get moon-vec-0 2)
-              moon-0-velocity (cond (> (math/abs moon-pos-0) (math/abs moon-pos-1)) -1
-                                    (> (math/abs moon-pos-1) (math/abs moon-pos-0)) 1
+              moon-0-velocity (cond (> moon-pos-0 moon-pos-1) -1
+                                    (> moon-pos-1 moon-pos-0) 1
                                     :else 0)
-              moon-1-velocity (cond (> (math/abs moon-pos-1) (math/abs moon-pos-0)) -1
-                                    (> (math/abs moon-pos-0) (math/abs moon-pos-1)) 1
+              moon-1-velocity (cond (> moon-pos-1 moon-pos-0) -1
+                                    (> moon-pos-0 moon-pos-1) 1
                                     :else 0)]]
     (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
         (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
