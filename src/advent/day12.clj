@@ -85,3 +85,6 @@
                                     :else 0)]]
     (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
         (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
+
+(doall (velocity-update all-candidates))
+(println @moon-meld)
