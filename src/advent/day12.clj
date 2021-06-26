@@ -70,7 +70,7 @@
 (def all-candidates
   (vec (map moons-pair candidates)))
 
-(defn velocity-calc [all-candidates]
+(defn velocity-update [all-candidates]
   (for [[moon-vec-0 moon-vec-1] all-candidates
         :let [moon-pos-0 (get moon-vec-0 0)
               moon-pos-1 (get moon-vec-1 0)
@@ -83,38 +83,5 @@
               moon-1-velocity (cond (> (math/abs moon-pos-1) (math/abs moon-pos-0)) -1
                                     (> (math/abs moon-pos-0) (math/abs moon-pos-1)) 1
                                     :else 0)]]
-    [moon-pos-0 moon-pos-1 moon-0 moon-1 axis moon-0-velocity moon-1-velocity]))
-
-;(defn velocity-calc [[moon-vec-0 moon-vec-1]]
-;  (let [moon-pos-0 (get moon-vec-0 0)
-;        moon-pos-1 (get moon-vec-1 0)
-;        moon-0 (get moon-vec-0 1)
-;        moon-1 (get moon-vec-1 1)
-;        axis (get moon-vec-0 2)]
-;    (cond
-;      (= moon-pos-0 moon-pos-1) @moon-meld
-;      (and (> (math/abs moon-pos-0) (math/abs moon-pos-1))
-;           (>= moon-pos-0 0)) (do (swap! moon-meld update-in [moon-0 :vel axis] dec)
-;                                  (swap! moon-meld update-in [moon-1 :vel axis] inc))
-;      (and (> (math/abs moon-pos-0) (math/abs moon-pos-1))
-;           (>= moon-pos-1 0)) (do (swap! moon-meld update-in [moon-0 :vel axis] inc)
-;                                  (swap! moon-meld update-in [moon-1 :vel axis] dec))
-;      (> (math/abs moon-pos-0) (math/abs moon-pos-1)) (do (swap! moon-meld update-in [moon-0 :vel axis] inc)
-;                                                          (swap! moon-meld update-in [moon-1 :vel axis] dec))
-;      (and (> (math/abs moon-pos-1) (math/abs moon-pos-0))
-;           (>= moon-pos-1 0)) (do (swap! moon-meld update-in [moon-1 :vel axis] dec)
-;                                  (swap! moon-meld update-in [moon-0 :vel axis] inc))
-;      (and (> (math/abs moon-pos-1) (math/abs moon-pos-0))
-;           (>= moon-pos-0 0)) (do (swap! moon-meld update-in [moon-1 :vel axis] inc)
-;                                  (swap! moon-meld update-in [moon-0 :vel axis] dec))
-;      (> (math/abs moon-pos-1) (math/abs moon-pos-0)) (do (swap! moon-meld update-in [moon-1 :vel axis] inc)
-;                                                          (swap! moon-meld update-in [moon-0 :vel axis] dec))
-;      (and (= (math/abs moon-pos-0) (math/abs moon-pos-1))
-;           (>= moon-pos-0 0)) (do (swap! moon-meld update-in [moon-0 :vel axis] dec)
-;                                  (swap! moon-meld update-in [moon-1 :vel axis] inc))
-;      (and (= (math/abs moon-pos-0) (math/abs moon-pos-1))
-;           (>= moon-pos-1 0)) (do (swap! moon-meld update-in [moon-1 :vel axis] dec)
-;                                  (swap! moon-meld update-in [moon-0 :vel axis] inc)))))
-;(def gravity
-;  (for [candidate all-candidates]
-;    (velocity-calc candidate)))
+    (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
+        (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
