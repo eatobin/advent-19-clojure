@@ -54,8 +54,8 @@
    [[1 0 2] [3 0 2]]
    [[2 0 2] [3 0 2]]])
 
-;(defn moon-getter [moon]
-;  [(get-in @moon-meld moon) (moon 0) (moon 2)])
+(defn moon-getter [[moon _ axis]]
+  [(get-in @(get moon-meld moon) [0 axis]) moon axis])
 
 ;(defn moons-pair [moons]
 ;  (vec (map moon-getter moons)))
