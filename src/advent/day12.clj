@@ -85,8 +85,4 @@
     (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
         (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
 
-(def gravity-map (into (sorted-map) (zipmap (range) (gravity-update all-candidates))))
-
-(println (get gravity-map 17))
-
-(println @moon-meld)
+(gravity-update all-candidates)
