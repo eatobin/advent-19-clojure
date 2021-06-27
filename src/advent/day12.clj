@@ -69,7 +69,7 @@
 (def all-candidates
   (vec (map moons-pair candidates)))
 
-(defn velocity-update [all-candidates]
+(defn gravity-update [all-candidates]
   (for [[moon-vec-0 moon-vec-1] all-candidates
         :let [moon-pos-0 (get moon-vec-0 0)
               moon-pos-1 (get moon-vec-1 0)
@@ -85,8 +85,8 @@
     (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
         (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
 
-(def atoms-map (into (sorted-map) (zipmap (range) (velocity-update all-candidates))))
+(def gravity-map (into (sorted-map) (zipmap (range) (gravity-update all-candidates))))
 
-(println (get atoms-map 17))
+(println (get gravity-map 17))
 
 (println @moon-meld)
