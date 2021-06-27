@@ -57,12 +57,12 @@
 (defn moon-getter [[moon _ axis]]
   [(get-in @(get moon-meld moon) [0 axis]) moon axis])
 
-;(defn moons-pair [moons]
-;  (vec (map moon-getter moons)))
-;
-;(def all-candidates
-;  (vec (map moons-pair candidates)))
-;
+(defn moons-pair [moons]
+  (vec (map moon-getter moons)))
+
+(def all-candidates
+  (vec (map moons-pair candidates)))
+
 ;(defn gravity-update [all-candidates]
 ;  (for [[moon-vec-0 moon-vec-1] all-candidates
 ;        :let [moon-pos-0 (get moon-vec-0 0)
