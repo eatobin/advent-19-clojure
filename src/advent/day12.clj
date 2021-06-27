@@ -5,7 +5,7 @@
     [clojure.string :as str]))
 
 ;part a
-(def vcs (with-open [reader (io/reader "resources/day12.csv")]
+(def vcs (with-open [reader (io/reader "resources/day12a.csv")]
            (doall
              (csv/read-csv reader))))
 
@@ -80,7 +80,7 @@
               moon-1-velocity (cond (> moon-pos-1 moon-pos-0) -1
                                     (> moon-pos-0 moon-pos-1) 1
                                     :else 0)]]
-    (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
-        (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
+    (do (swap! moon-meld update-in [moon-0 1 axis] + moon-0-velocity)
+        (swap! moon-meld update-in [moon-1 1 axis] + moon-1-velocity))))
 
-;(gravity-update all-candidates)
+(gravity-update all-candidates)
