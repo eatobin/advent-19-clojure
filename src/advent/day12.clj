@@ -5,7 +5,7 @@
     [clojure.string :as str]))
 
 ;part a
-(def vcs (with-open [reader (io/reader "resources/day12a.csv")]
+(def vcs (with-open [reader (io/reader "resources/day12.csv")]
            (doall
              (csv/read-csv reader))))
 
