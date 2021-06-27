@@ -16,27 +16,25 @@
     (map #(str/split % #"="))
     (map #(get % 1))
     (map #(Integer/parseInt %))
-    (zipmap [:x :y :z])))
+    (into [])))
 
 (def moon-maps (into [] (map make-moon-map vcs)))
 
 (def moon-template
-  {:i {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}
-   :e {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}
-   :g {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}
-   :c {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}})
+  [[[0 0 0] [0 0 0]]
+   [[0 0 0] [0 0 0]]
+   [[0 0 0] [0 0 0]]
+   [[0 0 0] [0 0 0]]])
+
+
 
 (def moon-meld
   (atom (->
           moon-template
-          (assoc-in [:i :pos] (get moon-maps 0))
-          (assoc-in [:e :pos] (get moon-maps 1))
-          (assoc-in [:g :pos] (get moon-maps 2))
-          (assoc-in [:c :pos] (get moon-maps 3)))))
+          (assoc-in [0 0] (get moon-maps 0))
+          (assoc-in [1 0] (get moon-maps 1))
+          (assoc-in [2 0] (get moon-maps 2))
+          (assoc-in [3 0] (get moon-maps 3)))))
 
 (def candidates
   [[[:i :pos :x] [:e :pos :x]]
