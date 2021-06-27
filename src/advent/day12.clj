@@ -37,26 +37,26 @@
           (assoc-in [3 0] (get moon-maps 3)))))
 
 (def candidates
-  [[[:i :pos :x] [:e :pos :x]]
-   [[:i :pos :x] [:g :pos :x]]
-   [[:i :pos :x] [:c :pos :x]]
-   [[:e :pos :x] [:g :pos :x]]
-   [[:e :pos :x] [:c :pos :x]]
-   [[:g :pos :x] [:c :pos :x]]
+  [[[0 0 0] [1 0 0]]
+   [[0 0 0] [2 0 0]]
+   [[0 0 0] [3 0 0]]
+   [[1 0 0] [2 0 0]]
+   [[1 0 0] [3 0 0]]
+   [[2 0 0] [3 0 0]]
 
-   [[:i :pos :y] [:e :pos :y]]
-   [[:i :pos :y] [:g :pos :y]]
-   [[:i :pos :y] [:c :pos :y]]
-   [[:e :pos :y] [:g :pos :y]]
-   [[:e :pos :y] [:c :pos :y]]
-   [[:g :pos :y] [:c :pos :y]]
+   [[0 0 1] [1 0 1]]
+   [[0 0 1] [2 0 1]]
+   [[0 0 1] [3 0 1]]
+   [[1 0 1] [2 0 1]]
+   [[1 0 1] [3 0 1]]
+   [[2 0 1] [3 0 1]]
 
-   [[:i :pos :z] [:e :pos :z]]
-   [[:i :pos :z] [:g :pos :z]]
-   [[:i :pos :z] [:c :pos :z]]
-   [[:e :pos :z] [:g :pos :z]]
-   [[:e :pos :z] [:c :pos :z]]
-   [[:g :pos :z] [:c :pos :z]]])
+   [[0 0 2] [1 0 2]]
+   [[0 0 2] [2 0 2]]
+   [[0 0 2] [3 0 2]]
+   [[1 0 2] [2 0 2]]
+   [[1 0 2] [3 0 2]]
+   [[2 0 2] [3 0 2]]])
 
 (defn moon-getter [moon]
   [(get-in @moon-meld moon) (moon 0) (moon 2)])
@@ -83,4 +83,4 @@
     (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
         (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
 
-(gravity-update all-candidates)
+;(gravity-update all-candidates)
