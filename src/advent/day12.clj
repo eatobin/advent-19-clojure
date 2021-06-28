@@ -80,3 +80,9 @@
         (swap! (get moon-meld moon-1) update-in [1 axis] + moon-1-velocity))))
 
 (gravity-update all-candidates)
+
+(doseq [moon-atom moon-meld
+        :let [[[_ _ _] [x-vel y-vel z-vel]] @moon-atom]]
+  (swap! moon-atom update-in [0 0] + x-vel)
+  (swap! moon-atom update-in [0 1] + y-vel)
+  (swap! moon-atom update-in [0 2] + z-vel))
