@@ -63,20 +63,20 @@
 (def all-candidates
   (vec (map moons-pair candidates)))
 
-;(defn gravity-update [all-candidates]
-;  (for [[moon-vec-0 moon-vec-1] all-candidates
-;        :let [moon-pos-0 (get moon-vec-0 0)
-;              moon-pos-1 (get moon-vec-1 0)
-;              moon-0 (get moon-vec-0 1)
-;              moon-1 (get moon-vec-1 1)
-;              axis (get moon-vec-0 2)
-;              moon-0-velocity (cond (> moon-pos-0 moon-pos-1) -1
-;                                    (> moon-pos-1 moon-pos-0) 1
-;                                    :else 0)
-;              moon-1-velocity (cond (> moon-pos-1 moon-pos-0) -1
-;                                    (> moon-pos-0 moon-pos-1) 1
-;                                    :else 0)]]
-;    (do (swap! moon-meld update-in [moon-0 1 axis] + moon-0-velocity)
-;        (swap! moon-meld update-in [moon-1 1 axis] + moon-1-velocity))))
-;
-;(gravity-update all-candidates)
+(defn gravity-update [all-candidates]
+  (for [[moon-vec-0 moon-vec-1] all-candidates
+        :let [moon-pos-0 (get moon-vec-0 0)
+              moon-pos-1 (get moon-vec-1 0)
+              moon-0 (get moon-vec-0 1)
+              moon-1 (get moon-vec-1 1)
+              axis (get moon-vec-0 2)
+              moon-0-velocity (cond (> moon-pos-0 moon-pos-1) -1
+                                    (> moon-pos-1 moon-pos-0) 1
+                                    :else 0)
+              moon-1-velocity (cond (> moon-pos-1 moon-pos-0) -1
+                                    (> moon-pos-0 moon-pos-1) 1
+                                    :else 0)]]
+    (do (swap! (get moon-meld moon-0) update-in [1 axis] + moon-0-velocity)
+        (swap! (get moon-meld moon-1) update-in [1 axis] + moon-1-velocity))))
+
+(gravity-update all-candidates)
