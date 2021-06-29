@@ -87,10 +87,10 @@
     (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
         (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
 
-;(gravity-update all-candidates)
+(gravity-update all-candidates)
 
-;(doseq [moon-atom moon-meld
-;        :let [[[_ _ _] [x-vel y-vel z-vel]] @moon-atom]]
-;  (swap! moon-atom update-in [0 0] + x-vel)
-;  (swap! moon-atom update-in [0 1] + y-vel)
-;  (swap! moon-atom update-in [0 2] + z-vel))
+;(doseq [moon-map @moon-meld
+;        :let [[[_ _ _] [x-vel y-vel z-vel]] moon-map]]
+;  (swap! moon-map update-in [0 0] + x-vel)
+;  (swap! moon-map update-in [0 1] + y-vel)
+;  (swap! moon-map update-in [0 2] + z-vel))
