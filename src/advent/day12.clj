@@ -21,14 +21,18 @@
 (def moon-maps (into [] (map make-moon-map vcs)))
 
 (def moon-template
-  {:i {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}
-   :e {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}
-   :g {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}
-   :c {:pos {:x 0, :y 0, :z 0},
-       :vel {:x 0, :y 0, :z 0}}})
+  {:i {:name :i,
+       :pos  {:x 0, :y 0, :z 0},
+       :vel  {:x 0, :y 0, :z 0}}
+   :e {:name :e,
+       :pos  {:x 0, :y 0, :z 0},
+       :vel  {:x 0, :y 0, :z 0}}
+   :g {:name :g,
+       :pos  {:x 0, :y 0, :z 0},
+       :vel  {:x 0, :y 0, :z 0}}
+   :c {:name :c,
+       :pos  {:x 0, :y 0, :z 0},
+       :vel  {:x 0, :y 0, :z 0}}})
 
 (def moon-meld
   (atom (->
