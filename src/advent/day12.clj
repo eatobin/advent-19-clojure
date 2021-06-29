@@ -16,73 +16,55 @@
     (map #(str/split % #"="))
     (map #(get % 1))
     (map #(Integer/parseInt %))
-    (into [])))
+    (zipmap [:x :y :z])))
 
 (def moon-maps (into [] (map make-moon-map vcs)))
 
-(def moon-meld
-  [(atom [[0 0 0] [0 0 0]])
-   (atom [[0 0 0] [0 0 0]])
-   (atom [[0 0 0] [0 0 0]])
-   (atom [[0 0 0] [0 0 0]])])
+(def moon-template
+  {:i {:pos {:x 0, :y 0, :z 0},
+       :vel {:x 0, :y 0, :z 0}}
+   :e {:pos {:x 0, :y 0, :z 0},
+       :vel {:x 0, :y 0, :z 0}}
+   :g {:pos {:x 0, :y 0, :z 0},
+       :vel {:x 0, :y 0, :z 0}}
+   :c {:pos {:x 0, :y 0, :z 0},
+       :vel {:x 0, :y 0, :z 0}}})
 
-(do
-  (swap! (get moon-meld 0) assoc-in [0] (get moon-maps 0))
-  (swap! (get moon-meld 1) assoc-in [0] (get moon-maps 1))
-  (swap! (get moon-meld 2) assoc-in [0] (get moon-maps 2))
-  (swap! (get moon-meld 3) assoc-in [0] (get moon-maps 3)))
+(def moon-meld
+  (atom (->
+          moon-template
+          (assoc-in [:i :pos] (get moon-maps 0))
+          (assoc-in [:e :pos] (get moon-maps 1))
+          (assoc-in [:g :pos] (get moon-maps 2))
+          (assoc-in [:c :pos] (get moon-maps 3)))))
 
 (def candidates
-  [[[0 0 0] [1 0 0]]
-   [[0 0 0] [2 0 0]]
-   [[0 0 0] [3 0 0]]
-   [[1 0 0] [2 0 0]]
-   [[1 0 0] [3 0 0]]
-   [[2 0 0] [3 0 0]]
+  [[[:i :pos :x] [:e :pos :x]]
+   [[:i :pos :x] [:g :pos :x]]
+   [[:i :pos :x] [:c :pos :x]]
+   [[:e :pos :x] [:g :pos :x]]
+   [[:e :pos :x] [:c :pos :x]]
+   [[:g :pos :x] [:c :pos :x]]
 
-   [[0 0 1] [1 0 1]]
-   [[0 0 1] [2 0 1]]
-   [[0 0 1] [3 0 1]]
-   [[1 0 1] [2 0 1]]
-   [[1 0 1] [3 0 1]]
-   [[2 0 1] [3 0 1]]
+   [[:i :pos :y] [:e :pos :y]]
+   [[:i :pos :y] [:g :pos :y]]
+   [[:i :pos :y] [:c :pos :y]]
+   [[:e :pos :y] [:g :pos :y]]
+   [[:e :pos :y] [:c :pos :y]]
+   [[:g :pos :y] [:c :pos :y]]
 
-   [[0 0 2] [1 0 2]]
-   [[0 0 2] [2 0 2]]
-   [[0 0 2] [3 0 2]]
-   [[1 0 2] [2 0 2]]
-   [[1 0 2] [3 0 2]]
-   [[2 0 2] [3 0 2]]])
+   [[:i :pos :z] [:e :pos :z]]
+   [[:i :pos :z] [:g :pos :z]]
+   [[:i :pos :z] [:c :pos :z]]
+   [[:e :pos :z] [:g :pos :z]]
+   [[:e :pos :z] [:c :pos :z]]
+   [[:g :pos :z] [:c :pos :z]]])
 
-(defn moon-getter [[moon _ axis]]
-  [(get-in @(get moon-meld moon) [0 axis]) moon axis])
+(defn moon-getter [moon]
+  [(moon 0) (moon 2) (get-in @moon-meld moon)])
 
 (defn moons-pair [moons]
   (vec (map moon-getter moons)))
 
 (def all-candidates
   (vec (map moons-pair candidates)))
-
-(defn gravity-update [all-candidates]
-  (for [[moon-vec-0 moon-vec-1] all-candidates
-        :let [moon-pos-0 (get moon-vec-0 0)
-              moon-pos-1 (get moon-vec-1 0)
-              moon-0 (get moon-vec-0 1)
-              moon-1 (get moon-vec-1 1)
-              axis (get moon-vec-0 2)
-              moon-0-velocity (cond (> moon-pos-0 moon-pos-1) -1
-                                    (> moon-pos-1 moon-pos-0) 1
-                                    :else 0)
-              moon-1-velocity (cond (> moon-pos-1 moon-pos-0) -1
-                                    (> moon-pos-0 moon-pos-1) 1
-                                    :else 0)]]
-    (do (swap! (get moon-meld moon-0) update-in [1 axis] + moon-0-velocity)
-        (swap! (get moon-meld moon-1) update-in [1 axis] + moon-1-velocity))))
-
-(gravity-update all-candidates)
-
-(doseq [moon-atom moon-meld
-        :let [[[_ _ _] [x-vel y-vel z-vel]] @moon-atom]]
-  (swap! moon-atom update-in [0 0] + x-vel)
-  (swap! moon-atom update-in [0 1] + y-vel)
-  (swap! moon-atom update-in [0 2] + z-vel))
