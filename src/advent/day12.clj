@@ -106,4 +106,6 @@
 ;  (swap! moon-meld update-in [name :pos :z] + z-vel))
 
 (doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
-  (prn name x-vel y-vel z-vel))
+  (swap! moon-meld update-in [name :pos :x] + x-vel)
+  (swap! moon-meld update-in [name :pos :y] + y-vel)
+  (swap! moon-meld update-in [name :pos :z] + z-vel))
