@@ -101,4 +101,16 @@
     (swap! moon-meld update-in [name :pos :y] + y-vel)
     (swap! moon-meld update-in [name :pos :z] + z-vel)))
 
+(def steps [apply-gravities apply-velocities])
 
+(apply-gravities)
+(apply-velocities)
+(update-candidates)
+(doall (map #(%) [apply-gravities apply-velocities]))
+
+;(defn run-step []
+;  (doall (map #(%) steps)))
+;
+;(run-step)
+
+(deref moon-meld)
