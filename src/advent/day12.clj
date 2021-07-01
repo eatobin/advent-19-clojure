@@ -71,12 +71,13 @@
   (vec (map moon-getter moons)))
 
 (def all-candidates
-  (vec (map moons-pair candidates)))
+  (atom (vec (map moons-pair candidates))))
 
+(defn update-candidates []
+  (reset! all-candidates (vec (map moons-pair candidates))))
 
-
-(defn gravity-update [all-candidates]
-  (for [[moon-vec-0 moon-vec-1] all-candidates
+(defn apply-gravity [all-candidates]
+  (for [[moon-vec-0 moon-vec-1] @all-candidates
         :let [moon-pos-0 (get moon-vec-0 2)
               moon-pos-1 (get moon-vec-1 2)
               moon-0 (get moon-vec-0 0)
@@ -91,21 +92,13 @@
     (do (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
         (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity))))
 
-(gravity-update all-candidates)
+(defn apply-gravities []
+  (apply-gravity all-candidates))
 
-;(doseq [moon-map @moon-meld
-;        :let [[[_ _ _] [x-vel y-vel z-vel]] moon-map]]
-;  (swap! moon-map update-in [0 0] + x-vel)
-;  (swap! moon-map update-in [0 1] + y-vel)
-;  (swap! moon-map update-in [0 2] + z-vel))
+(defn apply-velocities []
+  (doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
+    (swap! moon-meld update-in [name :pos :x] + x-vel)
+    (swap! moon-meld update-in [name :pos :y] + y-vel)
+    (swap! moon-meld update-in [name :pos :z] + z-vel)))
 
-;(doseq [moon-map @moon-meld
-;        :let [{name :name, {x-vel :x, y-vel :y, z-vel :z} :vel} moon-map]]
-;  (swap! moon-meld update-in [name :pos :x] + x-vel)
-;  (swap! moon-meld update-in [name :pos :y] + y-vel)
-;  (swap! moon-meld update-in [name :pos :z] + z-vel))
 
-(doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
-  (swap! moon-meld update-in [name :pos :x] + x-vel)
-  (swap! moon-meld update-in [name :pos :y] + y-vel)
-  (swap! moon-meld update-in [name :pos :z] + z-vel))
