@@ -99,8 +99,11 @@
 ;  (swap! moon-map update-in [0 1] + y-vel)
 ;  (swap! moon-map update-in [0 2] + z-vel))
 
-(doseq [moon-map @moon-meld
-        :let [{name :name, {x-pos :x, y-pos :y, z-pos :z} :pos, {x-vel :x, y-vel :y, z-vel :z} :vel} moon-map]]
-  (swap! moon-meld update-in [name :pos :x] + x-vel)
-  (swap! moon-meld update-in [name :pos :y] + y-vel)
-  (swap! moon-meld update-in [name :pos :z] + z-vel))
+;(doseq [moon-map @moon-meld
+;        :let [{name :name, {x-vel :x, y-vel :y, z-vel :z} :vel} moon-map]]
+;  (swap! moon-meld update-in [name :pos :x] + x-vel)
+;  (swap! moon-meld update-in [name :pos :y] + y-vel)
+;  (swap! moon-meld update-in [name :pos :z] + z-vel))
+
+(doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
+  (prn name x-vel y-vel z-vel))
