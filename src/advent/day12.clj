@@ -86,8 +86,10 @@
     (swap! moon-meld update-in [moon-0 :vel axis] + moon-0-velocity)
     (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity)))
 
-(defn apply-velocities []
+(defn apply-velocity []
   (doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
     (swap! moon-meld update-in [name :pos :x] + x-vel)
     (swap! moon-meld update-in [name :pos :y] + y-vel)
     (swap! moon-meld update-in [name :pos :z] + z-vel)))
+
+(def one-step [apply-gravity apply-velocity])
