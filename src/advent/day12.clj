@@ -107,12 +107,18 @@
     (swap! moon-meld assoc-in [name :pot :y] (math/abs y-pos))
     (swap! moon-meld assoc-in [name :pot :z] (math/abs z-pos))))
 
+(defn calc-ke []
+  (doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
+    (swap! moon-meld assoc-in [name :kin :x] (math/abs x-vel))
+    (swap! moon-meld assoc-in [name :kin :y] (math/abs y-vel))
+    (swap! moon-meld assoc-in [name :kin :z] (math/abs z-vel))))
+
 (def ten-step-vec
   (vec
     (flatten
       (take 10
             (repeat
-              (interleave [apply-gravity] [apply-velocity] [calc-pe]))))))
+              (interleave [apply-gravity] [apply-velocity] [calc-pe] [calc-ke]))))))
 
 (defn ten-step []
   (map #(%) ten-step-vec))
