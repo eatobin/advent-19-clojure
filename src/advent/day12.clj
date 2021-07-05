@@ -92,19 +92,14 @@
     (swap! moon-meld update-in [name :pos :y] + y-vel)
     (swap! moon-meld update-in [name :pos :z] + z-vel)))
 
-(def one-step-vec [apply-gravity apply-velocity])
+(def ten-step-vec
+  (vec
+    (flatten
+      (take 10
+            (repeat
+              (interleave [apply-gravity] [apply-velocity]))))))
 
-(defn one-step []
-  (map #(%) one-step-vec))
+(defn ten-step []
+  (map #(%) ten-step-vec))
 
-(one-step)
-
-(vec (flatten (take 5 (repeat (interleave [:a] [:b])))))
-
-;(def ten-step-vec
-;  (vec (take 10 (repeat one-step-vec))))
-;
-;(defn ten-step []
-;  (map #(%) ten-step-vec))
-;
-;(ten-step)
+(ten-step)
