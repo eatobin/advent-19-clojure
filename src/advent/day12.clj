@@ -2,7 +2,8 @@
   (:require
     [clojure.data.csv :as csv]
     [clojure.java.io :as io]
-    [clojure.string :as str]))
+    [clojure.string :as str]
+    [clojure.math.numeric-tower :as math]))
 
 ;part a
 (def vcs (with-open [reader (io/reader "resources/day12a.csv")]
@@ -23,16 +24,24 @@
 (def moon-template
   {:i {:name :i,
        :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}}
+       :vel  {:x 0, :y 0, :z 0}
+       :pot  {:x 0, :y 0, :z 0}
+       :kin  {:x 0, :y 0, :z 0}}
    :e {:name :e,
        :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}}
+       :vel  {:x 0, :y 0, :z 0}
+       :pot  {:x 0, :y 0, :z 0}
+       :kin  {:x 0, :y 0, :z 0}}
    :g {:name :g,
        :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}}
+       :vel  {:x 0, :y 0, :z 0}
+       :pot  {:x 0, :y 0, :z 0}
+       :kin  {:x 0, :y 0, :z 0}}
    :c {:name :c,
        :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}}})
+       :vel  {:x 0, :y 0, :z 0}
+       :pot  {:x 0, :y 0, :z 0}
+       :kin  {:x 0, :y 0, :z 0}}})
 
 (def moon-meld
   (atom (->
@@ -92,12 +101,18 @@
     (swap! moon-meld update-in [name :pos :y] + y-vel)
     (swap! moon-meld update-in [name :pos :z] + z-vel)))
 
+(defn calc-pe []
+  (doseq [[_ {name :name {x-pos :x, y-pos :y, z-pos :z} :pos}] @moon-meld]
+    (swap! moon-meld assoc-in [name :pot :x] (math/abs x-pos))
+    (swap! moon-meld assoc-in [name :pot :y] (math/abs y-pos))
+    (swap! moon-meld assoc-in [name :pot :z] (math/abs z-pos))))
+
 (def ten-step-vec
   (vec
     (flatten
       (take 10
             (repeat
-              (interleave [apply-gravity] [apply-velocity]))))))
+              (interleave [apply-gravity] [apply-velocity] [calc-pe]))))))
 
 (defn ten-step []
   (map #(%) ten-step-vec))
