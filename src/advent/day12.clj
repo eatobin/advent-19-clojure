@@ -92,4 +92,9 @@
     (swap! moon-meld update-in [name :pos :y] + y-vel)
     (swap! moon-meld update-in [name :pos :z] + z-vel)))
 
-(def one-step [apply-gravity apply-velocity])
+(def one-step-vec [apply-gravity apply-velocity])
+
+(defn one-step []
+  (map #(%) one-step-vec))
+
+(one-step)
