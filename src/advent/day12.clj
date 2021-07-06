@@ -8,7 +8,7 @@
 ;part a
 (def answer (atom 0))
 
-(def vcs (with-open [reader (io/reader "resources/day12a.csv")]
+(def vcs (with-open [reader (io/reader "resources/day12.csv")]
            (doall
              (csv/read-csv reader))))
 
@@ -139,22 +139,22 @@
   (doseq [[_ {name :name, tot-pot :tot-pot, tot-kin :tot-kin}] @moon-meld]
     (swap! moon-meld assoc-in [name :tot-tot] (* tot-pot tot-kin))))
 
-(def ten-step-vec
+(def one-thousand-step-vec
   (vec
     (flatten
-      (take 10
+      (take 1000
             (repeat
               (interleave [apply-gravity] [apply-velocity] [calc-pe] [calc-ke] [tot-pot] [tot-kin] [tot-tot]))))))
 
-(defn ten-step []
-  (doall (map #(%) ten-step-vec)))
+(defn one-thousand-step []
+  (doall (map #(%) one-thousand-step-vec)))
 
 (defn calc-answer []
   (doseq [[_ {tot-tot :tot-tot}] @moon-meld]
     (swap! answer + tot-tot)))
 
 (defn step-n-calc []
-  (doall (map #(%) [ten-step calc-answer])))
+  (doall (map #(%) [one-thousand-step calc-answer])))
 
 (step-n-calc)
 
