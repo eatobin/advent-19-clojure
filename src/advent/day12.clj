@@ -6,6 +6,8 @@
     [clojure.math.numeric-tower :as math]))
 
 ;part a
+(def answer (atom 0))
+
 (def vcs (with-open [reader (io/reader "resources/day12a.csv")]
            (doall
              (csv/read-csv reader))))
@@ -28,28 +30,32 @@
        :pot     {:x 0, :y 0, :z 0}
        :kin     {:x 0, :y 0, :z 0}
        :tot-pot 0
-       :tot-kin 0}
+       :tot-kin 0
+       :tot-tot 0}
    :e {:name    :e,
        :pos     {:x 0, :y 0, :z 0}
        :vel     {:x 0, :y 0, :z 0}
        :pot     {:x 0, :y 0, :z 0}
        :kin     {:x 0, :y 0, :z 0}
        :tot-pot 0
-       :tot-kin 0}
+       :tot-kin 0
+       :tot-tot 0}
    :g {:name    :g,
        :pos     {:x 0, :y 0, :z 0}
        :vel     {:x 0, :y 0, :z 0}
        :pot     {:x 0, :y 0, :z 0}
        :kin     {:x 0, :y 0, :z 0}
        :tot-pot 0
-       :tot-kin 0}
+       :tot-kin 0
+       :tot-tot 0}
    :c {:name    :c,
        :pos     {:x 0, :y 0, :z 0}
        :vel     {:x 0, :y 0, :z 0}
        :pot     {:x 0, :y 0, :z 0}
        :kin     {:x 0, :y 0, :z 0}
        :tot-pot 0
-       :tot-kin 0}})
+       :tot-kin 0
+       :tot-tot 0}})
 
 (def moon-meld
   (atom (->
@@ -104,39 +110,52 @@
     (swap! moon-meld update-in [moon-1 :vel axis] + moon-1-velocity)))
 
 (defn apply-velocity []
-  (doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
+  (doseq [[_ {name :name, {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
     (swap! moon-meld update-in [name :pos :x] + x-vel)
     (swap! moon-meld update-in [name :pos :y] + y-vel)
     (swap! moon-meld update-in [name :pos :z] + z-vel)))
 
 (defn calc-pe []
-  (doseq [[_ {name :name {x-pos :x, y-pos :y, z-pos :z} :pos}] @moon-meld]
+  (doseq [[_ {name :name, {x-pos :x, y-pos :y, z-pos :z} :pos}] @moon-meld]
     (swap! moon-meld assoc-in [name :pot :x] (math/abs x-pos))
     (swap! moon-meld assoc-in [name :pot :y] (math/abs y-pos))
     (swap! moon-meld assoc-in [name :pot :z] (math/abs z-pos))))
 
 (defn calc-ke []
-  (doseq [[_ {name :name {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
+  (doseq [[_ {name :name, {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
     (swap! moon-meld assoc-in [name :kin :x] (math/abs x-vel))
     (swap! moon-meld assoc-in [name :kin :y] (math/abs y-vel))
     (swap! moon-meld assoc-in [name :kin :z] (math/abs z-vel))))
 
 (defn tot-pot []
-  (doseq [[_ {name :name {x-pot :x, y-pot :y, z-pot :z} :pot}] @moon-meld]
+  (doseq [[_ {name :name, {x-pot :x, y-pot :y, z-pot :z} :pot}] @moon-meld]
     (swap! moon-meld assoc-in [name :tot-pot] (+ x-pot y-pot z-pot))))
 
 (defn tot-kin []
-  (doseq [[_ {name :name {x-kin :x, y-kin :y, z-kin :z} :kin}] @moon-meld]
+  (doseq [[_ {name :name, {x-kin :x, y-kin :y, z-kin :z} :kin}] @moon-meld]
     (swap! moon-meld assoc-in [name :tot-kin] (+ x-kin y-kin z-kin))))
+
+(defn tot-tot []
+  (doseq [[_ {name :name, tot-pot :tot-pot, tot-kin :tot-kin}] @moon-meld]
+    (swap! moon-meld assoc-in [name :tot-tot] (* tot-pot tot-kin))))
 
 (def ten-step-vec
   (vec
     (flatten
       (take 10
             (repeat
-              (interleave [apply-gravity] [apply-velocity] [calc-pe] [calc-ke] [tot-pot] [tot-kin]))))))
+              (interleave [apply-gravity] [apply-velocity] [calc-pe] [calc-ke] [tot-pot] [tot-kin] [tot-tot]))))))
 
 (defn ten-step []
-  (map #(%) ten-step-vec))
+  (doall (map #(%) ten-step-vec)))
 
-(ten-step)
+(defn calc-answer []
+  (doseq [[_ {tot-tot :tot-tot}] @moon-meld]
+    (swap! answer + tot-tot)))
+
+(defn step-n-calc []
+  (doall (map #(%) [ten-step calc-answer])))
+
+(step-n-calc)
+
+(println @answer)
