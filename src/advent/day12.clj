@@ -22,26 +22,34 @@
 (def moon-maps (into [] (map make-moon-map vcs)))
 
 (def moon-template
-  {:i {:name :i,
-       :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}
-       :pot  {:x 0, :y 0, :z 0}
-       :kin  {:x 0, :y 0, :z 0}}
-   :e {:name :e,
-       :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}
-       :pot  {:x 0, :y 0, :z 0}
-       :kin  {:x 0, :y 0, :z 0}}
-   :g {:name :g,
-       :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}
-       :pot  {:x 0, :y 0, :z 0}
-       :kin  {:x 0, :y 0, :z 0}}
-   :c {:name :c,
-       :pos  {:x 0, :y 0, :z 0},
-       :vel  {:x 0, :y 0, :z 0}
-       :pot  {:x 0, :y 0, :z 0}
-       :kin  {:x 0, :y 0, :z 0}}})
+  {:i {:name    :i,
+       :pos     {:x 0, :y 0, :z 0}
+       :vel     {:x 0, :y 0, :z 0}
+       :pot     {:x 0, :y 0, :z 0}
+       :kin     {:x 0, :y 0, :z 0}
+       :tot-pot 0
+       :tot-kin 0}
+   :e {:name    :e,
+       :pos     {:x 0, :y 0, :z 0}
+       :vel     {:x 0, :y 0, :z 0}
+       :pot     {:x 0, :y 0, :z 0}
+       :kin     {:x 0, :y 0, :z 0}
+       :tot-pot 0
+       :tot-kin 0}
+   :g {:name    :g,
+       :pos     {:x 0, :y 0, :z 0}
+       :vel     {:x 0, :y 0, :z 0}
+       :pot     {:x 0, :y 0, :z 0}
+       :kin     {:x 0, :y 0, :z 0}
+       :tot-pot 0
+       :tot-kin 0}
+   :c {:name    :c,
+       :pos     {:x 0, :y 0, :z 0}
+       :vel     {:x 0, :y 0, :z 0}
+       :pot     {:x 0, :y 0, :z 0}
+       :kin     {:x 0, :y 0, :z 0}
+       :tot-pot 0
+       :tot-kin 0}})
 
 (def moon-meld
   (atom (->
@@ -113,12 +121,20 @@
     (swap! moon-meld assoc-in [name :kin :y] (math/abs y-vel))
     (swap! moon-meld assoc-in [name :kin :z] (math/abs z-vel))))
 
+(defn tot-pot []
+  (doseq [[_ {name :name {x-pot :x, y-pot :y, z-pot :z} :pot}] @moon-meld]
+    (swap! moon-meld assoc-in [name :tot-pot] (+ x-pot y-pot z-pot))))
+
+(defn tot-kin []
+  (doseq [[_ {name :name {x-kin :x, y-kin :y, z-kin :z} :kin}] @moon-meld]
+    (swap! moon-meld assoc-in [name :tot-kin] (+ x-kin y-kin z-kin))))
+
 (def ten-step-vec
   (vec
     (flatten
       (take 10
             (repeat
-              (interleave [apply-gravity] [apply-velocity] [calc-pe] [calc-ke]))))))
+              (interleave [apply-gravity] [apply-velocity] [calc-pe] [calc-ke] [tot-pot] [tot-kin]))))))
 
 (defn ten-step []
   (map #(%) ten-step-vec))
