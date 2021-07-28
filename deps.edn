@@ -1,4 +1,4 @@
-{:paths ["src" "resources"]
+{:paths ["src" "test" "resources" "resources-test"]
  :deps  {cheshire/cheshire              {:mvn/version "5.10.0"}
          org.clojure/data.csv           {:mvn/version "1.0.0"}
          org.clojure/math.numeric-tower {:mvn/version "0.0.4"}
