@@ -22,6 +22,22 @@
 
 (println modules-sum)
 
+(defn fuel [x]
+  (max 0
+       (- (Math/floor (/ x 3)) 2)))
+
+(def modules-sum-je (->>
+                      "resources/day01.txt"
+                      (slurp)
+                      (str/split-lines)
+                      (map #(Integer/parseInt %))
+                      (into [])
+                      (map fuel)
+                      (reduce +)
+                      (int)))
+
+(println modules-sum-je)
+
 ;; 3337766
 
 ;part b
@@ -49,6 +65,23 @@
 
 (println modules-gas-sum)
 
+(defn total-fuel [x]
+  (apply + (take-while pos? (next (iterate fuel x)))))
+
+(def modules-gas-sum-je (->>
+                          "resources/day01.txt"
+                          (slurp)
+                          (str/split-lines)
+                          (map #(Integer/parseInt %))
+                          (into [])
+                          (map total-fuel)
+                          (reduce +)
+                          (int)))
+
+(println modules-gas-sum-je)
+
 ;; 5003788
+
+(int (reduce + (map total-fuel (map read-string (clojure.string/split-lines (slurp "resources/day01.txt"))))))
 
 (ostest/instrument)
