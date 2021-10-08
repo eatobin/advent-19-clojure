@@ -6,27 +6,27 @@
 
 (s/conform ::dom/module
            42)
-(s/conform ::dom/gas
+(s/conform ::dom/fuel
            42)
 
-(deftest gas-test
+(deftest fuel-test
   (is (= 2
-         (day01/gas 12)))
+         (day01/fuel 12)))
   (is (= 2
-         (day01/gas 14)))
+         (day01/fuel 14)))
   (is (= 654
-         (day01/gas 1969)))
+         (day01/fuel 1969)))
   (is (= 33583
-         (day01/gas 100756))))
-(s/conform ::dom/gas
-           (day01/gas 12))
+         (day01/fuel 100756))))
+(s/conform ::dom/fuel
+           (day01/fuel 12))
 
-(deftest gas-plus-test
+(deftest fuel-plus-test
   (is (= 2
-         (day01/gas-plus 14)))
+         (day01/fuel-plus 14)))
   (is (= 966
-         (day01/gas-plus 1969)))
+         (day01/fuel-plus 1969)))
   (is (= 50346
-         (day01/gas-plus 100756))))
-(s/conform ::dom/gas
-           (day01/gas-plus 14))
+         (day01/fuel-plus 100756))))
+(s/conform ::dom/fuel
+           (day01/fuel-plus 14))
