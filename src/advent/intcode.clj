@@ -329,8 +329,8 @@
 ;                relative-base)
 ;       0))
 
-(defn univ [{:keys [value pointer a-b-c memory relative-base]}]
-  (if value (memory (+ a-b-c pointer))
+(defn univ [{:keys [value? pointer a-b-c memory relative-base]}]
+  (if value? (memory (+ a-b-c pointer))
             (get memory (+
                           (memory (+ a-b-c pointer))
                           relative-base)
