@@ -323,15 +323,15 @@
              :recur?        recur?})
         "Unknown opcode"))))
 
-;(defn univ [{:keys [pointer a-b-c memory relative-base]}]
-;  (get memory (+
-;                (memory (+ a-b-c pointer))
-;                relative-base)
-;       0))
+(defn at-address [{:keys [pointer a-b-c memory relative-base]}]
+  (+
+    (memory (+ a-b-c pointer))
+    relative-base))
 
-(defn univ [{:keys [value? pointer a-b-c memory relative-base]}]
-  (if value? (memory (+ a-b-c pointer))
-            (get memory (+
-                          (memory (+ a-b-c pointer))
-                          relative-base)
-                 0)))
+(defn at-address-is-pointer [{:keys [pointer a-b-c memory relative-base]}]
+  (get memory (at-address {:pointer       pointer
+                           :a-b-c         a-b-c
+                           :memory        memory
+                           :relative-base relative-base}
+                          )
+       0))
