@@ -324,9 +324,13 @@
         "Unknown opcode"))))
 
 (defn at-address [{:keys [pointer a-b-c memory relative-base]}]
-  (+
-    (memory (+ a-b-c pointer))
-    relative-base))
+  (let [a-b-c (cond
+                (= :c a-b-c) 1
+                (= :b a-b-c) 2
+                :else 3)]
+    (+
+      (memory (+ a-b-c pointer))
+      relative-base)))
 
 (defn at-address-is-pointer [{:keys [pointer a-b-c memory relative-base]}]
   (get memory (at-address {:pointer       pointer
