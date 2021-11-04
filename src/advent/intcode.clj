@@ -42,16 +42,18 @@
                      )
        0))
 
-(defn param-maker [{:keys [instruction pointer memory relative-base]}]
-  (case (instruction :a)
-    0 (a-i-v {:pointer       pointer
-              :a-b-c         :a
-              :memory        memory
-              :relative-base 0})
-    2 (a-i-v {:pointer       pointer
-              :a-b-c         :a
-              :memory        memory
-              :relative-base relative-base})))
+(defn param-maker [{:keys [a-b-c instruction pointer memory relative-base]}]
+  (let [target (str (name a-b-c) (instruction :a))]
+    (case target
+      "a0" (a-i-v {:pointer       pointer
+                   :a-b-c         :a
+                   :memory        memory
+                   :relative-base 0})
+      "a2" (a-i-v {:pointer       pointer
+                   :a-b-c         :a
+                   :memory        memory
+                   :relative-base relative-base})
+      "invalid param")))
 
 ;(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
 ;  (case (instruction :e)
