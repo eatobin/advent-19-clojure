@@ -42,6 +42,17 @@
                      )
        0))
 
+(defn param-maker [{:keys [instruction pointer memory relative-base]}]
+  (case (instruction :a)
+    0 (a-i-v {:pointer       pointer
+              :a-b-c         :a
+              :memory        memory
+              :relative-base 0})
+    2 (a-i-v {:pointer       pointer
+              :a-b-c         :a
+              :memory        memory
+              :relative-base relative-base})))
+
 ;(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
 ;  (case (instruction :e)
 ;    (1 2 4 5 6 7 8 9)
