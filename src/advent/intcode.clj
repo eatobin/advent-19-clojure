@@ -87,226 +87,250 @@
                         :relative-base 0})
       "invalid param")))
 
-;(defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
-;  (if stopped?
-;    {:input         input
-;     :output        output
-;     :phase         phase
-;     :pointer       pointer
-;     :relative-base relative-base
-;     :memory        memory
-;     :stopped?      stopped?
-;     :recur?        recur?}
-;    (let [instruction (pad-5 (memory pointer))]
-;      (case (instruction :e)
-;        9 (if (=
-;                (instruction :d)
-;                9)
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       pointer
-;             :relative-base relative-base
-;             :memory        memory
-;             :stopped?      true
-;             :recur?        recur?}
-;            (recur
-;              {:input         input
-;               :output        output
-;               :phase         phase
-;               :pointer       (+ 2 pointer)
-;               :relative-base (+
-;                                (param-maker-c {:instruction   instruction
-;                                                :pointer       pointer
-;                                                :memory        memory
-;                                                :relative-base relative-base})
-;                                relative-base)
-;               :memory        memory
-;               :stopped?      stopped?
-;               :recur?        recur?}))
-;        1 (recur
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       (+ 4 pointer)
-;             :relative-base relative-base
-;             :memory        (assoc memory (param-maker-a {:instruction   instruction
-;                                                          :pointer       pointer
-;                                                          :memory        memory
-;                                                          :relative-base relative-base})
-;                                          (+
-;                                            (param-maker-c {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})
-;                                            (param-maker-b {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})))
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        2 (recur
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       (+ 4 pointer)
-;             :relative-base relative-base
-;             :memory        (assoc memory (param-maker-a {:instruction   instruction
-;                                                          :pointer       pointer
-;                                                          :memory        memory
-;                                                          :relative-base relative-base})
-;                                          (*
-;                                            (param-maker-c {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})
-;                                            (param-maker-b {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})))
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        3 (recur
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       (+ 2 pointer)
-;             :relative-base relative-base
-;             :memory        (if (some? phase)
-;                              (if (=
-;                                    0
-;                                    pointer)
-;                                (assoc memory (param-maker-c {:instruction   instruction
-;                                                              :pointer       pointer
-;                                                              :memory        memory
-;                                                              :relative-base relative-base})
-;                                              phase)
-;                                (assoc memory (param-maker-c {:instruction   instruction
-;                                                              :pointer       pointer
-;                                                              :memory        memory
-;                                                              :relative-base relative-base})
-;                                              input))
-;                              (assoc memory (param-maker-c {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})
-;                                            input))
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        4 (if recur?
-;            (recur
-;              {:input         input
-;               :output        (param-maker-c {:instruction   instruction
-;                                              :pointer       pointer
-;                                              :memory        memory
-;                                              :relative-base relative-base})
-;               :phase         phase
-;               :pointer       (+ 2 pointer)
-;               :relative-base relative-base
-;               :memory        memory
-;               :stopped?      stopped?
-;               :recur?        recur?})
-;            {:input         input
-;             :output        (param-maker-c {:instruction   instruction
-;                                            :pointer       pointer
-;                                            :memory        memory
-;                                            :relative-base relative-base})
-;             :phase         phase
-;             :pointer       (+ 2 pointer)
-;             :relative-base relative-base
-;             :memory        memory
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        5 (recur
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       (if (=
-;                                  0
-;                                  (param-maker-c {:instruction   instruction
-;                                                  :pointer       pointer
-;                                                  :memory        memory
-;                                                  :relative-base relative-base}))
-;                              (+ 3 pointer)
-;                              (param-maker-b {:instruction   instruction
-;                                              :pointer       pointer
-;                                              :memory        memory
-;                                              :relative-base relative-base}))
-;             :relative-base relative-base
-;             :memory        memory
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        6 (recur
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       (if (not=
-;                                  0
-;                                  (param-maker-c {:instruction   instruction
-;                                                  :pointer       pointer
-;                                                  :memory        memory
-;                                                  :relative-base relative-base}))
-;                              (+ 3 pointer)
-;                              (param-maker-b {:instruction   instruction
-;                                              :pointer       pointer
-;                                              :memory        memory
-;                                              :relative-base relative-base}))
-;             :relative-base relative-base
-;             :memory        memory
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        7 (recur
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       (+ 4 pointer)
-;             :relative-base relative-base
-;             :memory        (if (<
-;                                  (param-maker-c {:instruction   instruction
-;                                                  :pointer       pointer
-;                                                  :memory        memory
-;                                                  :relative-base relative-base})
-;                                  (param-maker-b {:instruction   instruction
-;                                                  :pointer       pointer
-;                                                  :memory        memory
-;                                                  :relative-base relative-base}))
-;                              (assoc memory (param-maker-a {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})
-;                                            1)
-;                              (assoc memory (param-maker-a {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})
-;                                            0))
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        8 (recur
-;            {:input         input
-;             :output        output
-;             :phase         phase
-;             :pointer       (+ 4 pointer)
-;             :relative-base relative-base
-;             :memory        (if (=
-;                                  (param-maker-c {:instruction   instruction
-;                                                  :pointer       pointer
-;                                                  :memory        memory
-;                                                  :relative-base relative-base})
-;                                  (param-maker-b {:instruction   instruction
-;                                                  :pointer       pointer
-;                                                  :memory        memory
-;                                                  :relative-base relative-base}))
-;                              (assoc memory (param-maker-a {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})
-;                                            1)
-;                              (assoc memory (param-maker-a {:instruction   instruction
-;                                                            :pointer       pointer
-;                                                            :memory        memory
-;                                                            :relative-base relative-base})
-;                                            0))
-;             :stopped?      stopped?
-;             :recur?        recur?})
-;        "Unknown opcode"))))
+(defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
+  (if stopped?
+    {:input         input
+     :output        output
+     :phase         phase
+     :pointer       pointer
+     :relative-base relative-base
+     :memory        memory
+     :stopped?      stopped?
+     :recur?        recur?}
+    (let [instruction (pad-5 (memory pointer))]
+      (case (instruction :e)
+        9 (if (=
+                (instruction :d)
+                9)
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       pointer
+             :relative-base relative-base
+             :memory        memory
+             :stopped?      true
+             :recur?        recur?}
+            (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (+ 2 pointer)
+               :relative-base (+
+                                (param-maker {:a-b-c         :c
+                                              :instruction   instruction
+                                              :pointer       pointer
+                                              :memory        memory
+                                              :relative-base relative-base})
+                                relative-base)
+               :memory        memory
+               :stopped?      stopped?
+               :recur?        recur?}))
+        1 (recur
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       (+ 4 pointer)
+             :relative-base relative-base
+             :memory        (assoc memory (param-maker {:a-b-c         :a
+                                                        :instruction   instruction
+                                                        :pointer       pointer
+                                                        :memory        memory
+                                                        :relative-base relative-base})
+                                          (+
+                                            (param-maker {:a-b-c         :c
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})
+                                            (param-maker {:a-b-c         :b
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})))
+             :stopped?      stopped?
+             :recur?        recur?})
+        2 (recur
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       (+ 4 pointer)
+             :relative-base relative-base
+             :memory        (assoc memory (param-maker {:a-b-c         :a
+                                                        :instruction   instruction
+                                                        :pointer       pointer
+                                                        :memory        memory
+                                                        :relative-base relative-base})
+                                          (*
+                                            (param-maker {:a-b-c         :c
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})
+                                            (param-maker {:a-b-c         :b
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})))
+             :stopped?      stopped?
+             :recur?        recur?})
+        3 (recur
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       (+ 2 pointer)
+             :relative-base relative-base
+             :memory        (if (some? phase)
+                              (if (=
+                                    0
+                                    pointer)
+                                (assoc memory (param-maker {:a-b-c         :c
+                                                            :instruction   instruction
+                                                            :pointer       pointer
+                                                            :memory        memory
+                                                            :relative-base relative-base})
+                                              phase)
+                                (assoc memory (param-maker {:a-b-c         :c
+                                                            :instruction   instruction
+                                                            :pointer       pointer
+                                                            :memory        memory
+                                                            :relative-base relative-base})
+                                              input))
+                              (assoc memory (param-maker {:a-b-c         :c
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})
+                                            input))
+             :stopped?      stopped?
+             :recur?        recur?})
+        4 (if recur?
+            (recur
+              {:input         input
+               :output        (param-maker {:a-b-c         :c
+                                            :instruction   instruction
+                                            :pointer       pointer
+                                            :memory        memory
+                                            :relative-base relative-base})
+               :phase         phase
+               :pointer       (+ 2 pointer)
+               :relative-base relative-base
+               :memory        memory
+               :stopped?      stopped?
+               :recur?        recur?})
+            {:input         input
+             :output        (param-maker {:a-b-c         :c
+                                          :instruction   instruction
+                                          :pointer       pointer
+                                          :memory        memory
+                                          :relative-base relative-base})
+             :phase         phase
+             :pointer       (+ 2 pointer)
+             :relative-base relative-base
+             :memory        memory
+             :stopped?      stopped?
+             :recur?        recur?})
+        5 (recur
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       (if (=
+                                  0
+                                  (param-maker {:a-b-c         :c
+                                                :instruction   instruction
+                                                :pointer       pointer
+                                                :memory        memory
+                                                :relative-base relative-base}))
+                              (+ 3 pointer)
+                              (param-maker {:a-b-c         :b
+                                            :instruction   instruction
+                                            :pointer       pointer
+                                            :memory        memory
+                                            :relative-base relative-base}))
+             :relative-base relative-base
+             :memory        memory
+             :stopped?      stopped?
+             :recur?        recur?})
+        6 (recur
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       (if (not=
+                                  0
+                                  (param-maker {:a-b-c         :c
+                                                :instruction   instruction
+                                                :pointer       pointer
+                                                :memory        memory
+                                                :relative-base relative-base}))
+                              (+ 3 pointer)
+                              (param-maker {:a-b-c         :b
+                                            :instruction   instruction
+                                            :pointer       pointer
+                                            :memory        memory
+                                            :relative-base relative-base}))
+             :relative-base relative-base
+             :memory        memory
+             :stopped?      stopped?
+             :recur?        recur?})
+        7 (recur
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       (+ 4 pointer)
+             :relative-base relative-base
+             :memory        (if (<
+                                  (param-maker {:a-b-c         :c
+                                                :instruction   instruction
+                                                :pointer       pointer
+                                                :memory        memory
+                                                :relative-base relative-base})
+                                  (param-maker {:a-b-c         :b
+                                                :instruction   instruction
+                                                :pointer       pointer
+                                                :memory        memory
+                                                :relative-base relative-base}))
+                              (assoc memory (param-maker {:a-b-c         :a
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})
+                                            1)
+                              (assoc memory (param-maker {:a-b-c         :a
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})
+                                            0))
+             :stopped?      stopped?
+             :recur?        recur?})
+        8 (recur
+            {:input         input
+             :output        output
+             :phase         phase
+             :pointer       (+ 4 pointer)
+             :relative-base relative-base
+             :memory        (if (=
+                                  (param-maker {:a-b-c         :c
+                                                :instruction   instruction
+                                                :pointer       pointer
+                                                :memory        memory
+                                                :relative-base relative-base})
+                                  (param-maker {:a-b-c         :b
+                                                :instruction   instruction
+                                                :pointer       pointer
+                                                :memory        memory
+                                                :relative-base relative-base}))
+                              (assoc memory (param-maker {:a-b-c         :a
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})
+                                            1)
+                              (assoc memory (param-maker {:a-b-c         :a
+                                                          :instruction   instruction
+                                                          :pointer       pointer
+                                                          :memory        memory
+                                                          :relative-base relative-base})
+                                            0))
+             :stopped?      stopped?
+             :recur?        recur?})
+        "Unknown opcode"))))
