@@ -24,7 +24,7 @@
             (- (byte character) 48))))
 
 ;address-is-value
-(defn a-i-v [pointer a-b-c memory relative-base]
+(defn a-i-v [{:keys [pointer a-b-c memory relative-base]}]
   (let [a-b-c (cond
                 (= :c a-b-c) 1
                 (= :b a-b-c) 2
@@ -34,8 +34,12 @@
       relative-base)))
 
 ;address-is-pointer
-(defn a-i-p [pointer a-b-c memory relative-base]
-  (get memory (a-i-v pointer a-b-c memory relative-base)
+(defn a-i-p [{:keys [pointer a-b-c memory relative-base]}]
+  (get memory (a-i-v {:pointer       pointer
+                      :a-b-c         a-b-c
+                      :memory        memory
+                      :relative-base relative-base}
+                     )
        0))
 
 ;(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
