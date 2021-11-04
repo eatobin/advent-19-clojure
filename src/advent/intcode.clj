@@ -43,68 +43,50 @@
        0))
 
 (defn param-maker [{:keys [a-b-c instruction pointer memory relative-base]}]
-  (let [target (str (name a-b-c) (instruction a-b-c))]
+  (let [target (str (name a-b-c) (instruction a-b-c) (and (= a-b-c :c) (= (instruction :e) 3)))]
     (case target
-      "a0" (a-i-v {:pointer       pointer
-                   :a-b-c         a-b-c
-                   :memory        memory
-                   :relative-base 0})
-      "a2" (a-i-v {:pointer       pointer
-                   :a-b-c         a-b-c
-                   :memory        memory
-                   :relative-base relative-base})
-      "b0" (a-i-p {:pointer       pointer
-                   :a-b-c         a-b-c
-                   :memory        memory
-                   :relative-base 0})
-      "b1" (a-i-v {:pointer       pointer
-                   :a-b-c         a-b-c
-                   :memory        memory
-                   :relative-base 0})
-      "b2" (a-i-v {:pointer       pointer
-                   :a-b-c         a-b-c
-                   :memory        memory
-                   :relative-base relative-base})
+      "a0false" (a-i-v {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base 0})
+      "a2false" (a-i-v {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base relative-base})
+      "b0false" (a-i-p {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base 0})
+      "b1false" (a-i-v {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base 0})
+      "b2false" (a-i-v {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base relative-base})
+      "c0true" (a-i-v {:pointer       pointer
+                       :a-b-c         a-b-c
+                       :memory        memory
+                       :relative-base 0})
+      "c0false" (a-i-p {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base 0})
+      "c2true" (a-i-v {:pointer       pointer
+                       :a-b-c         a-b-c
+                       :memory        memory
+                       :relative-base relative-base})
+      "c2false" (a-i-p {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base relative-base})
+      "c1false" (a-i-v {:pointer       pointer
+                        :a-b-c         a-b-c
+                        :memory        memory
+                        :relative-base 0})
       "invalid param")))
 
-;(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :e)
-;    (1 2 4 5 6 7 8 9)
-;    (case (instruction :c)
-;      0 (c-p-r-c-r-r {:pointer       pointer
-;                      :memory        memory
-;                      :relative-base 0})
-;      1 (c-p-w-c-i-r {:pointer pointer
-;                      :memory  memory})
-;      2 (c-p-r-c-r-r {:pointer       pointer
-;                      :memory        memory
-;                      :relative-base relative-base}))
-;    3 (case (instruction :c)
-;        0 (c-p-w-c-i-r {:pointer pointer
-;                        :memory  memory})
-;        2 (c-r-w {:pointer       pointer
-;                  :memory        memory
-;                  :relative-base relative-base}))))
-;
-;(defn param-maker-b [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :b)
-;    0 (b-p-r-b-r-r {:pointer       pointer
-;                    :memory        memory
-;                    :relative-base 0})
-;    1 (b-i-r {:pointer pointer
-;              :memory  memory})
-;    2 (b-p-r-b-r-r {:pointer       pointer
-;                    :memory        memory
-;                    :relative-base relative-base})))
-;
-;(defn param-maker-a [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :a)
-;    0 (a-p-w {:pointer pointer
-;              :memory  memory})
-;    2 (a-r-w {:pointer       pointer
-;              :memory        memory
-;              :relative-base relative-base})))
-;
 ;(defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
 ;  (if stopped?
 ;    {:input         input
