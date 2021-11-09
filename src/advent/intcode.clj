@@ -41,30 +41,44 @@
 
 (defn a-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :a)
-    0 (get memory (+ pointer offset-a) 0)
-    2 (get memory (+ (memory (+ pointer offset-a)) relative-base) 0)))
+    ; a-p-w
+    0 (memory (+ pointer offset-a))
+    ; a-r-w
+    2 (+ (memory (+ pointer offset-a)) relative-base)))
 
 (defn b-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :b)
+    ; b-p-r
     0 (get memory (memory (+ pointer offset-b)) 0)
-    1 (get memory (+ pointer offset-b) 0)
+    ;b-i-r
+    1 (memory (+ pointer offset-b))
+    ; b-r-r
     2 (get memory (+ (memory (+ pointer offset-b)) relative-base) 0)))
-
-;(defn c-param [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :c)
-;    0 (get memory (memory (+ pointer (calculate-offset-c))) 0)
-;    1 (get memory (+ pointer (calculate-offset-c)) 0)
-;    2 (get memory (+ pointer (calculate-offset-c relative-base)) 0)))
 
 (defn c-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :e)
     3 (case (instruction :c)
-        0 (get memory (+ pointer offset-c) 0)
+        ; c-p-w
+        0 (memory (+ pointer offset-c))
+        ; c-r-w
         2 (+ (memory (+ pointer offset-c)) relative-base))
     (case (instruction :c)
+      ; c-p-r
       0 (get memory (memory (+ pointer offset-c)) 0)
-      1 (get memory (+ pointer offset-c) 0)
+      ; c-i-r
+      1 (memory (+ pointer offset-c))
+      ; c-r-r
       2 (get memory (+ (memory (+ pointer offset-c)) relative-base) 0))))
+
+;(defn c-param [{:keys [instruction pointer memory relative-base]}]
+;  (case (instruction :e)
+;    (1 2 4 5 6 7 8 9) (case (instruction :c)
+;                        0 (get memory (memory (+ pointer offset-c)) 0)
+;                        1 (get memory (+ pointer offset-c) 0)
+;                        2 (get memory (+ (memory (+ pointer offset-c)) relative-base) 0))
+;    3 (case (instruction :c)
+;        0 (get memory (+ pointer offset-c) 0)
+;        2 (+ (memory (+ pointer offset-c)) relative-base))))
 
 ;(comment
 ;  (def memory {0 0, 1 11, 2 22, 3 3, 4 44, 11 111, 22 222}))
