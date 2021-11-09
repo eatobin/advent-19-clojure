@@ -50,11 +50,21 @@
     1 (get memory (+ pointer (calculate-offset-b)) 0)
     2 (get memory (+ pointer (calculate-offset-b relative-base)) 0)))
 
+;(defn c-param [{:keys [instruction pointer memory relative-base]}]
+;  (case (instruction :c)
+;    0 (get memory (memory (+ pointer (calculate-offset-c))) 0)
+;    1 (get memory (+ pointer (calculate-offset-c)) 0)
+;    2 (get memory (+ pointer (calculate-offset-c relative-base)) 0)))
+
 (defn c-param [{:keys [instruction pointer memory relative-base]}]
-  (case (instruction :c)
-    0 (get memory (memory (+ pointer (calculate-offset-c))) 0)
-    1 (get memory (+ pointer (calculate-offset-c)) 0)
-    2 (get memory (+ pointer (calculate-offset-c relative-base)) 0)))
+  (case (instruction :e)
+    3 (case (instruction :c)
+        0 (get memory (+ pointer (calculate-offset-c)) 0)
+        2 (get memory (+ pointer (calculate-offset-c relative-base)) 0))
+    (case (instruction :c)
+      0 (get memory (memory (+ pointer (calculate-offset-c))) 0)
+      1 (get memory (+ pointer (calculate-offset-c)) 0)
+      2 (get memory (+ pointer (calculate-offset-c relative-base)) 0))))
 
 (comment
   (def memory {0 0, 1 11, 2 22, 3 3, 4 44, 11 111, 22 222}))
@@ -64,9 +74,9 @@
 ;  (memory (+ 3 pointer)))
 ;
 ;; y2, y9
-;(defn b-p-r-b-r-r [{:keys [pointer memory relative-base]}]
-;  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
-;
+(defn b-p-r-b-r-r [{:keys [pointer memory relative-base]}]
+  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
+
 ;; y3, y10
 ;(defn c-p-r-c-r-r [{:keys [pointer memory relative-base]}]
 ;  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
