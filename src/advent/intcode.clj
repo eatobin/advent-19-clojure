@@ -97,7 +97,6 @@
 ;(defn c-r-w [{:keys [pointer memory relative-base]}]
 ;  (+ (memory (+ 1 pointer)) relative-base))
 ;
-;TODO - get this into c-param
 ;(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
 ;  (case (instruction :e)
 ;    (1 2 4 5 6 7 8 9) (case (instruction :c)
