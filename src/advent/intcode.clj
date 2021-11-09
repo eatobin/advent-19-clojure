@@ -38,7 +38,7 @@
   (case (instruction :b)
     ; b-p-r
     0 (get memory (memory (+ pointer offset-b)) 0)
-    ;b-i-r
+    ; b-i-r
     1 (memory (+ pointer offset-b))
     ; b-r-r
     2 (get memory (+ (memory (+ pointer offset-b)) relative-base) 0)))
@@ -119,7 +119,14 @@
                :memory        memory
                :stopped?      stopped?
                :recur?        recur?})
-            {:input input :output (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) :phase phase :pointer (+ 2 pointer) :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?})
+            {:input         input
+             :output        (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+             :phase         phase
+             :pointer       (+ 2 pointer)
+             :relative-base relative-base
+             :memory        memory
+             :stopped?      stopped?
+             :recur?        recur?})
         5 (recur
             {:input         input
              :output        output
