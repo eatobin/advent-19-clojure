@@ -40,18 +40,18 @@
             (- (byte character) 48))))
 
 (defn a-param [{:keys [instruction pointer memory relative-base]}]
-  (case ((pad-5 instruction) :a)
+  (case (instruction :a)
     0 (get memory (+ pointer (calculate-offset-a)) 0)
     2 (get memory (+ pointer (calculate-offset-a relative-base)) 0)))
 
 (defn b-param [{:keys [instruction pointer memory relative-base]}]
-  (case ((pad-5 instruction) :b)
+  (case (instruction :b)
     0 (get memory (memory (+ pointer (calculate-offset-b))) 0)
     1 (get memory (+ pointer (calculate-offset-b)) 0)
     2 (get memory (+ pointer (calculate-offset-b relative-base)) 0)))
 
 (defn c-param [{:keys [instruction pointer memory relative-base]}]
-  (case ((pad-5 instruction) :c)
+  (case (instruction :c)
     0 (get memory (memory (+ pointer (calculate-offset-c))) 0)
     1 (get memory (+ pointer (calculate-offset-c)) 0)
     2 (get memory (+ pointer (calculate-offset-c relative-base)) 0)))
@@ -87,6 +87,7 @@
 ;(defn c-r-w [{:keys [pointer memory relative-base]}]
 ;  (+ (memory (+ 1 pointer)) relative-base))
 ;
+;TODO - get this into c-param
 ;(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
 ;  (case (instruction :e)
 ;    (1 2 4 5 6 7 8 9) (case (instruction :c)
