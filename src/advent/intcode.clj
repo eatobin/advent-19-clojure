@@ -66,16 +66,16 @@
       1 (get memory (+ pointer (calculate-offset-c)) 0)
       2 (get memory (+ pointer (calculate-offset-c relative-base)) 0))))
 
-(comment
-  (def memory {0 0, 1 11, 2 22, 3 3, 4 44, 11 111, 22 222}))
+;(comment
+;  (def memory {0 0, 1 11, 2 22, 3 3, 4 44, 11 111, 22 222}))
 
 ;; y1
 ;(defn a-p-w [{:keys [pointer memory]}]
 ;  (memory (+ 3 pointer)))
 ;
 ;; y2, y9
-(defn b-p-r-b-r-r [{:keys [pointer memory relative-base]}]
-  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
+;(defn b-p-r-b-r-r [{:keys [pointer memory relative-base]}]
+;  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
 
 ;; y3, y10
 ;(defn c-p-r-c-r-r [{:keys [pointer memory relative-base]}]
