@@ -22,18 +22,6 @@
 (def offset-b 2)
 (def offset-a 3)
 
-;(defn offset-c
-;  ([] initial-offset-c)
-;  ([relative-base] (+ initial-offset-c relative-base)))
-;
-;(defn offset-b
-;  ([] initial-offset-b)
-;  ([relative-base] (+ initial-offset-b relative-base)))
-;
-;(defn offset-a
-;  ([] initial-offset-a)
-;  ([relative-base] (+ initial-offset-a relative-base)))
-
 (defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
           (for [character (format "%05d" instruction)]
@@ -70,68 +58,6 @@
       ; c-r-r
       2 (get memory (+ (memory (+ pointer offset-c)) relative-base) 0))))
 
-;(defn c-param [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :e)
-;    (1 2 4 5 6 7 8 9) (case (instruction :c)
-;                        0 (get memory (memory (+ pointer offset-c)) 0)
-;                        1 (get memory (+ pointer offset-c) 0)
-;                        2 (get memory (+ (memory (+ pointer offset-c)) relative-base) 0))
-;    3 (case (instruction :c)
-;        0 (get memory (+ pointer offset-c) 0)
-;        2 (+ (memory (+ pointer offset-c)) relative-base))))
-
-;(comment
-;  (def memory {0 0, 1 11, 2 22, 3 3, 4 44, 11 111, 22 222}))
-
-;; y1
-;(defn a-p-w [{:keys [pointer memory]}]
-;  (memory (+ 3 pointer)))
-;
-;; y2, y9
-;(defn b-p-r-b-r-r [{:keys [pointer memory relative-base]}]
-;  (get memory (+ (memory (+ 2 pointer)) relative-base) 0))
-
-;; y3, y10
-;(defn c-p-r-c-r-r [{:keys [pointer memory relative-base]}]
-;  (get memory (+ (memory (+ 1 pointer)) relative-base) 0))
-;
-;; y4, y6
-;(defn c-p-w-c-i-r [{:keys [pointer memory]}]
-;  (memory (+ 1 pointer)))
-;
-;; y5
-;(defn b-i-r [{:keys [pointer memory]}]
-;  (memory (+ 2 pointer)))
-;
-;; y7
-;(defn a-r-w [{:keys [pointer memory relative-base]}]
-;  (+ (memory (+ 3 pointer)) relative-base))
-;
-;; y8
-;(defn c-r-w [{:keys [pointer memory relative-base]}]
-;  (+ (memory (+ 1 pointer)) relative-base))
-;
-;(defn param-maker-c [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :e)
-;    (1 2 4 5 6 7 8 9) (case (instruction :c)
-;                        0 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base 0})
-;                        1 (c-p-w-c-i-r {:pointer pointer :memory memory})
-;                        2 (c-p-r-c-r-r {:pointer pointer :memory memory :relative-base relative-base}))
-;    3 (case (instruction :c)
-;        0 (c-p-w-c-i-r {:pointer pointer :memory memory})
-;        2 (c-r-w {:pointer pointer :memory memory :relative-base relative-base}))))
-;
-;(defn param-maker-b [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :b)
-;    0 (b-p-r-b-r-r {:pointer pointer :memory memory :relative-base 0})
-;    1 (b-i-r {:pointer pointer :memory memory})
-;    2 (b-p-r-b-r-r {:pointer pointer :memory memory :relative-base relative-base})))
-;
-;(defn param-maker-a [{:keys [instruction pointer memory relative-base]}]
-;  (case (instruction :a)
-;    0 (a-p-w {:pointer pointer :memory memory})
-;    2 (a-r-w {:pointer pointer :memory memory :relative-base relative-base})))
-;
 (defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
   (if stopped?
     {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?}
