@@ -18,9 +18,9 @@
        (zipmap (range))
        (into (sorted-map-by <))))
 
-(def offset-c 1)
-(def offset-b 2)
-(def offset-a 3)
+(def OFFSET-C 1)
+(def OFFSET-B 2)
+(def OFFSET-A 3)
 
 (defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
@@ -30,33 +30,33 @@
 (defn a-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :a)
     ; a-p-w
-    0 (memory (+ pointer offset-a))
+    0 (memory (+ pointer OFFSET-A))
     ; a-r-w
-    2 (+ (memory (+ pointer offset-a)) relative-base)))
+    2 (+ (memory (+ pointer OFFSET-A)) relative-base)))
 
 (defn b-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :b)
     ; b-p-r
-    0 (get memory (memory (+ pointer offset-b)) 0)
+    0 (get memory (memory (+ pointer OFFSET-B)) 0)
     ; b-i-r
-    1 (memory (+ pointer offset-b))
+    1 (memory (+ pointer OFFSET-B))
     ; b-r-r
-    2 (get memory (+ (memory (+ pointer offset-b)) relative-base) 0)))
+    2 (get memory (+ (memory (+ pointer OFFSET-B)) relative-base) 0)))
 
 (defn c-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :e)
     3 (case (instruction :c)
         ; c-p-w
-        0 (memory (+ pointer offset-c))
+        0 (memory (+ pointer OFFSET-C))
         ; c-r-w
-        2 (+ (memory (+ pointer offset-c)) relative-base))
+        2 (+ (memory (+ pointer OFFSET-C)) relative-base))
     (case (instruction :c)
       ; c-p-r
-      0 (get memory (memory (+ pointer offset-c)) 0)
+      0 (get memory (memory (+ pointer OFFSET-C)) 0)
       ; c-i-r
-      1 (memory (+ pointer offset-c))
+      1 (memory (+ pointer OFFSET-C))
       ; c-r-r
-      2 (get memory (+ (memory (+ pointer offset-c)) relative-base) 0))))
+      2 (get memory (+ (memory (+ pointer OFFSET-C)) relative-base) 0))))
 
 (defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
   (if stopped?
