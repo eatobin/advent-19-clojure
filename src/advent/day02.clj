@@ -21,16 +21,16 @@
 (def OFFSET-B 2)
 (def OFFSET-A 3)
 
-(defn char-to-int [character]
-  (if (or (< (byte character) 48)
-          (> (byte character) 57))
+(defn char-to-int [char-as-byte]
+  (if (or (< char-as-byte 48)
+          (> char-as-byte 57))
     "Char is not an integer"
-    (- (byte character) 48)))
+    (- char-as-byte 48)))
 
 (defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
           (for [character (format "%05d" instruction)]
-            (char-to-int character))))
+            (char-to-int (byte character)))))
 
 (defn a-param [{:keys [instruction pointer memory]}]
   (case (instruction :a)
