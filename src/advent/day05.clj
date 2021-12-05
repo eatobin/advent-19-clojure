@@ -52,33 +52,43 @@
     ; c-p-r
     0 (get-or-else pointer OFFSET-C memory)))
 
-(defn op-code [{:keys [pointer memory]}]
+(defn op-code [{:keys [input output pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
     (case (instruction :e)
       9 {:pointer pointer :memory memory}
       1 (recur
           {:pointer (+ 4 pointer)
-           :memory  (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory})
-                                  (+ (c-param {:instruction instruction :pointer pointer :memory memory})
-                                     (b-param {:instruction instruction :pointer pointer :memory memory})))})
+           :memory  (assoc
+                      memory
+                      (a-param {:instruction instruction :pointer pointer :memory memory})
+                      (+ (c-param {:instruction instruction :pointer pointer :memory memory})
+                         (b-param {:instruction instruction :pointer pointer :memory memory})))})
       2 (recur
           {:pointer (+ 4 pointer)
-           :memory  (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory})
-                                  (* (c-param {:instruction instruction :pointer pointer :memory memory})
-                                     (b-param {:instruction instruction :pointer pointer :memory memory})))})
+           :memory  (assoc
+                      memory
+                      (a-param {:instruction instruction :pointer pointer :memory memory})
+                      (* (c-param {:instruction instruction :pointer pointer :memory memory})
+                         (b-param {:instruction instruction :pointer pointer :memory memory})))})
+      3 (recur
+          {:pointer (+ 2 pointer)
+           :memory  (assoc
+                      memory
+                      (c-param {:instruction instruction :pointer pointer :memory memory})
+                      input)})
       "Unknown opcode")))
 
 ;part a
 (def tv (make-tv "resources/day05.csv"))
 
 (def answer ((op-code {:input         1
-                          :output        nil
-                          :phase         nil
-                          :pointer       0
-                          :relative-base 0
-                          :memory        tv
-                          :stopped?      false
-                          :recur?        true})
+                       :output        nil
+                       :phase         nil
+                       :pointer       0
+                       :relative-base 0
+                       :memory        tv
+                       :stopped?      false
+                       :recur?        true})
              :output))
 
 (println answer) answer
@@ -87,13 +97,13 @@
 
 ;part b
 (def answer-2 ((op-code {:input         5
-                            :output        nil
-                            :phase         nil
-                            :pointer       0
-                            :relative-base 0
-                            :memory        tv
-                            :stopped?      false
-                            :recur?        true})
+                         :output        nil
+                         :phase         nil
+                         :pointer       0
+                         :relative-base 0
+                         :memory        tv
+                         :stopped?      false
+                         :recur?        true})
                :output))
 
 (println answer-2)
