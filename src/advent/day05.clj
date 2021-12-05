@@ -50,11 +50,15 @@
     1 (memory (+ pointer OFFSET-B))))
 
 (defn c-param [{:keys [instruction pointer memory]}]
-  (case (instruction :c)
-    ; c-p-r
-    0 (get-or-else pointer OFFSET-C memory)
-    ; c-i-r
-    1 (memory (+ pointer OFFSET-C))))
+  (case (instruction :e)
+    3 (case (instruction :c)
+        ; c-p-w
+        0 (memory (+ pointer OFFSET-C)))
+    (case (instruction :c)
+      ; c-p-r
+      0 (get-or-else pointer OFFSET-C memory)
+      ; c-i-r
+      1 (memory (+ pointer OFFSET-C)))))
 
 (defn op-code [{:keys [input output pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
