@@ -95,6 +95,48 @@
            :output  (c-param {:instruction instruction :pointer pointer :memory memory})
            :pointer (+ 2 pointer)
            :memory  memory})
+      5 (recur
+          {:input   input
+           :output  output
+           :pointer (if (= 0 (c-param {:instruction instruction :pointer pointer :memory memory}))
+                      (+ 3 pointer)
+                      (b-param {:instruction instruction :pointer pointer :memory memory}))
+           :memory  memory})
+      6 (recur
+          {:input   input
+           :output  output
+           :pointer (if (not= 0 (c-param {:instruction instruction :pointer pointer :memory memory}))
+                      (+ 3 pointer)
+                      (b-param {:instruction instruction :pointer pointer :memory memory}))
+           :memory  memory})
+      7 (recur
+          {:input   input
+           :output  output
+           :pointer (+ 4 pointer)
+           :memory  (if (< (c-param {:instruction instruction :pointer pointer :memory memory})
+                           (b-param {:instruction instruction :pointer pointer :memory memory}))
+                      (assoc
+                        memory
+                        (a-param {:instruction instruction :pointer pointer :memory memory})
+                        1)
+                      (assoc
+                        memory
+                        (a-param {:instruction instruction :pointer pointer :memory memory})
+                        0))})
+      8 (recur
+          {:input   input
+           :output  output
+           :pointer (+ 4 pointer)
+           :memory  (if (= (c-param {:instruction instruction :pointer pointer :memory memory})
+                           (b-param {:instruction instruction :pointer pointer :memory memory}))
+                      (assoc
+                        memory
+                        (a-param {:instruction instruction :pointer pointer :memory memory})
+                        1)
+                      (assoc
+                        memory
+                        (a-param {:instruction instruction :pointer pointer :memory memory})
+                        0))})
       "Unknown opcode")))
 
 ;part a
