@@ -45,12 +45,16 @@
 (defn b-param [{:keys [instruction pointer memory]}]
   (case (instruction :b)
     ; b-p-r
-    0 (get-or-else pointer OFFSET-B memory)))
+    0 (get-or-else pointer OFFSET-B memory)
+    ; b-i-r
+    1 (memory (+ pointer OFFSET-B))))
 
 (defn c-param [{:keys [instruction pointer memory]}]
   (case (instruction :c)
     ; c-p-r
-    0 (get-or-else pointer OFFSET-C memory)))
+    0 (get-or-else pointer OFFSET-C memory)
+    ; c-i-r
+    1 (memory (+ pointer OFFSET-C))))
 
 (defn op-code [{:keys [input output pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
@@ -92,14 +96,10 @@
 ;part a
 (def tv (make-tv "resources/day05.csv"))
 
-(def answer ((op-code {:input         1
-                       :output        nil
-                       :phase         nil
-                       :pointer       0
-                       :relative-base 0
-                       :memory        tv
-                       :stopped?      false
-                       :recur?        true})
+(def answer ((op-code {:input   1
+                       :output  nil
+                       :pointer 0
+                       :memory  tv})
              :output))
 
 (println answer) answer
@@ -107,14 +107,10 @@
 ;9025675
 
 ;part b
-(def answer-2 ((op-code {:input         5
-                         :output        nil
-                         :phase         nil
-                         :pointer       0
-                         :relative-base 0
-                         :memory        tv
-                         :stopped?      false
-                         :recur?        true})
+(def answer-2 ((op-code {:input   5
+                         :output  nil
+                         :pointer 0
+                         :memory  tv})
                :output))
 
 (println answer-2)
