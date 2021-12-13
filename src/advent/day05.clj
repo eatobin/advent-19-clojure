@@ -49,11 +49,22 @@
     ; b-i-r
     1 (memory (+ pointer OFFSET-B))))
 
+;(defn c-param [{:keys [instruction pointer memory]}]
+;  (case (instruction :e)
+;    3 (case (instruction :c)
+;        ; c-p-w
+;        0 (memory (+ pointer OFFSET-C)))
+;    (case (instruction :c)
+;      ; c-p-r
+;      0 (get-or-else pointer OFFSET-C memory)
+;      ; c-i-r
+;      1 (memory (+ pointer OFFSET-C)))))
+
 (defn c-param [{:keys [instruction pointer memory]}]
-  (case (instruction :e)
-    3 (case (instruction :c)
-        ; c-p-w
-        0 (memory (+ pointer OFFSET-C)))
+  (if (= 3 (instruction :e))
+    (case (instruction :c)
+      ; c-p-w
+      0 (memory (+ pointer OFFSET-C)))
     (case (instruction :c)
       ; c-p-r
       0 (get-or-else pointer OFFSET-C memory)
