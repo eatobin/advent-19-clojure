@@ -54,19 +54,20 @@
 
 (defn op-code [{:keys [pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
-    (case (instruction :e)
-      9 {:pointer pointer :memory memory}
-      1 (recur
-          {:pointer (+ 4 pointer)
-           :memory  (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory})
-                                  (+ (c-param {:instruction instruction :pointer pointer :memory memory})
-                                     (b-param {:instruction instruction :pointer pointer :memory memory})))})
-      2 (recur
-          {:pointer (+ 4 pointer)
-           :memory  (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory})
-                                  (* (c-param {:instruction instruction :pointer pointer :memory memory})
-                                     (b-param {:instruction instruction :pointer pointer :memory memory})))})
-      "Unknown opcode")))
+    (if (= 9 (instruction :d))
+      {:pointer pointer :memory memory}
+      (case (instruction :e)
+        1 (recur
+            {:pointer (+ 4 pointer)
+             :memory  (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory})
+                                    (+ (c-param {:instruction instruction :pointer pointer :memory memory})
+                                       (b-param {:instruction instruction :pointer pointer :memory memory})))})
+        2 (recur
+            {:pointer (+ 4 pointer)
+             :memory  (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory})
+                                    (* (c-param {:instruction instruction :pointer pointer :memory memory})
+                                       (b-param {:instruction instruction :pointer pointer :memory memory})))})
+        "Unknown opcode"))))
 
 ;part a
 (def tv (make-tv "resources/day02.csv"))
