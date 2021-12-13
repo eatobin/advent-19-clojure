@@ -49,17 +49,6 @@
     ; b-i-r
     1 (memory (+ pointer OFFSET-B))))
 
-;(defn c-param [{:keys [instruction pointer memory]}]
-;  (case (instruction :e)
-;    3 (case (instruction :c)
-;        ; c-p-w
-;        0 (memory (+ pointer OFFSET-C)))
-;    (case (instruction :c)
-;      ; c-p-r
-;      0 (get-or-else pointer OFFSET-C memory)
-;      ; c-i-r
-;      1 (memory (+ pointer OFFSET-C)))))
-
 (defn c-param [{:keys [instruction pointer memory]}]
   (if (= 3 (instruction :e))
     (case (instruction :c)
@@ -73,82 +62,83 @@
 
 (defn op-code [{:keys [input output pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
-    (case (instruction :e)
-      9 {:input input :output output :pointer pointer :memory memory}
-      1 (recur
-          {:input   input
-           :output  output
-           :pointer (+ 4 pointer)
-           :memory  (assoc
-                      memory
-                      (a-param {:instruction instruction :pointer pointer :memory memory})
-                      (+ (c-param {:instruction instruction :pointer pointer :memory memory})
-                         (b-param {:instruction instruction :pointer pointer :memory memory})))})
-      2 (recur
-          {:input   input
-           :output  output
-           :pointer (+ 4 pointer)
-           :memory  (assoc
-                      memory
-                      (a-param {:instruction instruction :pointer pointer :memory memory})
-                      (* (c-param {:instruction instruction :pointer pointer :memory memory})
-                         (b-param {:instruction instruction :pointer pointer :memory memory})))})
-      3 (recur
-          {:input   input
-           :output  output
-           :pointer (+ 2 pointer)
-           :memory  (assoc
-                      memory
-                      (c-param {:instruction instruction :pointer pointer :memory memory})
-                      input)})
-      4 (recur
-          {:input   input
-           :output  (c-param {:instruction instruction :pointer pointer :memory memory})
-           :pointer (+ 2 pointer)
-           :memory  memory})
-      5 (recur
-          {:input   input
-           :output  output
-           :pointer (if (= 0 (c-param {:instruction instruction :pointer pointer :memory memory}))
-                      (+ 3 pointer)
-                      (b-param {:instruction instruction :pointer pointer :memory memory}))
-           :memory  memory})
-      6 (recur
-          {:input   input
-           :output  output
-           :pointer (if (not= 0 (c-param {:instruction instruction :pointer pointer :memory memory}))
-                      (+ 3 pointer)
-                      (b-param {:instruction instruction :pointer pointer :memory memory}))
-           :memory  memory})
-      7 (recur
-          {:input   input
-           :output  output
-           :pointer (+ 4 pointer)
-           :memory  (if (< (c-param {:instruction instruction :pointer pointer :memory memory})
-                           (b-param {:instruction instruction :pointer pointer :memory memory}))
-                      (assoc
+    (if (= 9 (instruction :d))
+      {:input input :output output :pointer pointer :memory memory}
+      (case (instruction :e)
+        1 (recur
+            {:input   input
+             :output  output
+             :pointer (+ 4 pointer)
+             :memory  (assoc
                         memory
                         (a-param {:instruction instruction :pointer pointer :memory memory})
-                        1)
-                      (assoc
+                        (+ (c-param {:instruction instruction :pointer pointer :memory memory})
+                           (b-param {:instruction instruction :pointer pointer :memory memory})))})
+        2 (recur
+            {:input   input
+             :output  output
+             :pointer (+ 4 pointer)
+             :memory  (assoc
                         memory
                         (a-param {:instruction instruction :pointer pointer :memory memory})
-                        0))})
-      8 (recur
-          {:input   input
-           :output  output
-           :pointer (+ 4 pointer)
-           :memory  (if (= (c-param {:instruction instruction :pointer pointer :memory memory})
-                           (b-param {:instruction instruction :pointer pointer :memory memory}))
-                      (assoc
+                        (* (c-param {:instruction instruction :pointer pointer :memory memory})
+                           (b-param {:instruction instruction :pointer pointer :memory memory})))})
+        3 (recur
+            {:input   input
+             :output  output
+             :pointer (+ 2 pointer)
+             :memory  (assoc
                         memory
-                        (a-param {:instruction instruction :pointer pointer :memory memory})
-                        1)
-                      (assoc
-                        memory
-                        (a-param {:instruction instruction :pointer pointer :memory memory})
-                        0))})
-      "Unknown opcode")))
+                        (c-param {:instruction instruction :pointer pointer :memory memory})
+                        input)})
+        4 (recur
+            {:input   input
+             :output  (c-param {:instruction instruction :pointer pointer :memory memory})
+             :pointer (+ 2 pointer)
+             :memory  memory})
+        5 (recur
+            {:input   input
+             :output  output
+             :pointer (if (= 0 (c-param {:instruction instruction :pointer pointer :memory memory}))
+                        (+ 3 pointer)
+                        (b-param {:instruction instruction :pointer pointer :memory memory}))
+             :memory  memory})
+        6 (recur
+            {:input   input
+             :output  output
+             :pointer (if (not= 0 (c-param {:instruction instruction :pointer pointer :memory memory}))
+                        (+ 3 pointer)
+                        (b-param {:instruction instruction :pointer pointer :memory memory}))
+             :memory  memory})
+        7 (recur
+            {:input   input
+             :output  output
+             :pointer (+ 4 pointer)
+             :memory  (if (< (c-param {:instruction instruction :pointer pointer :memory memory})
+                             (b-param {:instruction instruction :pointer pointer :memory memory}))
+                        (assoc
+                          memory
+                          (a-param {:instruction instruction :pointer pointer :memory memory})
+                          1)
+                        (assoc
+                          memory
+                          (a-param {:instruction instruction :pointer pointer :memory memory})
+                          0))})
+        8 (recur
+            {:input   input
+             :output  output
+             :pointer (+ 4 pointer)
+             :memory  (if (= (c-param {:instruction instruction :pointer pointer :memory memory})
+                             (b-param {:instruction instruction :pointer pointer :memory memory}))
+                        (assoc
+                          memory
+                          (a-param {:instruction instruction :pointer pointer :memory memory})
+                          1)
+                        (assoc
+                          memory
+                          (a-param {:instruction instruction :pointer pointer :memory memory})
+                          0))})
+        "Unknown opcode"))))
 
 ;part a
 (def tv (make-tv "resources/day05.csv"))
