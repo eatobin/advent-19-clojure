@@ -60,9 +60,9 @@
       ; c-i-r
       1 (memory (+ pointer OFFSET-C)))))
 
-;; {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?}
+;; {:input input :output output :phase phase :pointer pointer :memory memory :stopped? stopped? :recur? recur?}
 
-(defn op-code [{:keys [input output phase pointer memory stopped? :recur?]}]
+(defn op-code [{:keys [input output phase pointer memory stopped? recur?]}]
   (if stopped?
     {:input input :output output :phase phase :pointer pointer :memory memory :stopped? stopped? :recur? recur?}
     (let [instruction (pad-5 (memory pointer))]
