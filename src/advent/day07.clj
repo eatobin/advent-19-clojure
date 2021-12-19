@@ -96,7 +96,7 @@
                :output   output
                :phase    phase
                :pointer  (+ 2 pointer)
-               :memory   (if (some? phase)
+               :memory   (if (not= phase -1)
                            (if (= 0 pointer)
                              (assoc
                                memory
@@ -198,31 +198,31 @@
 
 (defn pass [[a b c d e] i-code]
   ((op-code {:input    ((op-code {:input    ((op-code {:input    ((op-code {:input    ((op-code {:input    0
-                                                                                                 :output   nil
+                                                                                                 :output   0
                                                                                                  :phase    a
                                                                                                  :pointer  0
                                                                                                  :memory   i-code
                                                                                                  :stopped? false
                                                                                                  :recur?   true}) :output)
-                                                                            :output   nil
+                                                                            :output   0
                                                                             :phase    b
                                                                             :pointer  0
                                                                             :memory   i-code
                                                                             :stopped? false
                                                                             :recur?   true}) :output)
-                                                       :output   nil
+                                                       :output   0
                                                        :phase    c
                                                        :pointer  0
                                                        :memory   i-code
                                                        :stopped? false
                                                        :recur?   true}) :output)
-                                  :output   nil
+                                  :output   0
                                   :phase    d
                                   :pointer  0
                                   :memory   i-code
                                   :stopped? false
                                   :recur?   true}) :output)
-             :output   nil
+             :output   0
              :phase    e
              :pointer  0
              :memory   i-code
@@ -249,11 +249,11 @@
 
 (defn to-amps-list [phases-vector memory]
   (letfn [(to-amps [phases]
-            {1 (atom {:input 0 :output nil :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-             2 (atom {:input nil :output nil :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-             3 (atom {:input nil :output nil :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-             4 (atom {:input nil :output nil :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-             5 (atom {:input nil :output nil :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
+            {1 (atom {:input 0 :output 0 :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             2 (atom {:input 0 :output 0 :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             3 (atom {:input 0 :output 0 :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             4 (atom {:input 0 :output 0 :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
+             5 (atom {:input 0 :output 0 :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
     (map to-amps phases-vector)))
 
 (defn runner [five-amps]
