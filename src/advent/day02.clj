@@ -14,7 +14,9 @@
                 (doall
                   (csv/read-csv reader))))
        (map #(Long/parseLong %))
-       (into [])))
+       (into [])
+       (zipmap (range))
+       (into (sorted-map-by <))))
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
