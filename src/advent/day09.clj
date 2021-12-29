@@ -14,7 +14,9 @@
                 (doall
                   (csv/read-csv reader))))
        (map #(Long/parseLong %))
-       (into [])))
+       (into [])
+       (zipmap (range))
+       (into (sorted-map-by <))))
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
@@ -31,12 +33,6 @@
           (for [character (format "%05d" instruction)]
             (char-to-int (byte character)))))
 
-(defn get-or-else [pointer OFFSET-X relative-base memory]
-  (if (> (+ (memory (+ pointer OFFSET-X)) relative-base)
-         (- (count memory) 1))
-    0
-    (memory (+ (memory (+ pointer OFFSET-X)) relative-base))))
-
 (defn a-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :a)
     ; a-p-w
@@ -47,11 +43,11 @@
 (defn b-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :b)
     ; b-p-r
-    0 (get-or-else pointer OFFSET-B 0 memory)
+    0 (get memory (memory (+ pointer OFFSET-B)) 0)
     ; b-i-r
     1 (memory (+ pointer OFFSET-B))
     ; b-r-r
-    2 (get-or-else pointer OFFSET-B relative-base memory)))
+    2 (get memory (+ (memory (+ pointer OFFSET-B)) relative-base) 0)))
 
 (defn c-param [{:keys [instruction pointer memory relative-base]}]
   (if (= 3 (instruction :e))
@@ -62,11 +58,11 @@
       2 (+ (memory (+ pointer OFFSET-C)) relative-base))
     (case (instruction :c)
       ; c-p-r
-      0 (get-or-else pointer OFFSET-C 0 memory)
+      0 (get memory (memory (+ pointer OFFSET-C)) 0)
       ; c-i-r
       1 (memory (+ pointer OFFSET-C))
       ; c-r-r
-      2 (get-or-else pointer OFFSET-C relative-base memory))))
+      2 (get memory (+ (memory (+ pointer OFFSET-C)) relative-base) 0))))
 
 (defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
   (if stopped?
