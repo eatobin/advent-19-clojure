@@ -33,12 +33,6 @@
           (for [character (format "%05d" instruction)]
             (char-to-int (byte character)))))
 
-(defn get-or-else [pointer OFFSET-X memory]
-  (if (> (+ pointer OFFSET-X)
-         (- (count memory) 1))
-    0
-    (memory (memory (+ pointer OFFSET-X)))))
-
 (defn a-param [{:keys [instruction pointer memory]}]
   (case (instruction :a)
     ; a-p-w
@@ -47,12 +41,12 @@
 (defn b-param [{:keys [instruction pointer memory]}]
   (case (instruction :b)
     ; b-p-r
-    0 (get-or-else pointer OFFSET-B memory)))
+    0 (memory (memory (+ pointer OFFSET-B)))))
 
 (defn c-param [{:keys [instruction pointer memory]}]
   (case (instruction :c)
     ; c-p-r
-    0 (get-or-else pointer OFFSET-C memory)))
+    0 (memory (memory (+ pointer OFFSET-C)))))
 
 (defn op-code [{:keys [pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
