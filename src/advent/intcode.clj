@@ -22,10 +22,16 @@
 (def OFFSET-B 2)
 (def OFFSET-A 3)
 
+(defn char-to-int [char-as-byte]
+  (if (or (< char-as-byte 48)
+          (> char-as-byte 57))
+    "Char is not an integer"
+    (- char-as-byte 48)))
+
 (defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
           (for [character (format "%05d" instruction)]
-            (- (byte character) 48))))
+            (char-to-int (byte character)))))
 
 (defn a-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :a)
@@ -44,12 +50,12 @@
     2 (get memory (+ (memory (+ pointer OFFSET-B)) relative-base) 0)))
 
 (defn c-param [{:keys [instruction pointer memory relative-base]}]
-  (case (instruction :e)
-    3 (case (instruction :c)
-        ; c-p-w
-        0 (memory (+ pointer OFFSET-C))
-        ; c-r-w
-        2 (+ (memory (+ pointer OFFSET-C)) relative-base))
+  (if (= 3 (instruction :e))
+    (case (instruction :c)
+      ; c-p-w
+      0 (memory (+ pointer OFFSET-C))
+      ; c-r-w
+      2 (+ (memory (+ pointer OFFSET-C)) relative-base))
     (case (instruction :c)
       ; c-p-r
       0 (get memory (memory (+ pointer OFFSET-C)) 0)
@@ -62,55 +68,67 @@
   (if stopped?
     {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?}
     (let [instruction (pad-5 (memory pointer))]
-      (case (instruction :e)
-        9 (if (= (instruction :d) 9)
-            {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? true :recur? recur?}
-            (recur
+      (if (= 9 (instruction :d))
+        {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? true :recur? recur?}
+        (case (instruction :e)
+          1 (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (+ 4 pointer)
+               :relative-base relative-base
+               :memory        (assoc
+                                memory
+                                (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                (+ (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                   (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
+               :stopped?      stopped?
+               :recur?        recur?})
+          2 (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (+ 4 pointer)
+               :relative-base relative-base
+               :memory        (assoc
+                                memory
+                                (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                (* (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                   (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
+               :stopped?      stopped?
+               :recur?        recur?})
+          3 (recur
               {:input         input
                :output        output
                :phase         phase
                :pointer       (+ 2 pointer)
-               :relative-base (+ (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) relative-base)
-               :memory        memory
+               :relative-base relative-base
+               :memory        (if (not= phase -1)
+                                (if (= 0 pointer)
+                                  (assoc
+                                    memory
+                                    (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                    phase)
+                                  (assoc
+                                    memory
+                                    (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                    input))
+                                (assoc
+                                  memory
+                                  (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                  input))
                :stopped?      stopped?
-               :recur?        recur?}))
-        1 (recur
-            {:input         input
-             :output        output
-             :phase         phase
-             :pointer       (+ 4 pointer)
-             :relative-base relative-base
-             :memory        (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                          (+ (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                             (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
-             :stopped?      stopped?
-             :recur?        recur?})
-        2 (recur
-            {:input         input
-             :output        output
-             :phase         phase
-             :pointer       (+ 4 pointer)
-             :relative-base relative-base
-             :memory        (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                          (* (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                             (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
-             :stopped?      stopped?
-             :recur?        recur?})
-        3 (recur
-            {:input         input
-             :output        output
-             :phase         phase
-             :pointer       (+ 2 pointer)
-             :relative-base relative-base
-             :memory        (if (some? phase)
-                              (if (= 0 pointer)
-                                (assoc memory (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) phase)
-                                (assoc memory (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) input))
-                              (assoc memory (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) input))
-             :stopped?      stopped?
-             :recur?        recur?})
-        4 (if recur?
-            (recur
+               :recur?        recur?})
+          4 (if recur?
+              (recur
+                {:input         input
+                 :output        (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                 :phase         phase
+                 :pointer       (+ 2 pointer)
+                 :relative-base relative-base
+                 :memory        memory
+                 :stopped?      stopped?
+                 :recur?        recur?})
               {:input         input
                :output        (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
                :phase         phase
@@ -119,58 +137,71 @@
                :memory        memory
                :stopped?      stopped?
                :recur?        recur?})
-            {:input         input
-             :output        (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-             :phase         phase
-             :pointer       (+ 2 pointer)
-             :relative-base relative-base
-             :memory        memory
-             :stopped?      stopped?
-             :recur?        recur?})
-        5 (recur
-            {:input         input
-             :output        output
-             :phase         phase
-             :pointer       (if (= 0 (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
-                              (+ 3 pointer)
-                              (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
-             :relative-base relative-base
-             :memory        memory
-             :stopped?      stopped?
-             :recur?        recur?})
-        6 (recur
-            {:input         input
-             :output        output
-             :phase         phase
-             :pointer       (if (not= 0 (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
-                              (+ 3 pointer)
-                              (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
-             :relative-base relative-base
-             :memory        memory
-             :stopped?      stopped?
-             :recur?        recur?})
-        7 (recur
-            {:input         input
-             :output        output
-             :phase         phase
-             :pointer       (+ 4 pointer)
-             :relative-base relative-base
-             :memory        (if (< (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                   (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
-                              (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 1)
-                              (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 0))
-             :stopped?      stopped?
-             :recur?        recur?})
-        8 (recur
-            {:input         input
-             :output        output
-             :phase         phase
-             :pointer       (+ 4 pointer)
-             :relative-base relative-base
-             :memory        (if (= (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                   (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
-                              (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 1)
-                              (assoc memory (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 0))
-             :stopped?      stopped?
-             :recur?        recur?})
-        "Unknown opcode"))))
+          5 (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (if (= 0 (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+                                (+ 3 pointer)
+                                (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+               :relative-base relative-base
+               :memory        memory
+               :stopped?      stopped?
+               :recur?        recur?})
+          6 (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (if (not= 0 (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+                                (+ 3 pointer)
+                                (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+               :relative-base relative-base
+               :memory        memory
+               :stopped?      stopped?
+               :recur?        recur?})
+          7 (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (+ 4 pointer)
+               :relative-base relative-base
+               :memory        (if (< (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                     (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+                                (assoc
+                                  memory
+                                  (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                  1)
+                                (assoc
+                                  memory
+                                  (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                  0))
+               :stopped?      stopped?
+               :recur?        recur?})
+          8 (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (+ 4 pointer)
+               :relative-base relative-base
+               :memory        (if (= (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                     (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+                                (assoc
+                                  memory
+                                  (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                  1)
+                                (assoc
+                                  memory
+                                  (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+                                  0))
+               :stopped?      stopped?
+               :recur?        recur?})
+          9 (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (+ 2 pointer)
+               :relative-base (+ (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) relative-base)
+               :memory        memory
+               :stopped?      stopped?
+               :recur?        recur?})
+          "Unknown opcode")))))
