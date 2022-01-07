@@ -1,6 +1,5 @@
 (ns advent.day09
-  (:require [advent.intcode :as ic]
-            [clojure.data.csv :as csv]
+  (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]))
 
 ; ABCDE
@@ -208,17 +207,17 @@
           "Unknown opcode")))))
 
 ;; part a
-(def tv (ic/make-tv "resources/day09.csv"))
+(def tv (make-tv "resources/day09.csv"))
 
 
-(def answer ((ic/op-code {:input         1
-                          :output        0
-                          :phase         -1
-                          :pointer       0
-                          :relative-base 0
-                          :memory        tv
-                          :stopped?      false
-                          :recur?        true})
+(def answer ((op-code {:input         1
+                       :output        0
+                       :phase         -1
+                       :pointer       0
+                       :relative-base 0
+                       :memory        tv
+                       :stopped?      false
+                       :recur?        true})
              :output))
 
 (println answer)
@@ -226,49 +225,16 @@
 ;; 3780860499
 
 ;; part b
-(def answer-2 ((ic/op-code {:input         2
-                            :output        0
-                            :phase         -1
-                            :pointer       0
-                            :relative-base 0
-                            :memory        tv
-                            :stopped?      false
-                            :recur?        true})
+(def answer-2 ((op-code {:input         2
+                         :output        0
+                         :phase         -1
+                         :pointer       0
+                         :relative-base 0
+                         :memory        tv
+                         :stopped?      false
+                         :recur?        true})
                :output))
 
 (println answer-2)
-
-;; 33343
-
-;; part c
-(def tv9 (make-tv "resources/day09.csv"))
-
-
-(def answer9 ((op-code {:input         1
-                        :output        0
-                        :phase         -1
-                        :pointer       0
-                        :relative-base 0
-                        :memory        tv9
-                        :stopped?      false
-                        :recur?        true})
-              :output))
-
-(println answer9)
-
-;; 3780860499
-
-;; part d
-(def answer-29 ((ic/op-code {:input         2
-                             :output        0
-                             :phase         -1
-                             :pointer       0
-                             :relative-base 0
-                             :memory        tv9
-                             :stopped?      false
-                             :recur?        true})
-                :output))
-
-(println answer-29)
 
 ;; 33343
