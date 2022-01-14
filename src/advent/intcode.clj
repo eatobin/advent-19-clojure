@@ -43,11 +43,11 @@
 (defn b-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :b)
     ; b-p-r
-    0 (get memory (memory (+ pointer OFFSET-B)) 0)
+    0 (memory (memory (+ pointer OFFSET-B)))
     ; b-i-r
     1 (memory (+ pointer OFFSET-B))
     ; b-r-r
-    2 (get memory (+ (memory (+ pointer OFFSET-B)) relative-base) 0)))
+    2 (memory (+ (memory (+ pointer OFFSET-B)) relative-base))))
 
 (defn c-param [{:keys [instruction pointer memory relative-base]}]
   (if (= 3 (instruction :e))
@@ -58,11 +58,11 @@
       2 (+ (memory (+ pointer OFFSET-C)) relative-base))
     (case (instruction :c)
       ; c-p-r
-      0 (get memory (memory (+ pointer OFFSET-C)) 0)
+      0 (memory (memory (+ pointer OFFSET-C)))
       ; c-i-r
       1 (memory (+ pointer OFFSET-C))
       ; c-r-r
-      2 (get memory (+ (memory (+ pointer OFFSET-C)) relative-base) 0))))
+      2 (memory (+ (memory (+ pointer OFFSET-C)) relative-base)))))
 
 (defn op-code [{:keys [input output phase pointer relative-base memory stopped? recur?]}]
   (if stopped?
