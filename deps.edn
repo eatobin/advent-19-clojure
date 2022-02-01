@@ -1,6 +1,6 @@
 {:paths ["src" "test" "resources" "resources-test"]
- :deps  {cheshire/cheshire              {:mvn/version "5.10.1"}
+ :deps  {cheshire/cheshire              {:mvn/version "5.10.2"}
          org.clojure/data.csv           {:mvn/version "1.0.0"}
-         org.clojure/math.numeric-tower {:mvn/version "0.0.4"}
+         org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
          net.mikera/core.matrix         {:mvn/version "0.62.0"}
          org.clojure/algo.generic       {:mvn/version "0.1.3"}}}
