@@ -2,4 +2,4 @@
   (:require [clojure.spec.alpha :as s]))
 
 (s/def ::module int?)
-(s/def ::fuel int?)
+(s/def ::gas int?)

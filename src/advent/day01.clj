@@ -20,7 +20,7 @@
                    (map gas)
                    (reduce +)))
 
-(println modules-sum)
+(println "Eric Part A: " modules-sum)
 
 (defn fuel [x]
   (max 0
@@ -36,7 +36,7 @@
                       (reduce +)
                       (int)))
 
-(println modules-sum-je)
+(println "Other Guy Part A: " modules-sum-je)
 
 ;; 3337766
 
@@ -63,7 +63,7 @@
                        (map gas-plus)
                        (reduce +)))
 
-(println modules-gas-sum)
+(println "Eric Part B: " modules-gas-sum)
 
 (defn total-fuel [x]
   (apply + (take-while pos? (next (iterate fuel x)))))
@@ -78,7 +78,7 @@
                           (reduce +)
                           (int)))
 
-(println modules-gas-sum-je)
+(println "Other Guy Part B: " modules-gas-sum-je)
 
 ;; 5003788
 
