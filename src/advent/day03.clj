@@ -13,9 +13,9 @@
             (doall
               (csv/read-csv reader))))
 
-(def red (vec (first both)))
+(def red (first both))
 
-(def blue (vec (second both)))
+(def blue (second both))
 
 (defn direction [unit]
   (subs unit 0 1))
