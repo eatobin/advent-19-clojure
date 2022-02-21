@@ -4,46 +4,12 @@
             [clojure.spec.alpha :as s]
             [orchestra.spec.test :as ostest]
             [malli.core :as m]
-            [malli.instrument :as mi]
-            [malli.generator :as mg]))
+            [malli.instrument :as mi]))
 
 ;part a
-
-
-(defn plus [x y]
-  (+ x y))
-
-(plus 1 2)
-; => 3
-
-(def =>plus
-  (m/schema
-    [:=> [:cat :int :int] :int]
-    {::m/function-checker mg/function-checker}))
-
-
-
-(m/validate =>plus plus)
-; => true
-
-(m/validate =>plus str)
-; => false
-
-
-
 (defn gas [module]
   (- (quot module 3) 2))
 (m/=> gas [:=> [:cat :int] :int])
-(def =>gas
-  (m/schema
-    [:=> [:cat :int] :int]
-    {::m/function-checker mg/function-checker}))
-(m/validate =>gas gas)
-(m/validate =>gas plus)
-;(s/fdef gas
-;        :args (s/cat :module ::dom/module)
-;        :ret ::dom/gas)
-(m/validate fn? gas)
 
 (def modules-sum (->>
                    "resources/day01.txt"
@@ -118,5 +84,5 @@
 
 (int (reduce + (map total-fuel (map read-string (clojure.string/split-lines (slurp "resources/day01.txt"))))))
 
-;(ostest/instrument)
+(ostest/instrument)
 (mi/instrument!)
