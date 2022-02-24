@@ -2,21 +2,12 @@
   (:require [clojure.test :refer [deftest is]]
             [advent.domain :as dom]
             [advent.day01 :as day01]
-            [clojure.spec.alpha :as s]
-            [malli.core :as m]
-            [malli.generator :as mg]))
+            [clojure.spec.alpha :as s]))
 
 (s/conform ::dom/module
            42)
 (s/conform ::dom/gas
            42)
-
-(def =>gas
-  (m/schema
-    [:=> [:cat :int] :int]
-    {::m/function-checker mg/function-checker}))
-
-(m/validate =>gas day01/gas)
 
 (deftest fuel-test
   (is (= 2
