@@ -1,15 +1,9 @@
 (ns advent.day01
-  (:require [advent.domain :as dom]
-            [clojure.string :as str]
-            [clojure.spec.alpha :as s]
-            [orchestra.spec.test :as ostest]))
+  (:require [clojure.string :as str]))
 
 ;part a
 (defn gas [module]
   (- (quot module 3) 2))
-(s/fdef gas
-        :args (s/cat :module ::dom/module)
-        :ret ::dom/gas)
 
 (def modules-sum (->>
                    "resources/day01.txt"
@@ -20,23 +14,7 @@
                    (map gas)
                    (reduce +)))
 
-(println "Eric Part A: " modules-sum)
-
-(defn fuel [x]
-  (max 0
-       (- (Math/floor (/ x 3)) 2)))
-
-(def modules-sum-je (->>
-                      "resources/day01.txt"
-                      (slurp)
-                      (str/split-lines)
-                      (map #(Integer/parseInt %))
-                      (into [])
-                      (map fuel)
-                      (reduce +)
-                      (int)))
-
-(println "Other Guy Part A: " modules-sum-je)
+(println modules-sum)
 
 ;; 3337766
 
@@ -50,9 +28,6 @@
           new-gas
           (+ acc new-gas))
         acc))))
-(s/fdef gas-plus
-        :args (s/cat :module ::dom/module)
-        :ret ::dom/gas)
 
 (def modules-gas-sum (->>
                        "resources/day01.txt"
@@ -63,25 +38,6 @@
                        (map gas-plus)
                        (reduce +)))
 
-(println "Eric Part B: " modules-gas-sum)
-
-(defn total-fuel [x]
-  (apply + (take-while pos? (next (iterate fuel x)))))
-
-(def modules-gas-sum-je (->>
-                          "resources/day01.txt"
-                          (slurp)
-                          (str/split-lines)
-                          (map #(Integer/parseInt %))
-                          (into [])
-                          (map total-fuel)
-                          (reduce +)
-                          (int)))
-
-(println "Other Guy Part B: " modules-gas-sum-je)
+(println modules-gas-sum)
 
 ;; 5003788
-
-(int (reduce + (map total-fuel (map read-string (clojure.string/split-lines (slurp "resources/day01.txt"))))))
-
-(ostest/instrument)
