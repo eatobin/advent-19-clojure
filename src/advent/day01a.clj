@@ -2,10 +2,12 @@
   (:require [clojure.string :as str]
             [malli.instrument :as mi]))
 
+(def =>fuel [:=> [:cat :int] :int])
+
 ;; part a
 (defn fuel
   "calculate the fuel required for a module"
-  {:malli/schema [:=> [:cat :int] :int]}
+  {:malli/schema =>fuel}
   [module]
   (- (quot module 3) 2))
 

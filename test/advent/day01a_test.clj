@@ -6,11 +6,14 @@
 
 (def =>fuel
   (m/schema
-    [:=> [:cat :int] :int]
+    day01a/=>fuel
     {::m/function-checker mg/function-checker}))
 
 (m/validate =>fuel day01a/fuel)
 (m/validate =>fuel (str 88))
+
+(m/explain =>fuel day01a/fuel)
+(m/explain =>fuel (str 88))
 
 (deftest fuel-test
   (is (= 2
