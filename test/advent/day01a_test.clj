@@ -1,6 +1,16 @@
 (ns advent.day01a-test
   (:require [clojure.test :refer [deftest is]]
-            [advent.day01a :as day01a]))
+            [advent.day01a :as day01a]
+            [malli.core :as m]
+            [malli.generator :as mg]))
+
+(def =>fuel
+  (m/schema
+    [:=> [:cat :int] :int]
+    {::m/function-checker mg/function-checker}))
+
+(m/validate =>fuel day01a/fuel)
+(m/validate =>fuel (str 88))
 
 (deftest fuel-test
   (is (= 2
