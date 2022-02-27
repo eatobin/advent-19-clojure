@@ -3,10 +3,12 @@
             [clojure.string :as str]
             [malli.instrument :as mi]))
 
+(def =>fuel-plus [:=> [:cat :int] :int])
+
 ;; part b
 (defn fuel-plus
   "calculate the recursive fuel required for a module"
-  {:malli/schema [:=> [:cat :int] :int]}
+  {:malli/schema =>fuel-plus}
   [module]
   (loop [m module
          acc 0]
