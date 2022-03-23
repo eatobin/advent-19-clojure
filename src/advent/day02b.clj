@@ -1,4 +1,4 @@
-(ns advent.day02a
+(ns advent.day02b
   (:require [clojure.data.csv :as csv]
             [clojure.java.io :as io]))
 
@@ -35,15 +35,15 @@
 
 (defn a-param [{:keys [instruction pointer memory]}]
   (case (instruction :a)
-    0 (memory (+ pointer OFFSET-A))))                       ; a-p-w
+    0 (memory (+ pointer OFFSET-A)))) ; a-p-w
 
 (defn b-param [{:keys [instruction pointer memory]}]
   (case (instruction :b)
-    0 (memory (memory (+ pointer OFFSET-B)))))              ; b-p-r
+    0 (memory (memory (+ pointer OFFSET-B))))) ; b-p-r
 
 (defn c-param [{:keys [instruction pointer memory]}]
   (case (instruction :c)
-    0 (memory (memory (+ pointer OFFSET-C)))))              ; c-p-r
+    0 (memory (memory (+ pointer OFFSET-C))))) ; c-p-r
 
 (defn op-code [{:keys [pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
@@ -70,17 +70,21 @@
     (assoc 1 noun)
     (assoc 2 verb)))
 
-(def answer
-  (((op-code {:pointer 0
-              :memory  (updated-memory 12 2)})
-    :memory)
-   0))
+(def noun-verb
+  (vec (for [noun (range 0 100)
+             verb (range 0 100)
+             :let [candidate (((op-code {:pointer 0
+                                         :memory  (updated-memory noun verb)})
+                               :memory)
+                              0)]
+             :when (= candidate 19690720)]
+         [candidate noun verb (+ (* 100 noun) verb)])))
 
 (defn -main
   "the main function/entry point"
   []
-  (println "advent.day02a:" answer))
+  (println "advent.day02a:" (last (first noun-verb))))
 
-;2890696
+;8226
 
-;;[eric@linux-epth advent-clojure](dev)$ clojure -M -m advent.day02a
+;;[eric@linux-epth advent-clojure](dev)$ clojure -M -m advent.day02b

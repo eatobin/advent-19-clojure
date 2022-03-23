@@ -30,7 +30,7 @@
     (into [])
     (map fuel-plus)
     (reduce +)
-    (println "advent.day01b: ")))                           ;5003788
+    (println "advent.day01b:")))                           ;5003788
 
 (mi/collect!)
 (mi/instrument!)
