@@ -77,25 +77,6 @@
     {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? stopped? :recur? recur?}
     (let [instruction (pad-5 (memory pointer))]
       (case (instruction :e)
-        9 (if (= (instruction :d) 9)
-            (recur
-              {:input         input
-               :output        output
-               :phase         phase
-               :pointer       pointer
-               :relative-base relative-base
-               :memory        memory
-               :stopped?      true
-               :recur?        recur?})
-            (recur
-              {:input         input
-               :output        output
-               :phase         phase
-               :pointer       (+ 2 pointer)
-               :relative-base (+ (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) relative-base)
-               :memory        memory
-               :stopped?      stopped?
-               :recur?        recur?}))
         1 (recur
             {:input         input
              :output        output
@@ -186,4 +167,23 @@
                               (assoc memory (param-maker-a {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) 0))
              :stopped?      stopped?
              :recur?        recur?})
+        9 (if (= (instruction :d) 9)
+            (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       pointer
+               :relative-base relative-base
+               :memory        memory
+               :stopped?      true
+               :recur?        recur?})
+            (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       (+ 2 pointer)
+               :relative-base (+ (param-maker-c {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}) relative-base)
+               :memory        memory
+               :stopped?      stopped?
+               :recur?        recur?}))
         "Unknown opcode"))))
