@@ -78,7 +78,15 @@
     (let [instruction (pad-5 (memory pointer))]
       (case (instruction :e)
         9 (if (= (instruction :d) 9)
-            {:input input :output output :phase phase :pointer pointer :relative-base relative-base :memory memory :stopped? true :recur? recur?}
+            (recur
+              {:input         input
+               :output        output
+               :phase         phase
+               :pointer       pointer
+               :relative-base relative-base
+               :memory        memory
+               :stopped?      true
+               :recur?        recur?})
             (recur
               {:input         input
                :output        output
