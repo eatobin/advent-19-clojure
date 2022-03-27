@@ -1,15 +1,17 @@
 (ns advent.day01
-  (:require [advent.domain :as dom]
-            [clojure.string :as str]
+  (:require [clojure.string :as str]
             [clojure.spec.alpha :as s]
             [orchestra.spec.test :as ostest]))
+
+(s/def ::module int?)
+(s/def ::gas int?)
 
 ;part a
 (defn gas [module]
   (- (quot module 3) 2))
 (s/fdef gas
-        :args (s/cat :module ::dom/module)
-        :ret ::dom/gas)
+        :args (s/cat :module ::module)
+        :ret ::gas)
 
 (def modules-sum (->>
                    "resources/day01.txt"
@@ -35,8 +37,8 @@
           (+ acc new-gas))
         acc))))
 (s/fdef gas-plus
-        :args (s/cat :module ::dom/module)
-        :ret ::dom/gas)
+        :args (s/cat :module ::module)
+        :ret ::gas)
 
 (def modules-gas-sum (->>
                        "resources/day01.txt"
