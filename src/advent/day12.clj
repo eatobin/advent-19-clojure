@@ -161,3 +161,6 @@
 (println @answer)
 
 ;;6849
+
+;part b
+;Your puzzle answer was 356658899375688.
