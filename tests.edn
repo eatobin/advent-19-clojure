@@ -1,5 +1,5 @@
 #kaocha/v1
     {:plugins                         [:orchestra
                                        :preloads]
-     :kaocha.plugin.preloads/ns-names [advent.domain]
+     :kaocha.plugin.preloads/ns-names [advent.day01]
      :color?                          false}
