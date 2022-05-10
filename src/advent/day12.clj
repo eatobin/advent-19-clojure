@@ -7,7 +7,7 @@
 ;part a
 ;(def answer (atom 0))
 
-(def vcs (with-open [reader (io/reader "resources/day12.csv")]
+(def vcs (with-open [reader (io/reader "resources/day12a.csv")]
            (doall
              (csv/read-csv reader))))
 
@@ -22,6 +22,9 @@
     (assoc {:vel [0 0 0]} :pos)))
 
 (def state (into [] (map make-moon-map vcs)))
+
+(mapv compare [2 -10 -7] [-1 0 2])
+;=> [1 -1 -1]
 
 ;(def moon-template
 ;  {:i {:name    :i,
