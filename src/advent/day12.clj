@@ -25,6 +25,12 @@
 
 (mapv compare [2 -10 -7] [-1 0 2])
 ;=> [1 -1 -1]
+(mapv compare (:pos (state 1)) (:pos (state 0)))
+(update {:vel [0 0 0]} :vel #(mapv inc %))
+(update {:vel [10 20 30]} :vel #(mapv + % [9 8 7]))
+(update-in state [0 :pos] #(mapv + % [-2 10 7]))
+
+(update-in state [0 :vel] #(mapv + (get-in state [0 :pos])) [-2 10 7])
 
 ;(def moon-template
 ;  {:i {:name    :i,
