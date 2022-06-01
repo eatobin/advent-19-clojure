@@ -23,14 +23,23 @@
 
 (def state (into [] (map make-moon-map vcs)))
 
+(def ss [{:vel [10 10 10], :pos [-1 0 2]}
+         {:vel [0 0 0], :pos [2 -10 -7]}
+         {:vel [0 0 0], :pos [4 -8 8]}
+         {:vel [0 0 0], :pos [3 5 -1]}])
+
 (mapv compare [2 -10 -7] [-1 0 2])
 ;=> [1 -1 -1]
 (mapv compare (:pos (state 1)) (:pos (state 0)))
 (update {:vel [0 0 0]} :vel #(mapv inc %))
 (update {:vel [10 20 30]} :vel #(mapv + % [9 8 7]))
-(update-in state [0 :pos] #(mapv + % [-2 10 7]))
+(update-in state [0 :pos] #(mapv + % [1 0 -2]))
+(update-in state [1 :pos] #(mapv + % [-2 10 7]))
+(assoc-in state [0 :vel] (mapv compare (:pos (state 1)) (:pos (state 0))))
+(update-in state [0 :vel] #(mapv + % (mapv compare (:pos (state 1)) (:pos (state 0)))))
+(update-in ss [0 :vel] #(mapv + % (mapv compare (:pos (state 1)) (:pos (state 0)))))
 
-(update-in state [0 :vel] #(mapv + (get-in state [0 :pos])) [-2 10 7])
+;(update-in state [0 :vel] #(mapv + (get-in state [0 :pos])) [-2 10 7])
 
 ;(def moon-template
 ;  {:i {:name    :i,
