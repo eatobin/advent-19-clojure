@@ -30,6 +30,11 @@
 
 (identity (nth (iterate step state) 10))
 
+(defn norm [xs] (transduce (map #(Math/abs (double %))) + xs))
+;(defn norm [xs] (transduce (map #(Math/abs %)) + xs))
+
+(defn total [moon] (* (norm (:vel moon)) (norm (:pos moon))))
+
 ;(defn calc-pe []
 ;  (doseq [[_ {name :name, {x-pos :x, y-pos :y, z-pos :z} :pos}] @moon-meld]
 ;    (swap! moon-meld assoc-in [name :pot :x] (math/abs x-pos))
