@@ -1,10 +1,16 @@
 (ns advent.day12x)
 
+;(def state
+;  [{:pos [+3 -6 +6] :vel [0 0 0]}
+;   {:pos [+10 +7 -9] :vel [0 0 0]}
+;   {:pos [-3 -7 +9] :vel [0 0 0]}
+;   {:pos [-8 0 +4] :vel [0 0 0]}])
+
 (def state
-  [{:pos [+3 -6 +6] :vel [0 0 0]}
-   {:pos [+10 +7 -9] :vel [0 0 0]}
-   {:pos [-3 -7 +9] :vel [0 0 0]}
-   {:pos [-8 0 +4] :vel [0 0 0]}])
+  [{:pos [-1 0 2] :vel [0 0 0]}
+   {:pos [2 -10 -7] :vel [0 0 0]}
+   {:pos [4 -8 8] :vel [0 0 0]}
+   {:pos [3 5 -1] :vel [0 0 0]}])
 
 (defn add [a b] (mapv + a b))
 
