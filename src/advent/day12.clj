@@ -28,7 +28,7 @@
           (assoc :vel new-velocities)
           (update :pos add new-velocities)))))
 
-(identity (step state))
+(identity (nth (iterate step state) 10))
 
 ;(defn calc-pe []
 ;  (doseq [[_ {name :name, {x-pos :x, y-pos :y, z-pos :z} :pos}] @moon-meld]
