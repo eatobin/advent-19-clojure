@@ -30,9 +30,20 @@
 
 (identity (nth (iterate step state) 10))
 
+;(def xform
+;  (map #(Math/abs (double %))))
+;
+;(defn norm [xs] (transduce xform + xs))
+
 (defn norm [xs] (transduce (map #(Math/abs (double %))) + xs))
 
+(norm  [-3 -2 1])
+;=> 6.0
+
 (defn total [moon] (* (norm (:vel moon)) (norm (:pos moon))))
+
+(total {:pos [2 1 -3], :vel [-3 -2 1]})
+;=> 36.0
 
 ;(defn calc-pe []
 ;  (doseq [[_ {name :name, {x-pos :x, y-pos :y, z-pos :z} :pos}] @moon-meld]

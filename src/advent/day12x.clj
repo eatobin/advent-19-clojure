@@ -29,7 +29,7 @@
 (defn norm [xs] (transduce (map #(Math/abs (double %))) + xs))
 
 (defn total [moon] (* (norm (:vel moon)) (norm (:pos moon))))
-;(defn total-system [state] (reduce + (map total state)))
+(defn total-system [state] (reduce + (map total state)))
 
 ;(println "Total energy:" (total-system (nth (iterate step state) 1000)))
 
