@@ -31,7 +31,6 @@
 (identity (nth (iterate step state) 10))
 
 (defn norm [xs] (transduce (map #(Math/abs (double %))) + xs))
-;(defn norm [xs] (transduce (map #(Math/abs %)) + xs))
 
 (defn total [moon] (* (norm (:vel moon)) (norm (:pos moon))))
 
