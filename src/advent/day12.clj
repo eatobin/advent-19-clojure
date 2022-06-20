@@ -1,18 +1,11 @@
 (ns advent.day12)
 
 ;part a
-
-;(def state
-;  [{:pos [+3 -6 +6] :vel [0 0 0]}
-;   {:pos [+10 +7 -9] :vel [0 0 0]}
-;   {:pos [-3 -7 +9] :vel [0 0 0]}
-;   {:pos [-8 0 +4] :vel [0 0 0]}])
-
 (def state
-  [{:pos [-1 0 2] :vel [0 0 0]}
-   {:pos [2 -10 -7] :vel [0 0 0]}
-   {:pos [4 -8 8] :vel [0 0 0]}
-   {:pos [3 5 -1] :vel [0 0 0]}])
+  [{:pos [+3 -6 +6] :vel [0 0 0]}
+   {:pos [+10 +7 -9] :vel [0 0 0]}
+   {:pos [-3 -7 +9] :vel [0 0 0]}
+   {:pos [-8 0 +4] :vel [0 0 0]}])
 
 (defn add [a b] (mapv + a b))
 
@@ -28,69 +21,31 @@
           (assoc :vel new-velocities)
           (update :pos add new-velocities)))))
 
-(identity (nth (iterate step state) 10))
-
-;(def xform
-;  (map #(Math/abs (double %))))
-;
-;(defn norm [xs] (transduce xform + xs))
-
 (defn norm [xs] (transduce (map #(Math/abs (double %))) + xs))
-
-(norm  [-3 -2 1])
-;=> 6.0
 
 (defn total [moon] (* (norm (:vel moon)) (norm (:pos moon))))
 
-(total {:pos [2 1 -3], :vel [-3 -2 1]})
-;=> 36.0
+(defn total-system [state] (reduce + (map total state)))
 
-;(defn calc-pe []
-;  (doseq [[_ {name :name, {x-pos :x, y-pos :y, z-pos :z} :pos}] @moon-meld]
-;    (swap! moon-meld assoc-in [name :pot :x] (math/abs x-pos))
-;    (swap! moon-meld assoc-in [name :pot :y] (math/abs y-pos))
-;    (swap! moon-meld assoc-in [name :pot :z] (math/abs z-pos))))
-;
-;(defn calc-ke []
-;  (doseq [[_ {name :name, {x-vel :x, y-vel :y, z-vel :z} :vel}] @moon-meld]
-;    (swap! moon-meld assoc-in [name :kin :x] (math/abs x-vel))
-;    (swap! moon-meld assoc-in [name :kin :y] (math/abs y-vel))
-;    (swap! moon-meld assoc-in [name :kin :z] (math/abs z-vel))))
-;
-;(defn tot-pot []
-;  (doseq [[_ {name :name, {x-pot :x, y-pot :y, z-pot :z} :pot}] @moon-meld]
-;    (swap! moon-meld assoc-in [name :tot-pot] (+ x-pot y-pot z-pot))))
-;
-;(defn tot-kin []
-;  (doseq [[_ {name :name, {x-kin :x, y-kin :y, z-kin :z} :kin}] @moon-meld]
-;    (swap! moon-meld assoc-in [name :tot-kin] (+ x-kin y-kin z-kin))))
-;
-;(defn tot-tot []
-;  (doseq [[_ {name :name, tot-pot :tot-pot, tot-kin :tot-kin}] @moon-meld]
-;    (swap! moon-meld assoc-in [name :tot-tot] (* tot-pot tot-kin))))
-;
-;(def one-thousand-step-vec
-;  (vec
-;    (flatten
-;      (take 1000
-;            (repeat
-;              (interleave [apply-gravity] [apply-velocity] [calc-pe] [calc-ke] [tot-pot] [tot-kin] [tot-tot]))))))
-;
-;(defn one-thousand-step []
-;  (doall (map #(%) one-thousand-step-vec)))
-;
-;(defn calc-answer []
-;  (doseq [[_ {tot-tot :tot-tot}] @moon-meld]
-;    (swap! answer + tot-tot)))
-;
-;(defn step-n-calc []
-;  (doall (map #(%) [one-thousand-step calc-answer])))
-;
-;(step-n-calc)
-;
-;(println @answer)
+(identity (total-system (nth (iterate step state) 1000)))
 
 ;;6849
 
 ;part b
-;Your puzzle answer was 356658899375688.
+(defn third [x] (nth x 2))
+(defn gcd [a b] (if (zero? b) a (recur b, (mod a b))))
+(defn lcm [& v] (reduce (fn [a b] (/ (* a b) (gcd a b))) v))
+
+(defn first-repeat [step state proj-fn]
+  (reduce (fn [acc state]
+            (if (contains? acc state)
+              (reduced (count acc))
+              (conj acc state)))
+          #{} (map proj-fn (iterate step state))))
+
+(def offsets (for [proj [first second third]]
+               (first-repeat step state (partial mapv (juxt (comp proj :pos) (comp proj :vel))))))
+
+(apply lcm offsets)
+
+;;356658899375688
