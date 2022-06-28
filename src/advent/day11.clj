@@ -70,9 +70,9 @@
     (if (@oc :stopped?)
       (count (distinct (map :pt (vec (remove #(nil? (% :rp)) @visits)))))
       (do
-        (reset! visits (paint-atom @visits (@oc :output)))
+        (reset! visits (paint-atom @visits (last (@oc :output))))
         (swap! oc ic/op-code)
-        (reset! visits (turn-atom @visits (@oc :output)))
+        (reset! visits (turn-atom @visits (last (@oc :output))))
         (recur
           ((last @visits) :c))))))
 
@@ -93,9 +93,9 @@
     (if (@oc :stopped?)
       (vec (map #(select-keys % [:pt :c]) @visits))
       (do
-        (reset! visits (paint-atom @visits (@oc :output)))
+        (reset! visits (paint-atom @visits (last (@oc :output))))
         (swap! oc ic/op-code)
-        (reset! visits (turn-atom @visits (@oc :output)))
+        (reset! visits (turn-atom @visits (last (@oc :output))))
         (recur
           ((last @visits) :c))))))
 
