@@ -110,7 +110,7 @@
         4 (if recur?
             (recur
               {:input         input
-               :output        (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+               :output        (conj output (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
                :phase         phase
                :pointer       (+ 2 pointer)
                :relative-base relative-base
@@ -118,7 +118,7 @@
                :stopped?      stopped?
                :recur?        recur?})
             {:input         input
-             :output        (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
+             :output        (conj output (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
              :phase         phase
              :pointer       (+ 2 pointer)
              :relative-base relative-base
