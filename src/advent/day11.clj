@@ -33,7 +33,7 @@
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def oc (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
+(def oc (atom {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
 
 (defn map-eq-pts
   "Takes a {:x 3 :y 3} as target point (tpt)"
@@ -85,7 +85,7 @@
 ;part b
 (def visits-2 (atom [{:pt {:x 0 :y 0} :h :n :c 1 :rp nil}]))
 
-(def oc-2 (atom {:input nil :output nil :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
+(def oc-2 (atom {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
 
 (defn runner-2 [visits oc]
   (loop [c ((last @visits) :c)]
