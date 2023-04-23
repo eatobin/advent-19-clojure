@@ -2,5 +2,5 @@
  :deps  {cheshire/cheshire              {:mvn/version "5.11.0"}
          org.clojure/data.csv           {:mvn/version "1.0.1"}
          org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
-         net.mikera/core.matrix         {:mvn/version "0.62.0"}
+         net.mikera/core.matrix         {:mvn/version "0.63.0"}
          org.clojure/algo.generic       {:mvn/version "0.1.3"}}}
