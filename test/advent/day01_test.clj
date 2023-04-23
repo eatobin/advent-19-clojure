@@ -1,7 +1,7 @@
 (ns advent.day01-test
-  (:require [clojure.test :refer [deftest is]]
-            [advent.day01 :as day01]
-            [clojure.spec.alpha :as s]))
+  (:require [advent.day01 :as day01]
+            [clojure.spec.alpha :as s]
+            [clojure.test :refer [deftest is]]))
 
 (s/conform ::day01/module
            42)
