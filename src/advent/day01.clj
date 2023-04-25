@@ -20,9 +20,21 @@
                    (map #(Integer/parseInt %))
                    (into [])
                    (map gas)
-                   (reduce +)))
+                   (reduce +))):eat/test
 
 (println modules-sum)
+
+(defn your-inc [x]
+  (inc x))
+(s/fdef your-inc
+        :args (s/cat :x int?)
+        :ret nat-int?)
+
+(comment
+  (your-inc 1)
+  (your-inc -11)
+  (your-inc 'a')
+  (your-inc -1))
 
 ;; 3337766
 
