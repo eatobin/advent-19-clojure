@@ -2,4 +2,4 @@
     {:plugins                         [:orchestra
                                        :preloads]
      :kaocha.plugin.preloads/ns-names [advent.day01]
-     :color?                          false}
+     :color?                          true}
