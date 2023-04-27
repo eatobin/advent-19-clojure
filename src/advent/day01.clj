@@ -22,7 +22,7 @@
                    (map gas)
                    (reduce +))) :eat/test
 
-(println modules-sum)
+(comment modules-sum)
 
 ;; 3337766
 
@@ -49,7 +49,7 @@
                        (map gas-plus)
                        (reduce +)))
 
-(println modules-gas-sum)
+(comment modules-gas-sum)
 
 ;; 5003788
 
