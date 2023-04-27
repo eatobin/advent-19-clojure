@@ -13,14 +13,14 @@
                  [a b c d e]))
 
 (defn pass [[a b c d e] i-code]
-  (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input         0
-                                                                                                                                                                  :output        []
-                                                                                                                                                                  :phase         a
-                                                                                                                                                                  :pointer       0
+  (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input  0
+                                                                                                                                                                  :output []
+                                                                                                                                                                  :phase a
+                                                                                                                                                                  :pointer 0
                                                                                                                                                                   :relative-base 0
-                                                                                                                                                                  :memory        i-code
-                                                                                                                                                                  :stopped?      false
-                                                                                                                                                                  :recur?        true}) :output))
+                                                                                                                                                                  :memory i-code
+                                                                                                                                                                  :stopped? false
+                                                                                                                                                                  :recur? true}) :output))
                                                                                                                                :output        []
                                                                                                                                :phase         b
                                                                                                                                :pointer       0

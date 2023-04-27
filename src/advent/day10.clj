@@ -1,6 +1,6 @@
 (ns advent.day10
-  (:require [clojure.string :as str]
-            [clojure.math.numeric-tower :as math]))
+  (:require [clojure.math.numeric-tower :as math]
+            [clojure.string :as str]))
 
 ;part a
 (def universe (->>

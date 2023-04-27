@@ -1,6 +1,6 @@
 (ns advent.intcode
   (:require [clojure.data.csv :as csv]
-    [clojure.java.io :as io]))
+            [clojure.java.io :as io]))
 
 ; ABCDE
 ;  1002
@@ -13,10 +13,10 @@
   (->> (first (with-open [reader (io/reader file)]
                 (doall
                   (csv/read-csv reader))))
-    (map #(Long/parseLong %))
-    (into [])
-    (zipmap (range))
-    (into (sorted-map-by <))))
+       (map #(Long/parseLong %))
+       (into [])
+       (zipmap (range))
+       (into (sorted-map-by <))))
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
@@ -24,14 +24,14 @@
 
 (defn char-to-int [char-as-byte]
   (if (or (< char-as-byte 48)
-        (> char-as-byte 57))
+          (> char-as-byte 57))
     "Char is not an integer"
     (- char-as-byte 48)))
 
 (defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
-    (for [character (format "%05d" instruction)]
-      (char-to-int (byte character)))))
+          (for [character (format "%05d" instruction)]
+            (char-to-int (byte character)))))
 
 (defn a-param [{:keys [instruction pointer memory relative-base]}]
   (case (instruction :a)
@@ -69,7 +69,7 @@
                               memory
                               (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
                               (+ (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
+                                 (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
              :stopped?      stopped?
              :recur?        recur?})
         2 (recur
@@ -82,7 +82,7 @@
                               memory
                               (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
                               (* (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
+                                 (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})))
              :stopped?      stopped?
              :recur?        recur?})
         3 (recur
@@ -154,7 +154,7 @@
              :pointer       (+ 4 pointer)
              :relative-base relative-base
              :memory        (if (< (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                  (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+                                   (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
                               (assoc
                                 memory
                                 (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
@@ -172,7 +172,7 @@
              :pointer       (+ 4 pointer)
              :relative-base relative-base
              :memory        (if (= (c-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})
-                                  (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
+                                   (b-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base}))
                               (assoc
                                 memory
                                 (a-param {:instruction instruction :pointer pointer :memory memory :relative-base relative-base})

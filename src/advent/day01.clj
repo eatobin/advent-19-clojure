@@ -1,6 +1,6 @@
 (ns advent.day01
-  (:require [clojure.string :as str]
-            [clojure.spec.alpha :as s]
+  (:require [clojure.spec.alpha :as s]
+            [clojure.string :as str]
             [orchestra.spec.test :as ostest]))
 
 (s/def ::module int?)
