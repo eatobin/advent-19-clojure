@@ -20,7 +20,7 @@
                    (map #(Integer/parseInt %))
                    (into [])
                    (map gas)
-                   (reduce +))) :eat/test
+                   (reduce +)))
 
 (comment modules-sum)
 
