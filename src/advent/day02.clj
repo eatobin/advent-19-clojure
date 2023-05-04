@@ -12,7 +12,7 @@
 
 (def answer (((ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory (updated-memory 12 2) :stopped? false :recur? true}) :memory) 0))
 
-(println answer)
+(comment answer)
 
 ;2890696
 
@@ -24,6 +24,6 @@
              :when (= candidate 19690720)]
          [candidate noun verb (+ (* 100 noun) verb)])))
 
-(println (last (first noun-verb)))
+(comment (last (first noun-verb)))
 
 ;8226
