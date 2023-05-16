@@ -121,8 +121,8 @@
 (defn update-grid [{:keys [row col c grid]}]
   (vec (reset! grid (assoc-in @grid [row col] c))))
 
-(do
-  (vec (map update-grid my-corrected-w-atom))
-  (pp/print-table @my-grid))
+(vec (map update-grid my-corrected-w-atom))
+
+(pp/print-table @my-grid)
 
 ;HGEHJHUZ
