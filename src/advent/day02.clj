@@ -4,6 +4,8 @@
 ;part a
 (def tv (ic/make-tv "resources/day02.csv"))
 
+(comment tv)
+
 (defn updated-memory [noun verb]
   (->
     tv
