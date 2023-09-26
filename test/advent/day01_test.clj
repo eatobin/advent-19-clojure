@@ -1,3 +1,5 @@
+;; clojure -M:test/kaocha-plain
+
 (ns advent.day01-test
   (:require [advent.day01 :as day01]
             [clojure.test :as t]))
