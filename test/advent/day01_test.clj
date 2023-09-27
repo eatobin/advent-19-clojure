@@ -1,4 +1,5 @@
-;; [eric@linux-x2vq advent-19-clojure](master)$ clojure -X:test/rich
+;; clojure -M:test/kaocha-plain
+;; clojure -X:test/rich
 
 (ns advent.day01-test
   (:require [advent.day01 :as day01]
