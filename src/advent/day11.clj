@@ -44,11 +44,11 @@
   "Takes a {:x 3 :y 3} as target point (tpt)"
   [tpt pts]
   (let [c (->>
-            pts
-            (map-eq-pts tpt)
-            (butlast)
-            (remove nil?)
-            (last))]
+           pts
+           (map-eq-pts tpt)
+           (butlast)
+           (remove nil?)
+           (last))]
     (if (nil? c)
       0
       c)))
@@ -74,7 +74,7 @@
         (swap! oc ic/op-code)
         (reset! visits (turn-atom @visits (last (@oc :output))))
         (recur
-          ((last @visits) :c))))))
+         ((last @visits) :c))))))
 
 (def answer (runner visits oc))
 
@@ -97,7 +97,7 @@
         (swap! oc ic/op-code)
         (reset! visits (turn-atom @visits (last (@oc :output))))
         (recur
-          ((last @visits) :c))))))
+         ((last @visits) :c))))))
 
 (def raw-visits (runner-2 visits-2 oc-2))
 

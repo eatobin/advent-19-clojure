@@ -4,12 +4,12 @@
 
 ;part a
 (def universe (->>
-                "resources/day10-17-22-288.txt"
-                (slurp)
-                (str/split-lines)
-                (into [])
-                (map vec)
-                (into [])))
+               "resources/day10-17-22-288.txt"
+               (slurp)
+               (str/split-lines)
+               (into [])
+               (map vec)
+               (into [])))
 
 (defn make-pad-line [universe]
   (map (fn [_] \.) (first universe)))

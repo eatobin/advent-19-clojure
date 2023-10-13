@@ -11,15 +11,15 @@
 
 (defn step [state]
   (doall
-    (for [m state
-          :let [new-velocities
-                (reduce
-                  add
-                  (:vel m)
-                  (for [n state] (mapv compare (:pos n) (:pos m))))]]
-      (-> m
-          (assoc :vel new-velocities)
-          (update :pos add new-velocities)))))
+   (for [m state
+         :let [new-velocities
+               (reduce
+                add
+                (:vel m)
+                (for [n state] (mapv compare (:pos n) (:pos m))))]]
+     (-> m
+         (assoc :vel new-velocities)
+         (update :pos add new-velocities)))))
 
 (defn norm [xs] (transduce (map #(Math/abs (double %))) + xs))
 

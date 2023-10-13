@@ -86,9 +86,9 @@
       (do (swap! (amps current-amp-no) ic/op-code)
           (swap! (amps next-amp-no) assoc :input (last (:output @(amps current-amp-no))))
           (recur
-            (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
-            next-amp-no
-            (+ 1 (mod next-amp-no 5)))))))
+           (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
+           next-amp-no
+           (+ 1 (mod next-amp-no 5)))))))
 
 (def answer-2 (apply max (map runner (to-amps-list possibles-2 tv))))
 
@@ -106,5 +106,5 @@
 
 (comment
   (to-amps-list
-    [[5 6 7 8 9]]
-    {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
+   [[5 6 7 8 9]]
+   {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))

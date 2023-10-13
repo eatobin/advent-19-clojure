@@ -9,19 +9,19 @@
 
 (defn input [layer-size num-rows]
   (->>
-    "resources/day08.txt"
-    (slurp)
-    (partition layer-size)
-    (m/matrix)
-    (map to-ints)
-    (map #(partition num-rows %))
-    (m/matrix)))
+   "resources/day08.txt"
+   (slurp)
+   (partition layer-size)
+   (m/matrix)
+   (map to-ints)
+   (map #(partition num-rows %))
+   (m/matrix)))
 
 (defn zeros-in-row [row]
   (->>
-    row
-    (filter #(= % 0))
-    (count)))
+   row
+   (filter #(= % 0))
+   (count)))
 
 (defn zeros-in-layer [layer]
   (reduce + (map zeros-in-row layer)))
@@ -37,18 +37,18 @@
 
 (defn ones-in-row [row]
   (->>
-    row
-    (filter #(= % 1))
-    (count)))
+   row
+   (filter #(= % 1))
+   (count)))
 
 (defn ones-in-layer [layer]
   (reduce + (map ones-in-row layer)))
 
 (defn twos-in-row [row]
   (->>
-    row
-    (filter #(= % 2))
-    (count)))
+   row
+   (filter #(= % 2))
+   (count)))
 
 (defn twos-in-layer [layer]
   (reduce + (map twos-in-row layer)))
@@ -63,12 +63,12 @@
 
 (def input-2
   (->>
-    "resources/day08.txt"
-    (slurp)
-    (partition 150)
-    (m/matrix)
-    (map to-ints)
-    (m/to-nested-vectors)))
+   "resources/day08.txt"
+   (slurp)
+   (partition 150)
+   (m/matrix)
+   (map to-ints)
+   (m/to-nested-vectors)))
 
 (defn val-for-column [column]
   (first (for [row (range 100)

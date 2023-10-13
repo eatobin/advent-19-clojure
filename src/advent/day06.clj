@@ -12,9 +12,9 @@
   (apply hash-map (flatten (map (comp reverse #(str/split % #"\)")) (str/split-lines raw)))))
 
 (def input (->>
-             "resources/day06.txt"
-             (slurp)
-             (parse-orbit-map)))
+            "resources/day06.txt"
+            (slurp)
+            (parse-orbit-map)))
 
 (defn orbit-centers
   "Returns the number of orbits the given object is contained in (i.e. direct orbit + indirect orbits)"
@@ -40,8 +40,8 @@
     (if (some #(= (first you-path) %) santa-path)
       (first you-path)
       (recur
-        (rest you-path)
-        santa-path))))
+       (rest you-path)
+       santa-path))))
 
 (defn transfers
   "Returns the number of transfers between YOU and SAN"
