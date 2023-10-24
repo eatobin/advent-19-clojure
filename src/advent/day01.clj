@@ -1,3 +1,5 @@
+;; $ clj -X:repl/socket-repl **Use this one for printing to the server REPL
+
 (ns advent.day01
   (:require [clojure.string :as str]))
 
