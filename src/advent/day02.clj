@@ -12,7 +12,7 @@
    (assoc 1 noun)
    (assoc 2 verb)))
 
-(def answer (((ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory (updated-memory 12 2) :stopped? false :recur? true}) :memory) 0))
+(def answer ((:memory (ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory (updated-memory 12 2) :stopped? false :recur? true})) 0))
 
 (comment answer)
 
@@ -22,7 +22,7 @@
 (def noun-verb
   (vec (for [noun (range 0 100)
              verb (range 0 100)
-             :let [candidate (((ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory (updated-memory noun verb) :stopped? false :recur? true}) :memory) 0)]
+             :let [candidate ((:memory (ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory (updated-memory noun verb) :stopped? false :recur? true})) 0)]
              :when (= candidate 19690720)]
          [candidate noun verb (+ (* 100 noun) verb)])))
 
