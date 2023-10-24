@@ -17,7 +17,7 @@
    (map #(Long/parseLong %))
    (into [])
    (zipmap (range))
-   (into (sorted-map-by <))))
+   (into (sorted-map))))
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
