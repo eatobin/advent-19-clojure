@@ -3,11 +3,11 @@
             [clojure.java.io :as io]))
 
 ; ABCDE
-;  1002
+; 01002
 
-; a- b- or c- = left-to-right position after 2 digit opcode
-; -p- -i- or -r- = position, immediate or relative mode
-; -r or -w = read or write
+; a b or c = left-to-right position after 2 digit opcode
+; p i or r = position, immediate or relative mode
+; r or w = read or write
 
 (defn make-tv [file]
   (->>
