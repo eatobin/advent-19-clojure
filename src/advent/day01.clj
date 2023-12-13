@@ -8,13 +8,13 @@
   (- (quot module 3) 2))
 
 (def modules-sum (->>
-                  "resources/day01.txt"
-                  (slurp)
-                  (str/split-lines)
-                  (map #(Integer/parseInt %))
-                  (into [])
-                  (map gas)
-                  (reduce +)))
+                   "resources/day01.txt"
+                   (slurp)
+                   (str/split-lines)
+                   (map #(Integer/parseInt %))
+                   (into [])
+                   (map gas)
+                   (reduce +)))
 
 (comment modules-sum)
 
@@ -27,18 +27,18 @@
     (let [new-gas (gas m)]
       (if (pos? new-gas)
         (recur
-         new-gas
-         (+ acc new-gas))
+          new-gas
+          (+ acc new-gas))
         acc))))
 
 (def modules-gas-sum (->>
-                      "resources/day01.txt"
-                      (slurp)
-                      (str/split-lines)
-                      (map #(Integer/parseInt %))
-                      (into [])
-                      (map gas-plus)
-                      (reduce +)))
+                       "resources/day01.txt"
+                       (slurp)
+                       (str/split-lines)
+                       (map #(Integer/parseInt %))
+                       (into [])
+                       (map gas-plus)
+                       (reduce +)))
 
 (comment modules-gas-sum)
 
