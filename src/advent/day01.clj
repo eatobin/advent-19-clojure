@@ -18,7 +18,8 @@
     (reduce +)))
 
 (comment
-  (modules-sum "resources/day01.txt"))
+  (modules-sum "resources/day01.txt")
+  :rcf)
 
 ;; 3337766
 
@@ -44,6 +45,7 @@
     (reduce +)))
 
 (comment
-  (modules-gas-sum "resources/day01.txt"))
+  (modules-gas-sum "resources/day01.txt")
+  :rcf)
 
 ;; 5003788
