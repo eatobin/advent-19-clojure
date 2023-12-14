@@ -7,16 +7,18 @@
 (defn gas [module]
   (- (quot module 3) 2))
 
-(def modules-sum (->>
-                   "resources/day01.txt"
-                   (slurp)
-                   (str/split-lines)
-                   (map #(Integer/parseInt %))
-                   (into [])
-                   (map gas)
-                   (reduce +)))
+(defn modules-sum [file]
+  (->>
+    file
+    (slurp)
+    (str/split-lines)
+    (map #(Integer/parseInt %))
+    (into [])
+    (map gas)
+    (reduce +)))
 
-(comment modules-sum)
+(comment
+  (modules-sum "resources/day01.txt"))
 
 ;; 3337766
 
@@ -31,15 +33,17 @@
           (+ acc new-gas))
         acc))))
 
-(def modules-gas-sum (->>
-                       "resources/day01.txt"
-                       (slurp)
-                       (str/split-lines)
-                       (map #(Integer/parseInt %))
-                       (into [])
-                       (map gas-plus)
-                       (reduce +)))
+(defn modules-gas-sum [file]
+  (->>
+    file
+    (slurp)
+    (str/split-lines)
+    (map #(Integer/parseInt %))
+    (into [])
+    (map gas-plus)
+    (reduce +)))
 
-(comment modules-gas-sum)
+(comment
+  (modules-gas-sum "resources/day01.txt"))
 
 ;; 5003788
