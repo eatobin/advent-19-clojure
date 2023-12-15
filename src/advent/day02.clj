@@ -4,13 +4,18 @@
 ;part a
 (def tv (ic/make-tv "resources/day02.csv"))
 
-(comment tv)
+(comment
+  tv
+  (tv 0)
+  (tv 100)
+  (count tv)
+  )
 
 (defn updated-memory [noun verb]
   (->
-   tv
-   (assoc 1 noun)
-   (assoc 2 verb)))
+    tv
+    (assoc 1 noun)
+    (assoc 2 verb)))
 
 (def answer ((:memory (ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory (updated-memory 12 2) :stopped? false :recur? true})) 0))
 
