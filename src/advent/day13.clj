@@ -9,9 +9,9 @@
 ;; 4 is a ball tile. The ball moves diagonally and bounces off objects.
 
 ;part a
-(def tv (ic/make-tv "resources/day13.csv"))
+(def memory (ic/make-tv "resources/day13.csv"))
 
-(def raw-output (:output (ic/op-code {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true})))
+(def raw-output (:output (ic/op-code {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true})))
 
 (defn zip-it
   [instruction]
