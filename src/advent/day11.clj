@@ -1,10 +1,10 @@
 (ns advent.day11
   (:require [advent.intcode :as ic]
-            [clojure.math.numeric-tower :as math]
-            [clojure.pprint :as pp]))
+    [clojure.math.numeric-tower :as math]
+    [clojure.pprint :as pp]))
 
 ;part a
-(def tv (ic/make-tv "resources/day11.csv"))
+(def memory (ic/make-tv "resources/day11.csv"))
 
 (defn new-heading [heading turn]
   (cond
@@ -33,7 +33,7 @@
 
 (def visits (atom [{:pt {:x 0 :y 0} :h :n :c 0 :rp nil}]))
 
-(def oc (atom {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
+(def oc (atom {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}))
 
 (defn map-eq-pts
   "Takes a {:x 3 :y 3} as target point (tpt)"
@@ -44,11 +44,11 @@
   "Takes a {:x 3 :y 3} as target point (tpt)"
   [tpt pts]
   (let [c (->>
-           pts
-           (map-eq-pts tpt)
-           (butlast)
-           (remove nil?)
-           (last))]
+            pts
+            (map-eq-pts tpt)
+            (butlast)
+            (remove nil?)
+            (last))]
     (if (nil? c)
       0
       c)))
@@ -74,18 +74,20 @@
         (swap! oc ic/op-code)
         (reset! visits (turn-atom @visits (last (@oc :output))))
         (recur
-         ((last @visits) :c))))))
+          ((last @visits) :c))))))
 
 (def answer (runner visits oc))
 
-(println answer)
+(comment
+  answer
+  )
 
 ;1771
 
 ;part b
 (def visits-2 (atom [{:pt {:x 0 :y 0} :h :n :c 1 :rp nil}]))
 
-(def oc-2 (atom {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? false}))
+(def oc-2 (atom {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}))
 
 (defn runner-2 [visits oc]
   (loop [c ((last @visits) :c)]
@@ -97,7 +99,7 @@
         (swap! oc ic/op-code)
         (reset! visits (turn-atom @visits (last (@oc :output))))
         (recur
-         ((last @visits) :c))))))
+          ((last @visits) :c))))))
 
 (def raw-visits (runner-2 visits-2 oc-2))
 
