@@ -1,20 +1,40 @@
 (ns advent.day13
   (:require [advent.intcode :as ic]))
 
+;; (x [from left] y [from top] id [below])
+;; 0 is an empty tile. No game object appears in this tile.
+;; 1 is a wall tile. Walls are indestructible barriers.
+;; 2 is a block tile. Blocks can be broken by the ball.
+;; 3 is a horizontal paddle tile. The paddle is indestructible.
+;; 4 is a ball tile. The ball moves diagonally and bounces off objects.
+
 ;part a
 (def tv (ic/make-tv "resources/day13.csv"))
 
-(def raw-output ((ic/op-code {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true}) :output))
+(def raw-output (:output (ic/op-code {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory tv :stopped? false :recur? true})))
 
-(def tiles (vec (map vec (partition 3 raw-output))))
+(defn zip-it
+  [instruction]
+  (zipmap [:x :y :id] instruction))
 
-(defn is-block? [[_ _ id]] (if (= id 2) 1 0))
+(def tiles (map zip-it (partition 3 raw-output)))
 
-(reduce + (map is-block? tiles))
+(defn is-block? [tile] (if (= (:id tile) 2) 1 0))
+
+(comment
+  (reduce + (map is-block? tiles))
+  :rcf)
 
 ;; 412
 
 ;part b
+
+;; The arcade cabinet has a joystick that can move left and right. The software reads the position of the joystick with input instructions:
+
+;; If the joystick is in the neutral position, provide 0.
+;; If the joystick is tilted to the left, provide -1.
+;; If the joystick is tilted to the right, provide 1.
+
 ;; (def tv-b (assoc tv 0 2))
 
 ;; (def raw-output-b-n ((ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory tv-b :stopped? false :recur? true}) :output))
