@@ -2,18 +2,18 @@
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def tv (ic/make-tv "resources/day02.csv"))
+(def memory (ic/make-tv "resources/day02.csv"))
 
 (comment
-  tv
-  (tv 0)
-  (tv 100)
-  (count tv)
+  memory
+  (memory 0)
+  (memory 100)
+  (count memory)
   )
 
 (defn updated-memory [noun verb]
   (->
-    tv
+    memory
     (assoc 1 noun)
     (assoc 2 verb)))
 
