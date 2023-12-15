@@ -15,11 +15,11 @@
 
 (defn zip-it
   [instruction]
-  (zipmap [:x :y :id] instruction))
+  (zipmap [::x ::y ::z] instruction))
 
 (def tiles (map zip-it (partition 3 raw-output)))
 
-(defn is-block? [tile] (if (= (:id tile) 2) 1 0))
+(defn is-block? [tile] (if (= (::z tile) 2) 1 0))
 
 (comment
   (reduce + (map is-block? tiles))
