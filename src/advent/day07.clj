@@ -2,7 +2,7 @@
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def tv (ic/make-tv "resources/day07.csv"))
+(def memory (ic/make-tv "resources/day07.csv"))
 
 (def possibles (for [a (range 0 5)
                      b (range 0 5)
@@ -53,9 +53,11 @@
 (defn passes [i-code]
   (map #(pass % i-code) possibles))
 
-(def answer (apply max (passes tv)))
+(def answer (apply max (passes memory)))
 
-(println answer)
+(comment
+  answer
+  )
 
 ;368584
 
@@ -84,15 +86,17 @@
     (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
       (last (:output @(amps current-amp-no)))
       (do (swap! (amps current-amp-no) ic/op-code)
-          (swap! (amps next-amp-no) assoc :input (last (:output @(amps current-amp-no))))
-          (recur
-           (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
-           next-amp-no
-           (+ 1 (mod next-amp-no 5)))))))
+        (swap! (amps next-amp-no) assoc :input (last (:output @(amps current-amp-no))))
+        (recur
+          (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
+          next-amp-no
+          (+ 1 (mod next-amp-no 5)))))))
 
-(def answer-2 (apply max (map runner (to-amps-list possibles-2 tv))))
+(def answer-2 (apply max (map runner (to-amps-list possibles-2 memory))))
 
-(println answer-2)
+(comment
+  answer-2
+  )
 
 ;35993240
 
@@ -100,11 +104,11 @@
   (def mv [((vec possibles-2) 0)])
   mv
   [[5 6 7 8 9]]
-  (def five-amps (first (to-amps-list mv tv)))
+  (def five-amps (first (to-amps-list mv memory)))
   (runner five-amps)
   33807717)
 
 (comment
   (to-amps-list
-   [[5 6 7 8 9]]
-   {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
+    [[5 6 7 8 9]]
+    {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
