@@ -49,3 +49,23 @@
   :rcf)
 
 ;; 5003788
+
+(defn gas-plus-lazy [module]
+  (reduce + (rest (take-while pos? (iterate gas module)))))
+
+(defn modules-gas-sum-lazy [file]
+  (->>
+    file
+    (slurp)
+    (str/split-lines)
+    (map #(Integer/parseInt %))
+    (map gas-plus-lazy)
+    (reduce +)))
+
+(comment
+  (modules-gas-sum-lazy "resources/day01.txt")
+  :rcf)
+
+;; 5003788
+
+(println "Let's test the terminal!")
