@@ -15,14 +15,17 @@
 
 (defn zip-it
   [instruction]
-  (zipmap [::x ::y ::z] instruction))
+  (zipmap [:x :y :z] instruction))
 
 (def tiles (map zip-it (partition 3 raw-output)))
 
-(defn is-block? [tile] (if (= (::z tile) 2) 1 0))
+(defn is-block? [tile] (if (= (:z tile) 2) 1 0))
 
 (comment
   (reduce + (map is-block? tiles))
+  (filter #(= (:z %) 1) tiles)
+  (max-key val #:advent.day13{:x 43, :y 1, :z 1})
+  (apply max-key val #:advent.day13{:x 43, :y 1, :z 1})
   :rcf)
 
 ;; 412
