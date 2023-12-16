@@ -9,7 +9,7 @@
 ; p i or r = position, immediate or relative mode
 ; r or w = read or write
 
-(defn make-tv [file]
+(defn make-memory [file]
   (->>
     (first (with-open [reader (io/reader file)]
              (doall

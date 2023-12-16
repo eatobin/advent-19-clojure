@@ -2,7 +2,7 @@
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def memory (ic/make-tv "resources/day09.csv"))
+(def memory (ic/make-memory "resources/day09.csv"))
 
 
 (def answer (last ((ic/op-code {:input 1 :output [] :phase nil :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}) :output)))

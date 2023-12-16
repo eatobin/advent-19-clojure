@@ -2,7 +2,7 @@
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def memory (ic/make-tv "resources/day02.csv"))
+(def memory (ic/make-memory "resources/day02.csv"))
 
 (comment
   memory

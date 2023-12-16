@@ -2,7 +2,7 @@
   (:require [advent.intcode :as ic]))
 
 ;part a
-(def memory (ic/make-tv "resources/day07.csv"))
+(def memory (ic/make-memory "resources/day07.csv"))
 
 (def possibles (for [a (range 0 5)
                      b (range 0 5)

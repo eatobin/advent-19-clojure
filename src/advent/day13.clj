@@ -9,7 +9,7 @@
 ;; 4 is a ball tile. The ball moves diagonally and bounces off objects.
 
 ;part a
-(def memory (ic/make-tv "resources/day13.csv"))
+(def memory (ic/make-memory "resources/day13.csv"))
 
 (def raw-output (:output (ic/op-code {:input nil :output [] :phase nil :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true})))
 
@@ -38,13 +38,13 @@
 ;; If the joystick is tilted to the left, provide -1.
 ;; If the joystick is tilted to the right, provide 1.
 
-;; (def tv-b (assoc tv 0 2))
+;; (def memory-b (assoc memory 0 2))
 
-;; (def raw-output-b-n ((ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory tv-b :stopped? false :recur? true}) :output))
+;; (def raw-output-b-n ((ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory memory-b :stopped? false :recur? true}) :output))
 
-;; (def raw-output-b-l ((ic/op-code {:input -1 :output [] :phase nil :pointer 0 :relative-base 0 :memory tv-b :stopped? false :recur? true}) :output))
+;; (def raw-output-b-l ((ic/op-code {:input -1 :output [] :phase nil :pointer 0 :relative-base 0 :memory memory-b :stopped? false :recur? true}) :output))
 
-;; (def raw-output-b-r ((ic/op-code {:input 1 :output [] :phase nil :pointer 0 :relative-base 0 :memory tv-b :stopped? false :recur? true}) :output))
+;; (def raw-output-b-r ((ic/op-code {:input 1 :output [] :phase nil :pointer 0 :relative-base 0 :memory memory-b :stopped? false :recur? true}) :output))
 
 ;; (def tiles-n (vec (map vec (partition 3 raw-output-b-n))))
 

@@ -4,7 +4,7 @@
     [clojure.pprint :as pp]))
 
 ;part a
-(def memory (ic/make-tv "resources/day11.csv"))
+(def memory (ic/make-memory "resources/day11.csv"))
 
 (defn new-heading [heading turn]
   (cond
