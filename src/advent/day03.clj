@@ -1,13 +1,13 @@
 (ns advent.day03
   (:require [clojure.data.csv :as csv]
-            [clojure.java.io :as io]
-            [clojure.math.numeric-tower :as math]
-            [clojure.set :as s]))
+    [clojure.java.io :as io]
+    [clojure.math.numeric-tower :as math]
+    [clojure.set :as s]))
 
 ;part a
 (def both (with-open [reader (io/reader "resources/day03.csv")]
             (doall
-             (csv/read-csv reader))))
+              (csv/read-csv reader))))
 
 (def red (first both))
 
@@ -39,9 +39,9 @@
     (if (empty? units)
       path
       (recur
-       (rest units)
-       (last (make-path (first units) start))
-       (vec (concat path (rest (make-path (first units) start))))))))
+        (rest units)
+        (last (make-path (first units) start))
+        (vec (concat path (rest (make-path (first units) start))))))))
 
 (defn abs-dist [[x y]]
   (+ (math/abs x) (math/abs y)))
