@@ -9,13 +9,13 @@
 
 (defn modules-sum [file]
   (->>
-    file
-    (slurp)
-    (str/split-lines)
-    (map #(Integer/parseInt %))
-    (into [])
-    (map gas)
-    (reduce +)))
+   file
+   (slurp)
+   (str/split-lines)
+   (map #(Integer/parseInt %))
+   (into [])
+   (map gas)
+   (reduce +)))
 
 (comment
   (modules-sum "resources/day01.txt")
@@ -30,19 +30,19 @@
     (let [new-gas (gas m)]
       (if (pos? new-gas)
         (recur
-          new-gas
-          (+ acc new-gas))
+         new-gas
+         (+ acc new-gas))
         acc))))
 
 (defn modules-gas-sum [file]
   (->>
-    file
-    (slurp)
-    (str/split-lines)
-    (map #(Integer/parseInt %))
-    (into [])
-    (map gas-plus)
-    (reduce +)))
+   file
+   (slurp)
+   (str/split-lines)
+   (map #(Integer/parseInt %))
+   (into [])
+   (map gas-plus)
+   (reduce +)))
 
 (comment
   (modules-gas-sum "resources/day01.txt")
@@ -53,14 +53,16 @@
 (defn gas-plus-lazy [module]
   (reduce + (rest (take-while pos? (iterate gas module)))))
 
+(defn my-fn [x] (x))
+
 (defn modules-gas-sum-lazy [file]
   (->>
-    file
-    (slurp)
-    (str/split-lines)
-    (map #(Integer/parseInt %))
-    (map gas-plus-lazy)
-    (reduce +)))
+   file
+   (slurp)
+   (str/split-lines)
+   (map #(Integer/parseInt %))
+   (map gas-plus-lazy)
+   (reduce +)))
 
 (comment
   (modules-gas-sum-lazy "resources/day01.txt")
