@@ -53,7 +53,7 @@
 (defn gas-plus-lazy [module]
   (reduce + (rest (take-while pos? (iterate gas module)))))
 
-(defn my-fn [x] (x))
+(defn my-fn [_] 8)
 
 (defn modules-gas-sum-lazy [file]
   (->>
