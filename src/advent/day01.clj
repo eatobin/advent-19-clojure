@@ -1,7 +1,8 @@
 ;; $ clj -X:repl/socket-repl **Use this one for printing to the server REPL
 
 (ns advent.day01
-  (:require [clojure.string :as str]))
+  (:require
+   [clojure.string :as str]))
 
 ;part a
 (defn gas [module]
@@ -54,6 +55,8 @@
   (reduce + (rest (take-while pos? (iterate gas module)))))
 
 (defn my-fn [_] 8)
+
+(my-fn 77)
 
 (defn modules-gas-sum-lazy [file]
   (->>
