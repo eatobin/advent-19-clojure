@@ -8,14 +8,13 @@
   memory
   (memory 0)
   (memory 100)
-  (count memory)
-  )
+  (count memory))
 
 (defn updated-memory [noun verb]
   (->
-    memory
-    (assoc 1 noun)
-    (assoc 2 verb)))
+   memory
+   (assoc 1 noun)
+   (assoc 2 verb)))
 
 (def answer ((:memory (ic/op-code {:input 0 :output [] :phase nil :pointer 0 :relative-base 0 :memory (updated-memory 12 2) :stopped? false :recur? true})) 0))
 
