@@ -1,5 +1,0 @@
-COM)B
-COM)C
-B)D
-B)E
-C)F
