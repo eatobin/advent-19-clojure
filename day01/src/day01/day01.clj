@@ -5,7 +5,7 @@
 (defn gas [module]
   (- (quot module 3) 2))
 
-(defn answer []
+(defn answer-a []
   (->>
    memory
    (map gas)
@@ -14,4 +14,4 @@
 (defn -main
   "Invoke me with clojure -M -m day01.day01"
   [& _]
-  (printf "Part A answer: %s, correct: 3337766%n" (answer)))
+  (printf "Part A answer: %s, correct: 3337766%n" (answer-a)))
