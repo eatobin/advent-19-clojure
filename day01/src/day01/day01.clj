@@ -14,5 +14,4 @@
 (defn -main
   "Invoke me with clojure -M -m day01.day01"
   [& _]
-  (println "Part A answer:" (answer) "-correct: 3337766 ")
-  (printf "1 + 2 is %s%n" (answer)))
+  (printf "Part A answer: %s, correct: 3337766%n" (answer)))
