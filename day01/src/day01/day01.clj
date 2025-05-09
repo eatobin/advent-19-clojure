@@ -24,7 +24,7 @@
   (->> memory
     (map gas-plus-lazy)
     (reduce +)))
-  
+
 (defn print-a
   "Invoke me with clojure -X day01.day01/print-a"
   [_]
@@ -39,8 +39,7 @@
 
 (comment
   (print-a nil)
-  (print-b nil)
-  )
+  (print-b nil))
 
 (defn -main
   "Invoke me with clojure -M -m day01.day01"
