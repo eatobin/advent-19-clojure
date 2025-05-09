@@ -1,3 +1,5 @@
+; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
+
 (ns day01.day01)
 
 ;; use a list - will iterate over all...
@@ -39,6 +41,7 @@
 
 (comment
   (print-a nil)
+  
   (print-b nil))
 
 (defn -main
