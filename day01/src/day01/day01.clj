@@ -8,24 +8,26 @@
 
 (defn answer-a []
   (->> memory
-       (map gas)
-       (reduce +)))
+    (map gas)
+    (reduce +)))
 
 ;part b
 (defn gas-plus-lazy [module]
   (->> module
-       (iterate gas)
-       (take-while pos?)
-       (rest)
-       (reduce +)))
+    (iterate gas)
+    (take-while pos?)
+    (rest)
+    (reduce +)))
 
 (defn answer-b []
   (->> memory
-       (map gas-plus-lazy)
-       (reduce +)))
+    (map gas-plus-lazy)
+    (reduce +)))
 
 (defn -main
   "Invoke me with clojure -M -m day01.day01"
   [& _]
   (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
-  (printf "Part B answer: %s, correct: 5003788%n" (answer-b)))
+  (flush)
+  (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
+  (flush))
