@@ -2,51 +2,37 @@
 
 (ns day02.day02)
 
-;; use a list - will iterate over all...
-(def memory '(68958 82218 54333 59177 51874 100259 95468 124006 75078 113631 90315 147580 68233 81025 133084 90959 81196 92443 124832 65871 57704 140203 113053 76337 72195 115917 87843 131768 105816 131153 59714 94107 50933 139545 94969 149463 60042 66028 111190 63257 50020 88783 81428 73977 149240 137152 74738 55067 128829 56465 81962 67242 94121 92303 68477 88595 64324 82527 134717 140344 132026 137558 95643 79010 146346 86246 52341 147564 89159 66456 83190 128675 130658 122857 134538 122151 133900 117462 117791 139254 86366 66165 92897 121218 135962 143061 129220 114623 98257 76722 121014 77713 137858 133282 103595 118981 149137 101141 70765 141113))
+(def OFFSET-C 1)
+(def OFFSET-B 2)
+(def OFFSET-A 3)
 
 ;part a
-(defn gas [module]
-  (- (quot module 3) 2))
+(defn op-code [{:keys [pointer memory]}]
+  (case (get memory pointer)
+    1 (recur
+        {:pointer       (+ 4 pointer)
+         :memory        (assoc
+                          memory
+                          (get memory (+ pointer OFFSET-A))
+                          (+ (get memory (get memory (+ pointer OFFSET-C)))
+                            (get memory (get memory (+ pointer OFFSET-B)))))})
+    2 (recur
+        {:pointer       (+ 4 pointer)
+         :memory        (assoc
+                          memory
+                          (get memory (+ pointer OFFSET-A))
+                          (* (get memory (get memory (+ pointer OFFSET-C)))
+                            (get memory (get memory (+ pointer OFFSET-B)))))})
+    99 {:pointer       pointer
+        :memory        memory}
+    "invalid op-code"))
 
-(defn answer-a []
-  (->> memory
-    (map gas)
-    (reduce +)))
+(def memory [1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,10,1,19,2,9,19,23,2,13,23,27,1,6,27,31,2,6,31,35,2,13,35,39,1,39,10,43,2,43,13,47,1,9,47,51,1,51,13,55,1,55,13,59,2,59,13,63,1,63,6,67,2,6,67,71,1,5,71,75,2,6,75,79,1,5,79,83,2,83,6,87,1,5,87,91,1,6,91,95,2,95,6,99,1,5,99,103,1,6,103,107,1,107,2,111,1,111,5,0,99,2,14,0,0])
 
-;part b
-(defn gas-plus-lazy [module]
-  (->> module
-    (iterate gas)
-    (take-while pos?)
-    (rest)
-    (reduce +)))
+(defn updated-memory [noun verb]
+  (->
+    memory
+    (assoc 1 noun)
+    (assoc 2 verb)))
 
-(defn answer-b []
-  (->> memory
-    (map gas-plus-lazy)
-    (reduce +)))
-
-(defn print-a
-  "Invoke me with clojure -X day02.day02/print-a"
-  [_]
-  (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
-  (flush))
-
-(defn print-b
-  "Invoke me with clojure -X day02.day02/print-b"
-  [_]
-  (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
-  (flush))
-
-(comment
-  (print-a nil)
-  (print-b nil))
-
-(defn -main
-  "Invoke me with clojure -M -m day02.day02"
-  [& _]
-  (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
-  (flush)
-  (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
-  (flush))
+(get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0)
