@@ -28,13 +28,13 @@
     (reduce +)))
 
 (defn print-a
-  "Invoke me with clojure -X day01.day01/print-a"
+  "Invoke me with clojure -X day02.day02/print-a"
   [_]
   (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
   (flush))
 
 (defn print-b
-  "Invoke me with clojure -X day01.day01/print-b"
+  "Invoke me with clojure -X day02.day02/print-b"
   [_]
   (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
   (flush))
@@ -44,7 +44,7 @@
   (print-b nil))
 
 (defn -main
-  "Invoke me with clojure -M -m day01.day01"
+  "Invoke me with clojure -M -m day02.day02"
   [& _]
   (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
   (flush)
