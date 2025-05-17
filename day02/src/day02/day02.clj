@@ -10,19 +10,19 @@
 (defn op-code [{:keys [pointer memory]}]
   (case (get memory pointer)
     1 (recur
-       {:pointer       (+ 4 pointer)
-        :memory        (assoc
-                        memory
-                        (get memory (+ pointer OFFSET-A))
-                        (+ (get memory (get memory (+ pointer OFFSET-C)))
-                           (get memory (get memory (+ pointer OFFSET-B)))))})
+        {:pointer       (+ 4 pointer)
+         :memory        (assoc
+                          memory
+                          (get memory (+ pointer OFFSET-A))
+                          (+ (get memory (get memory (+ pointer OFFSET-C)))
+                            (get memory (get memory (+ pointer OFFSET-B)))))})
     2 (recur
-       {:pointer       (+ 4 pointer)
-        :memory        (assoc
-                        memory
-                        (get memory (+ pointer OFFSET-A))
-                        (* (get memory (get memory (+ pointer OFFSET-C)))
-                           (get memory (get memory (+ pointer OFFSET-B)))))})
+        {:pointer       (+ 4 pointer)
+         :memory        (assoc
+                          memory
+                          (get memory (+ pointer OFFSET-A))
+                          (* (get memory (get memory (+ pointer OFFSET-C)))
+                            (get memory (get memory (+ pointer OFFSET-B)))))})
     99 {:pointer       pointer
         :memory        memory}))
 
@@ -30,9 +30,9 @@
 
 (defn updated-memory [noun verb]
   (->
-   memory
-   (assoc 1 noun)
-   (assoc 2 verb)))
+    memory
+    (assoc 1 noun)
+    (assoc 2 verb)))
 
 (defn answer-a []
   (get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0))
@@ -51,15 +51,24 @@
              :when (= candidate 19690720)]
          [candidate noun verb (+ (* 100 noun) verb)])))
 
+(defn answer-b []
+  (last (first noun-verb)))
+
+(defn print-b
+  "Invoke me with clojure -X day02.day02/print-b"
+  [_]
+  (printf "Part B answer: %s, correct: 8226%n" (answer-b))
+  (flush))
+
 (comment
-  (print-a nil))
-; (print-b nil))
+  (print-a nil)
+  (print-b nil)
+  )
 
 (defn -main
   "Invoke me with clojure -M -m day02.day02"
   [& _]
   (printf "Part A answer: %s, correct: 2890696%n" (answer-a))
+  (flush)
+  (printf "Part B answer: %s, correct: 8226%n" (answer-b))
   (flush))
-; (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
-; (flush))
-
