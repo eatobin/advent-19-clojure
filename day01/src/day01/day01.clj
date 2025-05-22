@@ -16,6 +16,16 @@
        (reduce +)))
 
 ;part b
+(defn gas-plus [module]
+  (loop [m module
+         acc 0]
+    (let [new-gas (gas m)]
+      (if (pos? new-gas)
+        (recur
+          new-gas
+          (+ acc new-gas))
+        acc))))
+
 (defn gas-plus-lazy [module]
   (->> module
        (iterate gas)
@@ -24,6 +34,11 @@
        (reduce +)))
 
 (defn answer-b []
+  (->> memory
+       (map gas-plus)
+       (reduce +)))
+
+(defn answer-c []
   (->> memory
        (map gas-plus-lazy)
        (reduce +)))
@@ -39,7 +54,8 @@
   "Invoke me with clojure -X day01.day01/print-b"
   [_]
   (println)
-  (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
+  (printf "Part B answer (strict): %s, correct: 5003788%n" (answer-b))
+  (printf "Part B answer (lazy): %s, correct: 5003788%n" (answer-c))
   (flush))
 
 (comment
@@ -50,11 +66,13 @@
   "Invoke me with clojure -M -m day01.day01"
   [& _]
   (println)
-  (flush)
   (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
   (flush)
-  (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
+  (printf "Part B answer (strict): %s, correct: 5003788%n" (answer-b))
+  (flush)
+  (printf "Part B answer (lazy): %s, correct: 5003788%n" (answer-c))
   (flush))
 
 (comment
-  (-main))
+  (-main)
+  *ns*)
