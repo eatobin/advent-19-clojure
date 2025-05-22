@@ -1,4 +1,5 @@
-; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
+;; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
+;; clojure -M:repl/rebel-nrepl
 
 (ns day01.day01)
 
@@ -30,12 +31,14 @@
 (defn print-a
   "Invoke me with clojure -X day01.day01/print-a"
   [_]
+  (println)
   (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
   (flush))
 
 (defn print-b
   "Invoke me with clojure -X day01.day01/print-b"
   [_]
+  (println)
   (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
   (flush))
 
@@ -47,6 +50,8 @@
 (defn -main
   "Invoke me with clojure -M -m day01.day01"
   [& _]
+  (println)
+  (flush)
   (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
   (flush)
   (printf "Part B answer: %s, correct: 5003788%n" (answer-b))
