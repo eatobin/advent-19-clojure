@@ -1,4 +1,4 @@
-{:paths ["src"]
+ {:paths ["src"]
  :deps  {}
  :aliases 
  {:neil {:project {:name day01/day01}}}}
