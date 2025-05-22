@@ -12,21 +12,21 @@
 
 (defn answer-a []
   (->> memory
-    (map gas)
-    (reduce +)))
+       (map gas)
+       (reduce +)))
 
 ;part b
 (defn gas-plus-lazy [module]
   (->> module
-    (iterate gas)
-    (take-while pos?)
-    (rest)
-    (reduce +)))
+       (iterate gas)
+       (take-while pos?)
+       (rest)
+       (reduce +)))
 
 (defn answer-b []
   (->> memory
-    (map gas-plus-lazy)
-    (reduce +)))
+       (map gas-plus-lazy)
+       (reduce +)))
 
 (defn print-a
   "Invoke me with clojure -X day01.day01/print-a"
@@ -44,8 +44,7 @@
 
 (comment
   (print-a nil)
-  (print-b nil)
-  )
+  (print-b nil))
 
 (defn -main
   "Invoke me with clojure -M -m day01.day01"
@@ -58,5 +57,4 @@
   (flush))
 
 (comment
-  (-main)
-  )
+  (-main))
