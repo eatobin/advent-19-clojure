@@ -22,8 +22,8 @@
     (let [new-gas (gas m)]
       (if (pos? new-gas)
         (recur
-          new-gas
-          (+ acc new-gas))
+         new-gas
+         (+ acc new-gas))
         acc))))
 
 (defn gas-plus-lazy [module]
