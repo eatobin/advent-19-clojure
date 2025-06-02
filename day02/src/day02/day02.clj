@@ -1,6 +1,48 @@
 ; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
 
-(ns day02.day02)
+(ns day02.day02
+  (:require [malli.core :as m]))
+
+(m/validate
+  [:map
+   [:x :int]
+   [::m/default [:map
+                 [:y :int]
+                 [::m/default [:map-of :int :int]]]]]
+  {:x 1, :y 2, 1 1, 2 2})
+;; => true
+
+(m/validate
+  [:map [:x :int]]
+  {:x 1, :extra "key"})
+;; => true
+
+(m/validate
+  [:map {:closed true} [:x :int]]
+  {:x 1, :extra "key"})
+;; => false
+
+(defn kikka
+  "schema via var metadata"
+  {:malli/schema [:=> [:cat :int] :int]}
+  [x] (inc x))
+
+(defn kukka
+  "schema via separate declaration"
+  [x] (inc x))
+(m/=> kukka [:=> [:cat :int] :int])
+
+(defn plus1 [x] (inc x))
+(m/=> plus1 [:=> [:cat :int] [:int {:max 6}]])
+
+#_:clj-kondo/ignore
+(comment
+  (kikka 1 2)
+  (kukka 1 2)
+  (kikka "1")
+  (kukka "1")
+  (kikka 1.0)
+  (kikka 1))
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
@@ -73,4 +115,5 @@
   (printf "Part B answer: %s, correct: 8226%n" (answer-b))
   (flush))
 
-(-main)
+(comment
+  (-main))
