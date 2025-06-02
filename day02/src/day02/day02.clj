@@ -72,3 +72,5 @@
   (flush)
   (printf "Part B answer: %s, correct: 8226%n" (answer-b))
   (flush))
+
+(-main)
