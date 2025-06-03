@@ -1,25 +1,26 @@
 ; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
 
 (ns day02.day02
-  (:require [malli.core :as m]))
+  (:require
+   [malli.core :as m]))
 
 (m/validate
-  [:map
-   [:x :int]
-   [::m/default [:map
-                 [:y :int]
-                 [::m/default [:map-of :int :int]]]]]
-  {:x 1, :y 2, 1 1, 2 2})
+ [:map
+  [:x :int]
+  [::m/default [:map
+                [:y :int]
+                [::m/default [:map-of :int :int]]]]]
+ {:x 1, :y 2, 1 1, 2 2})
 ;; => true
 
 (m/validate
-  [:map [:x :int]]
-  {:x 1, :extra "key"})
+ [:map [:x :int]]
+ {:x 1, :extra "key"})
 ;; => true
 
 (m/validate
-  [:map {:closed true} [:x :int]]
-  {:x 1, :extra "key"})
+ [:map {:closed true} [:x :int]]
+ {:x 1, :extra "key"})
 ;; => false
 
 (defn kikka
@@ -37,13 +38,13 @@
 
 #_:clj-kondo/ignore
 (comment
+  (kikka 42)
   (kikka 1 2)
   (kukka 1 2)
   (kikka "1")
   (kukka "1")
   (kikka 1.0)
-  (kikka 1)
-  )
+  (kikka 1))
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
@@ -53,19 +54,19 @@
 (defn op-code [{:keys [pointer memory]}]
   (case (get memory pointer)
     1 (recur
-        {:pointer (+ 4 pointer)
-         :memory  (assoc
-                    memory
-                    (get memory (+ pointer OFFSET-A))
-                    (+ (get memory (get memory (+ pointer OFFSET-C)))
-                       (get memory (get memory (+ pointer OFFSET-B)))))})
+       {:pointer (+ 4 pointer)
+        :memory  (assoc
+                  memory
+                  (get memory (+ pointer OFFSET-A))
+                  (+ (get memory (get memory (+ pointer OFFSET-C)))
+                     (get memory (get memory (+ pointer OFFSET-B)))))})
     2 (recur
-        {:pointer (+ 4 pointer)
-         :memory  (assoc
-                    memory
-                    (get memory (+ pointer OFFSET-A))
-                    (* (get memory (get memory (+ pointer OFFSET-C)))
-                       (get memory (get memory (+ pointer OFFSET-B)))))})
+       {:pointer (+ 4 pointer)
+        :memory  (assoc
+                  memory
+                  (get memory (+ pointer OFFSET-A))
+                  (* (get memory (get memory (+ pointer OFFSET-C)))
+                     (get memory (get memory (+ pointer OFFSET-B)))))})
     99 {:pointer pointer
         :memory  memory}))
 
@@ -73,9 +74,9 @@
 
 (defn updated-memory [noun verb]
   (->
-    memory
-    (assoc 1 noun)
-    (assoc 2 verb)))
+   memory
+   (assoc 1 noun)
+   (assoc 2 verb)))
 
 (defn answer-a []
   (get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0))
@@ -105,8 +106,7 @@
 
 (comment
   (print-a nil)
-  (print-b nil)
-  )
+  (print-b nil))
 
 (defn -main
   "Invoke me with clojure -M -m day02.day02"
