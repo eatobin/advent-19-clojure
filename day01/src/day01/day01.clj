@@ -1,4 +1,4 @@
-;; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
+;; clj -X:repl/socket-repl
 ;; clojure -M:repl/rebel-nrepl
 
 (ns day01.day01)
