@@ -42,7 +42,8 @@
   (kikka "1")
   (kukka "1")
   (kikka 1.0)
-  (kikka 1))
+  (kikka 1)
+  )
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
