@@ -2,4 +2,4 @@
  :deps  {metosin/malli {:mvn/version "0.18.0"}}
  :aliases
  {:neil        {:project {:name day02/day02}}
-  :day02/malli {:extra-deps {metosin/malli {:mvn/version "0.18.0"}}}}}
+  :malli {:extra-deps {metosin/malli {:mvn/version "0.18.0"}}}}}
