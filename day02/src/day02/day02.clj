@@ -2,25 +2,28 @@
 
 (ns day02.day02
   (:require
-   [malli.core :as m]))
+    [malli.core :as m]
+    [malli.error :as me]
+    [malli.generator :as mg]
+    [malli.instrument :as mi]))
 
 (m/validate
- [:map
-  [:x :int]
-  [::m/default [:map
-                [:y :int]
-                [::m/default [:map-of :int :int]]]]]
- {:x 1, :y 2, 1 1, 2 2})
+  [:map
+   [:x :int]
+   [::m/default [:map
+                 [:y :int]
+                 [::m/default [:map-of :int :int]]]]]
+  {:x 1, :y 2, 1 1, 2 2})
 ;; => true
 
 (m/validate
- [:map [:x :int]]
- {:x 1, :extra "key"})
+  [:map [:x :int]]
+  {:x 1, :extra "key"})
 ;; => true
 
 (m/validate
- [:map {:closed true} [:x :int]]
- {:x 1, :extra "key"})
+  [:map {:closed true} [:x :int]]
+  {:x 1, :extra "key"})
 ;; => false
 
 (defn kikka
@@ -33,9 +36,6 @@
   [x] (inc x))
 (m/=> kukka [:=> [:cat :int] :int])
 
-(defn plus1 [x] (inc x))
-(m/=> plus1 [:=> [:cat :int] [:int {:max 6}]])
-
 #_:clj-kondo/ignore
 (comment
   (kikka 42)
@@ -46,6 +46,83 @@
   (kikka 1.0)
   (kikka 1))
 
+
+(def arg<ret
+  (m/schema
+    [:=>
+     [:cat :int]
+     :int
+     [:fn {:error/message "argument should be less than return"}
+      (fn [[[arg] ret]] (< arg ret))]]
+    {::m/function-checker mg/function-checker}))
+
+(m/explain arg<ret (fn [x] (inc x)))
+;; => nil
+
+(m/explain arg<ret (fn [x] x))
+
+(me/humanize (m/explain arg<ret (fn [x] (inc x))))
+
+(me/humanize (m/explain arg<ret (fn [x] x)))
+
+(def pow
+  (m/-instrument
+    {:schema [:=> [:cat :int] [:int {:max 6}]]}
+    (fn [x] (* x x))))
+
+(comment
+  (pow 2)
+  ; => 4
+  (pow "2")
+  ; =throws=> :malli.core/invalid-input {:input [:cat :int], :args ["2"], :schema [:=> [:cat :int] [:int {:max 6}]]}
+  (pow 4)
+  ; =throws=> :malli.core/invalid-output {:output [:int {:max 6}], :value 16, :args [4], :schema [:=> [:cat :int] [:int {:max 6}]]}
+  (pow 4 2)
+  )
+
+(def small-int [:int {:max 6}])
+
+(defn plus1 [x] (inc x))
+;(m/=> plus1 [:=> [:cat :int] small-int])
+(m/=> plus1 [:=> [:cat [:int {:max 5}]] [:int {:max 6}]])
+
+(m/function-schemas)
+
+(mi/instrument!)
+(comment (plus1 10))
+(mi/unstrument!)
+
+(plus1 10)
+
+(defn minus-me
+  "a normal clojure function, no dependencies to malli"
+  ;{:malli/schema [:=> [:cat :int] small-int]}
+  {:malli/schema [:=> [:cat [:int {:max 7}]] small-int]}
+  [x]
+  (dec x))
+
+(mi/collect!)
+; => #{#'user/minus}
+
+(m/function-schemas)
+;{user {plus1 {:schema [:=> [:cat :int] [:int {:max 6}]]
+;              :ns user
+;              :name plus1},
+;       minus {:schema [:=> [:cat :int] [:int {:min 6}]]
+;              :ns user
+;              :name minus}}}
+
+(mi/instrument!)
+; =stdout=> ..instrumented #'user/plus1
+; =stdout=> ..instrumented #'user/minus
+
+(comment
+  (minus-me 6)
+  (minus-me 66)
+  )
+
+(mi/check)
+
 (def OFFSET-C 1)
 (def OFFSET-B 2)
 (def OFFSET-A 3)
@@ -54,19 +131,19 @@
 (defn op-code [{:keys [pointer memory]}]
   (case (get memory pointer)
     1 (recur
-       {:pointer (+ 4 pointer)
-        :memory  (assoc
-                  memory
-                  (get memory (+ pointer OFFSET-A))
-                  (+ (get memory (get memory (+ pointer OFFSET-C)))
-                     (get memory (get memory (+ pointer OFFSET-B)))))})
+        {:pointer (+ 4 pointer)
+         :memory  (assoc
+                    memory
+                    (get memory (+ pointer OFFSET-A))
+                    (+ (get memory (get memory (+ pointer OFFSET-C)))
+                       (get memory (get memory (+ pointer OFFSET-B)))))})
     2 (recur
-       {:pointer (+ 4 pointer)
-        :memory  (assoc
-                  memory
-                  (get memory (+ pointer OFFSET-A))
-                  (* (get memory (get memory (+ pointer OFFSET-C)))
-                     (get memory (get memory (+ pointer OFFSET-B)))))})
+        {:pointer (+ 4 pointer)
+         :memory  (assoc
+                    memory
+                    (get memory (+ pointer OFFSET-A))
+                    (* (get memory (get memory (+ pointer OFFSET-C)))
+                       (get memory (get memory (+ pointer OFFSET-B)))))})
     99 {:pointer pointer
         :memory  memory}))
 
@@ -74,9 +151,9 @@
 
 (defn updated-memory [noun verb]
   (->
-   memory
-   (assoc 1 noun)
-   (assoc 2 verb)))
+    memory
+    (assoc 1 noun)
+    (assoc 2 verb)))
 
 (defn answer-a []
   (get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0))
