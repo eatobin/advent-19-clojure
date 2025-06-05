@@ -1,13 +1,14 @@
 ; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
+; clojure -M:repl/rebel-nrepl:eat/malli:eat/test
 
 (ns day02.day02
   (:require
- ;     [malli.error :as me]
- ;     [malli.generator :as mg]
-   [malli.instrument :as mi]
- ;     [malli.error :as me]
+    ;     [malli.error :as me]
+    ;     [malli.generator :as mg]
    [malli.core :as m]
-   [malli.dev :as dev]))
+    ;     [malli.error :as me]
+   [malli.dev :as dev]
+   [malli.instrument :as mi]))
 
 ; (m/validate
 ;   [:map
@@ -135,7 +136,8 @@
 ; It's main entry points is dev/start!, taking same options as mi/instrument!. It runs mi/instrument! and mi/collect! (for all loaded namespaces) once and starts watching the function registry for changes. Any change that matches the filters will cause automatic re-instrumentation for the functions. dev/stop! removes all instrumentation and stops watching the registry.
 
 (defn plus1 [x] (inc x))
-(m/=> plus1 [:=> [:cat :int] [:int {:max 6}]])
+(m/=> plus1 [:=> [:cat [:int {:max 5}]] [:int {:max 6}]])
+;(m/=> plus1 [:=> [:cat :int] [:int {:max 6}]])
 
 (dev/start!)
 ; malli: instrumented 1 function var
@@ -149,18 +151,14 @@
   (plus1 6))
 ; =throws=> :malli.core/invalid-output {:output [:int {:max 6}], :value 9, :args [8], :schema [:=> [:cat :int] [:int {:max 6}]]}
 
-;; (m/=> plus1 [:=> [:cat :int] :int])
-(m/=> plus1 [:=> [:cat [:int {:max 5}]] [:int {:max 6}]])
+;(m/=> plus1 [:=> [:cat :int] :int])
 ; =stdout=> ..instrumented #'user/plus1
-
-(comment
-  (plus1 6))
-; => 7
 
 (mi/check)
 (m/function-schemas)
 
-;; (dev/stop!)
+(comment
+  (dev/stop!))
 ; malli: unstrumented 1 function vars
 ; malli: dev-mode stopped
 
