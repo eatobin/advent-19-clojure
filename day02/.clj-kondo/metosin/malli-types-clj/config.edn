@@ -1,2 +1,2 @@
 {:linters {:unresolved-symbol {:exclude [(malli.core/=>)]},
-           :type-mismatch {:namespaces {day02.day02 {plus1 {:arities {1 {:args [:int], :ret :int}}}}}}}}
+           :type-mismatch {:namespaces {day02.malli {plus1 {:arities {1 {:args [:int], :ret :int}}}}}}}}
