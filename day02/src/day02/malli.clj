@@ -1,5 +1,5 @@
-; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
-; clojure -M:repl/rebel-nrepl:eat/malli:eat/test
+; clojure -X:repl/socket-repl:eat/malli
+; clojure -M:repl/rebel-nrepl:eat/malli
 
 (ns day02.malli
   (:require ;     [malli.error :as me]
