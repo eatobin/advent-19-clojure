@@ -2,13 +2,12 @@
 ; clojure -M:repl/rebel-nrepl:eat/malli:eat/test
 
 (ns day02.malli
-  (:require
-    ;     [malli.error :as me]
-    ;     [malli.generator :as mg]
-    [malli.core :as m]
-    [malli.dev :as dev]
-    [malli.instrument :as mi]
-    [sci.core :as sci]))
+  (:require ;     [malli.error :as me]
+ ;     [malli.generator :as mg]
+   [malli.core :as m]
+   [malli.dev :as dev]
+   [malli.instrument :as mi]
+   [sci.core :as sci]))
 
 (m/validate string? "kikka")
 (sci/eval-string "(println \"hello\")" {:namespaces {'clojure.core {'println println}}})
@@ -33,7 +32,6 @@
 
 (m/validate my-schema {:x 1, :y 2})
 ; => false
-
 
 ; (m/validate
 ;   [:map
@@ -73,7 +71,6 @@
 ;   (kukka "1")
 ;   (kikka 1.0)
 ;   (kikka 1))
-
 
 ; (def arg<ret
 ;   (m/schema
@@ -151,9 +148,6 @@
 
 ; (mi/check)
 
-
-
-
 ; Development Instrumentation
 ; For better DX, there is malli.dev namespace.
 
@@ -169,7 +163,7 @@
 ; malli: dev-mode started
 
 (comment
-  #_:clj-kondo/ignore
+  ; #_:clj-kondo/ignore
   (plus1 "6"))
 ; =throws=> :malli.core/invalid-input {:input [:cat :int], :args ["6"], :schema [:=> [:cat :int] [:int {:max 6}]]}
 
