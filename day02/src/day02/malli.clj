@@ -1,5 +1,4 @@
-; clojure -X:repl/socket-repl:eat/malli
-; clojure -M:repl/rebel-nrepl:eat/malli
+; clojure -M:repl/rebel-nrepl
 
 (ns day02.malli
   (:require ;     [malli.error :as me]
@@ -33,13 +32,15 @@
 (m/validate my-schema {:x 1, :y 2})
 ; => false
 
-; (m/validate
-;   [:map
-;    [:x :int]
-;    [::m/default [:map
-;                  [:y :int]
-;                  [::m/default [:map-of :int :int]]]]]
-;   {:x 1, :y 2, 1 1, 2 2})
+(m/validate
+ [:map
+  [:x :int]
+  [::m/default [:map
+                [:y :int]
+                [::m/default [:map-of :int :int]]]]]
+  ;{:x 1, :y 2, 1 1, 2 2}
+  ;{:x 1, :y 2}
+ {:x 1, :y 2, 1 1})
 ; ;; => true
 
 ; (m/validate
@@ -163,7 +164,7 @@
 ; malli: dev-mode started
 
 (comment
-  ; #_:clj-kondo/ignore
+  ;; #_:clj-kondo/ignore
   (plus1 "6"))
 ; =throws=> :malli.core/invalid-input {:input [:cat :int], :args ["6"], :schema [:=> [:cat :int] [:int {:max 6}]]}
 

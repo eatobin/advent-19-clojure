@@ -1,6 +1,8 @@
+;; clojure -X:deps aliases
+;; clojure -M:project/outdated
+
 {:paths ["src"]
  :deps  {metosin/malli    {:mvn/version "0.18.0"}
          org.babashka/sci {:mvn/version "0.9.45"}}
  :aliases
- {:neil  {:project {:name day02/day02}}
-  :malli {:extra-deps {metosin/malli {:mvn/version "0.18.0"}}}}}
+ {:neil  {:project {:name day02/day02}}}}
