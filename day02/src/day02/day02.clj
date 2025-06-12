@@ -1,7 +1,6 @@
-; clj -X clojure.core.server/start-server :name repl :port 5555 :accept clojure.core.server/repl :server-daemon false
-; clojure -M:repl/rebel-nrepl:eat/malli:eat/test
-
 (ns day02.day02)
+
+; clj -M:repl/nREPL
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
