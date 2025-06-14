@@ -1,5 +1,6 @@
 {:paths ["src"]
- :deps  {}
+ :deps  {metosin/malli    {:mvn/version "0.19.1"}
+         org.babashka/sci {:mvn/version "0.9.45"}}
  :aliases
  {:neil {:project {:name day01/day01}}}}
 
