@@ -1,7 +1,7 @@
 (ns day01.day01
   (:require
-    [malli.core :as m]
-    [sci.core]))
+   [malli.core :as m]
+   [sci.core]))
 
 ; clj -M:repl/nREPL
 
@@ -28,8 +28,8 @@
     (let [new-gas (gas m)]
       (if (pos? new-gas)
         (recur
-          new-gas
-          (+ acc new-gas))
+         new-gas
+         (+ acc new-gas))
         acc))))
 
 (defn gas-plus-lazy [module]
