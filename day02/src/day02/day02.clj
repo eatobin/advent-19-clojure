@@ -10,19 +10,19 @@
 (defn op-code [{:keys [pointer memory]}]
   (case (get memory pointer)
     1 (recur
-       {:pointer (+ 4 pointer)
-        :memory  (assoc
-                  memory
-                  (get memory (+ pointer OFFSET-A))
-                  (+ (get memory (get memory (+ pointer OFFSET-C)))
-                     (get memory (get memory (+ pointer OFFSET-B)))))})
+        {:pointer (+ 4 pointer)
+         :memory  (assoc
+                    memory
+                    (get memory (+ pointer OFFSET-A))
+                    (+ (get memory (get memory (+ pointer OFFSET-C)))
+                       (get memory (get memory (+ pointer OFFSET-B)))))})
     2 (recur
-       {:pointer (+ 4 pointer)
-        :memory  (assoc
-                  memory
-                  (get memory (+ pointer OFFSET-A))
-                  (* (get memory (get memory (+ pointer OFFSET-C)))
-                     (get memory (get memory (+ pointer OFFSET-B)))))})
+        {:pointer (+ 4 pointer)
+         :memory  (assoc
+                    memory
+                    (get memory (+ pointer OFFSET-A))
+                    (* (get memory (get memory (+ pointer OFFSET-C)))
+                       (get memory (get memory (+ pointer OFFSET-B)))))})
     99 {:pointer pointer
         :memory  memory}))
 
@@ -30,9 +30,9 @@
 
 (defn updated-memory [noun verb]
   (->
-   memory
-   (assoc 1 noun)
-   (assoc 2 verb)))
+    memory
+    (assoc 1 noun)
+    (assoc 2 verb)))
 
 (defn answer-a []
   (get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0))

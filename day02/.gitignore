@@ -10,5 +10,4 @@
 .hgignore
 .hg/
 *.iml
-.clj-kondo/.cache/
-.clj-kondo/imports/
+.clj-kondo/
