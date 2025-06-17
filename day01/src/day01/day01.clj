@@ -1,6 +1,8 @@
 (ns day01.day01
   (:require
    [malli.core :as m]
+   [malli.dev :as dev]
+   [malli.instrument :as mi]
    [sci.core]))
 
 ; clj -M:repl/nREPL
@@ -13,8 +15,12 @@
 (m/validate modules-schema modules)
 
 ;part a
-(defn gas [module]
+(defn gas
+  "a normal clojure function, no dependencies to malli"
+  {:malli/schema [:=> [:cat :int] :int]}
+  [module]
   (- (quot module 3) 2))
+#_(gas 77.7)
 
 (defn answer-a []
   (->> modules
@@ -22,7 +28,10 @@
        (reduce +)))
 
 ;part b
-(defn gas-plus [module]
+(defn gas-plus
+  "ditto"
+  {:malli/schema [:=> [:cat :int] :int]}
+  [module]
   (loop [m module
          acc 0]
     (let [new-gas (gas m)]
@@ -31,6 +40,7 @@
          new-gas
          (+ acc new-gas))
         acc))))
+#_(gas-plus 77.7)
 
 (defn gas-plus-lazy [module]
   (->> module
@@ -82,3 +92,9 @@
 (comment
   (-main)
   *ns*)
+
+(dev/start!)
+(mi/check)
+(m/function-schemas)
+(comment
+  (dev/stop!))
