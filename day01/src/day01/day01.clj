@@ -35,7 +35,7 @@
   (loop [m module
          acc 0]
     (let [new-gas (gas m)]
-      (if (pos? new-gas)
+      (if (pos-int? new-gas)
         (recur
          new-gas
          (+ acc new-gas))
