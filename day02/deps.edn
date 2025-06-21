@@ -1,4 +1,6 @@
 {:paths ["src"]
- :deps  {}
- :aliases 
- {:neil {:project {:name day02/day02}}}}
+ :deps {}
+ :aliases {:neil  {:project {:name day02/day02}}}}
+
+;; clojure -X:deps aliases
+;; clojure -M:project/outdated
