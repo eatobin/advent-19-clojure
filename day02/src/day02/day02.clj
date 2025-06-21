@@ -7,22 +7,28 @@
 (def OFFSET-A 3)
 
 ;part a
+(defn add [{:keys [pointer memory]}]
+  {:pointer (+ 4 pointer)
+   :memory  (assoc
+              memory
+              (get memory (+ pointer OFFSET-A))
+              (+ (get memory (get memory (+ pointer OFFSET-C)))
+                 (get memory (get memory (+ pointer OFFSET-B)))))})
+
+(defn multiply [{:keys [pointer memory]}]
+  {:pointer (+ 4 pointer)
+   :memory  (assoc
+              memory
+              (get memory (+ pointer OFFSET-A))
+              (* (get memory (get memory (+ pointer OFFSET-C)))
+                 (get memory (get memory (+ pointer OFFSET-B)))))})
+
 (defn op-code [{:keys [pointer memory]}]
   (case (get memory pointer)
     1 (recur
-        {:pointer (+ 4 pointer)
-         :memory  (assoc
-                    memory
-                    (get memory (+ pointer OFFSET-A))
-                    (+ (get memory (get memory (+ pointer OFFSET-C)))
-                       (get memory (get memory (+ pointer OFFSET-B)))))})
+        (add {:pointer pointer, :memory memory}))
     2 (recur
-        {:pointer (+ 4 pointer)
-         :memory  (assoc
-                    memory
-                    (get memory (+ pointer OFFSET-A))
-                    (* (get memory (get memory (+ pointer OFFSET-C)))
-                       (get memory (get memory (+ pointer OFFSET-B)))))})
+        (multiply {:pointer pointer, :memory memory}))
     99 {:pointer pointer
         :memory  memory}))
 
