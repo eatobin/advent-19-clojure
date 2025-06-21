@@ -1,6 +1,7 @@
-{:paths ["src"]
- :deps {}
- :aliases {:neil  {:project {:name day02/day02}}}}
+{:paths   ["src"]
+ :deps    {}
+ :aliases {:neil {:project {:name day02/day02}}}}
 
 ;; clojure -X:deps aliases
-;; clojure -M:project/outdated
+;; clojure -M:project/outdated --upgrade
+;; cd /home/eric/.config/clojure && clojure -M:project/outdated --upgrade
