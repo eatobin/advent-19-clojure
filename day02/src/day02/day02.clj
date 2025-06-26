@@ -53,12 +53,6 @@
   (case (instruction :c)
     0 (-p-r {:pointer pointer :memory memory} OFFSET-C)))   ; c-p-r
 
-(comment
-  (write-to-read-from-index {:pointer 0 :memory [0 1 2 3 4 5]} 3)
-  (-p-w {:pointer 0 :memory [0 1 2 3 4 5]} 3)
-  (-p-r {:pointer 0 :memory [0 1 2 3 4 5]} 1)
-  )
-
 ;;part a
 (defn add [{:keys [instruction pointer memory]}]
   {:pointer (+ 4 pointer)
