@@ -41,6 +41,18 @@
 (defn -p-r [{:keys [pointer memory]} offset]
   (get memory (write-to-read-from-index {:pointer pointer :memory memory} offset)))
 
+(defn a-param [{:keys [instruction pointer memory]}]
+  (case (instruction :a)
+    0 (-p-w {:pointer pointer :memory memory} OFFSET-A)))   ; a-p-w
+
+(defn b-param [{:keys [instruction pointer memory]}]
+  (case (instruction :b)
+    0 (-p-r {:pointer pointer :memory memory} OFFSET-B)))   ; b-p-r
+
+(defn c-param [{:keys [instruction pointer memory]}]
+  (case (instruction :c)
+    0 (-p-r {:pointer pointer :memory memory} OFFSET-C)))   ; c-p-r
+
 (comment
   (write-to-read-from-index {:pointer 0 :memory [0 1 2 3 4 5]} 3)
   (-p-w {:pointer 0 :memory [0 1 2 3 4 5]} 3)
@@ -48,30 +60,30 @@
   )
 
 ;;part a
-(defn add [{:keys [pointer memory]}]
+(defn add [{:keys [instruction pointer memory]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
               memory
-              (get memory (+ pointer OFFSET-A))
-              (+ (get memory (get memory (+ pointer OFFSET-C)))
-                 (get memory (get memory (+ pointer OFFSET-B)))))})
+              (a-param {:instruction instruction :pointer pointer :memory memory})
+              (+ (c-param {:instruction instruction :pointer pointer :memory memory})
+                 (b-param {:instruction instruction :pointer pointer :memory memory})))})
 
-(defn multiply [{:keys [pointer memory]}]
+(defn multiply [{:keys [instruction pointer memory]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
               memory
-              (get memory (+ pointer OFFSET-A))
-              (* (get memory (get memory (+ pointer OFFSET-C)))
-                 (get memory (get memory (+ pointer OFFSET-B)))))})
+              (a-param {:instruction instruction :pointer pointer :memory memory})
+              (* (c-param {:instruction instruction :pointer pointer :memory memory})
+                 (b-param {:instruction instruction :pointer pointer :memory memory})))})
 
 (defn op-code [{:keys [pointer memory]}]
-  (case (get memory pointer)
-    1 (recur
-        (add {:pointer pointer, :memory memory}))
-    2 (recur
-        (multiply {:pointer pointer, :memory memory}))
-    99 {:pointer pointer
-        :memory  memory}))
+  (let [instruction (pad-5 (memory pointer))]
+    (case (instruction :e)
+      1 (recur
+          (add {:instruction instruction :pointer pointer :memory memory}))
+      2 (recur
+          (multiply {:instruction instruction :pointer pointer :memory memory}))
+      9 {:instruction instruction :pointer pointer :memory memory})))
 
 (defn updated-memory [noun verb]
   (->
@@ -88,7 +100,7 @@
   (printf "Part A answer: %s, correct: 2890696%n" (answer-a))
   (flush))
 
-;part b
+;;part b
 (def noun-verb
   (vec (for [noun (range 0 100)
              verb (range 0 100)
