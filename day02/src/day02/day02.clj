@@ -32,7 +32,22 @@
 (def OFFSET-B 2)
 (def OFFSET-A 3)
 
-;part a
+(defn write-to-read-from-index [{:keys [pointer memory]} offset]
+  (get memory (+ pointer offset)))
+
+(defn -p-w [{:keys [pointer memory]} offset]
+  (write-to-read-from-index {:pointer pointer :memory memory} offset))
+
+(defn -p-r [{:keys [pointer memory]} offset]
+  (get memory (write-to-read-from-index {:pointer pointer :memory memory} offset)))
+
+(comment
+  (write-to-read-from-index {:pointer 0 :memory [0 1 2 3 4 5]} 3)
+  (-p-w {:pointer 0 :memory [0 1 2 3 4 5]} 3)
+  (-p-r {:pointer 0 :memory [0 1 2 3 4 5]} 1)
+  )
+
+;;part a
 (defn add [{:keys [pointer memory]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
