@@ -1,6 +1,7 @@
-(ns day01.day01
+(ns day01lein.day01lein
   (:require
-    [malli.core :as m]))
+    [malli.core :as m])
+  (:gen-class))
 
 ; clj -M:repl/nREPL
 
@@ -54,27 +55,8 @@
        (map gas-plus-lazy)
        (reduce +)))
 
-(defn print-a
-  "Invoke me with clojure -X day01.day01/print-a"
-  [_]
-  (println)
-  (printf "Part A answer: %s, correct: 3337766%n" (answer-a))
-  (flush))
-
-(defn print-b
-  "Invoke me with clojure -X day01.day01/print-b"
-  [_]
-  (println)
-  (printf "Part B answer (strict): %s, correct: 5003788%n" (answer-b))
-  (printf "Part B answer (lazy): %s, correct: 5003788%n" (answer-c))
-  (flush))
-
-(comment
-  (print-a nil)
-  (print-b nil))
-
 (defn -main
-  "Invoke me with clojure -M -m day01.day01"
+  "Invoke me with lein run"
   [& _]
   (println)
   (printf "Part A answer: %s, correct: 3337766%n" (answer-a))

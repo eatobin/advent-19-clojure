@@ -1,6 +1,7 @@
 {:paths ["src"]
- :deps  {metosin/malli    {:mvn/version "0.19.1"}
-         org.babashka/sci {:mvn/version "0.10.46"}}
+ :deps  {org.clojure/clojure {:mvn/version "1.12.1"}
+         metosin/malli       {:mvn/version "0.19.1"}
+         org.babashka/sci    {:mvn/version "0.10.47"}}
  :aliases
  {:neil {:project {:name day01/day01}}}}
 
