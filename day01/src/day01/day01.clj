@@ -1,8 +1,9 @@
 (ns day01.day01
   (:require
-    [malli.core :as m]))
+   [malli.core :as m]))
 
 ; clj -M:repl/nREPL
+; clojure -M:repl/reloaded
 
 (def modules-schema
   [:fn '(fn [coll] (and (list? coll) (= (count coll) 100) (every? integer? coll)))])
@@ -87,3 +88,16 @@
 (comment
   (-main)
   *ns*)
+
+(comment
+  (require '[portal.api :as p])
+  (def p (p/open))
+  (add-tap #'p/submit)
+  (tap> {:nope
+        [{:name "jen" :email "jen@jen.com"}
+        {:name "sara" :email "sara@sara.com"}
+        {:name "ericky" :email "eatobin@gmail.com"}]})
+  (p/clear)
+  (remove-tap #'p/submit)
+  (p/close)
+  (p/docs))
