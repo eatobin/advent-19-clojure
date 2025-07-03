@@ -3,5 +3,8 @@
  :aliases {:neil {:project {:name day02/day02}}}}
 
 ;; clojure -X:deps aliases
-;; clojure -M:project/outdated --upgrade
-;; cd /home/eric/.config/clojure && clojure -M:project/outdated --upgrade
+
+;; - report project dependencies that have newer versions available:
+;; cd project-directory && clojure -T:search/outdated
+;; - update library versions in this deps.edn file:
+;; cd $XDG_CONFIG_HOME/clojure && clojure -T:search/outdated

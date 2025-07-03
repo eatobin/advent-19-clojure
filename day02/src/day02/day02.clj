@@ -1,6 +1,6 @@
 (ns day02.day02)
 
-;; clj -M:repl/nREPL
+;; clojure -M:repl/reloaded
 
 ;; Instruction:
 ;; ABCDE
@@ -118,6 +118,7 @@
 (defn -main
   "Invoke me with clojure -M -m day02.day02"
   [& _]
+  (flush)
   (printf "Part A answer: %s, correct: 2890696%n" (answer-a))
   (flush)
   (printf "Part B answer: %s, correct: 8226%n" (answer-b))
