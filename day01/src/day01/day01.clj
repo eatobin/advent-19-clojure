@@ -2,7 +2,6 @@
   (:require
    [malli.core :as m]))
 
-; clj -M:repl/nREPL
 ; clojure -M:repl/reloaded
 
 (def modules-schema
