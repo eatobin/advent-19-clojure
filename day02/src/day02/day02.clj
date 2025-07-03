@@ -91,6 +91,7 @@
 (defn print-a
   "Invoke me with clojure -X day02.day02/print-a"
   [_]
+  (flush)
   (printf "Part A answer: %s, correct: 2890696%n" (answer-a))
   (flush))
 
@@ -108,6 +109,7 @@
 (defn print-b
   "Invoke me with clojure -X day02.day02/print-b"
   [_]
+  (flush)
   (printf "Part B answer: %s, correct: 8226%n" (answer-b))
   (flush))
 
