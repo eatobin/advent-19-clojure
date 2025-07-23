@@ -2,7 +2,7 @@
   (:require
    [malli.core :as m]))
 
-; clojure -M:repl/reloaded
+; clojure -M:repl/rebel
 
 (def modules-schema
   [:fn '(fn [coll] (and (list? coll) (= (count coll) 100) (every? integer? coll)))])
