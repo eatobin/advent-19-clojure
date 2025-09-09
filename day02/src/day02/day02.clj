@@ -57,33 +57,33 @@
 (defn add [{:keys [instruction pointer memory]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
-             memory
-             (a-param {:instruction instruction :pointer pointer :memory memory})
-             (+ (c-param {:instruction instruction :pointer pointer :memory memory})
-                (b-param {:instruction instruction :pointer pointer :memory memory})))})
+              memory
+              (a-param {:instruction instruction :pointer pointer :memory memory})
+              (+ (c-param {:instruction instruction :pointer pointer :memory memory})
+                 (b-param {:instruction instruction :pointer pointer :memory memory})))})
 
 (defn multiply [{:keys [instruction pointer memory]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
-             memory
-             (a-param {:instruction instruction :pointer pointer :memory memory})
-             (* (c-param {:instruction instruction :pointer pointer :memory memory})
-                (b-param {:instruction instruction :pointer pointer :memory memory})))})
+              memory
+              (a-param {:instruction instruction :pointer pointer :memory memory})
+              (* (c-param {:instruction instruction :pointer pointer :memory memory})
+                 (b-param {:instruction instruction :pointer pointer :memory memory})))})
 
 (defn op-code [{:keys [pointer memory]}]
   (let [instruction (pad-5 (memory pointer))]
     (case (instruction :e)
       1 (recur
-         (add {:instruction instruction :pointer pointer :memory memory}))
+          (add {:instruction instruction :pointer pointer :memory memory}))
       2 (recur
-         (multiply {:instruction instruction :pointer pointer :memory memory}))
+          (multiply {:instruction instruction :pointer pointer :memory memory}))
       9 {:instruction instruction :pointer pointer :memory memory})))
 
 (defn updated-memory [noun verb]
   (->
-   memory
-   (assoc 1 noun)
-   (assoc 2 verb)))
+    memory
+    (assoc 1 noun)
+    (assoc 2 verb)))
 
 (defn answer-a []
   (get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0))

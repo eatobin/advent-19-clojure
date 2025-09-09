@@ -1,14 +1,14 @@
 (ns day03.day03
   (:require
-   [clojure.data.csv :as csv]
-   [clojure.java.io :as io]
-   [clojure.math.numeric-tower :as math]
-   [clojure.set :as s]))
+    [clojure.data.csv :as csv]
+    [clojure.java.io :as io]
+    [clojure.math.numeric-tower :as math]
+    [clojure.set :as s]))
 
 ;part a
 (def both (with-open [reader (io/reader "resources/day03.csv")]
             (doall
-             (csv/read-csv reader))))
+              (csv/read-csv reader))))
 
 (comment
   both)
@@ -55,9 +55,9 @@
     (if (empty? movements)
       path
       (recur
-       (rest movements)
-       (last (make-path (first movements) start))
-       (vec (concat path (rest (make-path (first movements) start))))))))
+        (rest movements)
+        (last (make-path (first movements) start))
+        (vec (concat path (rest (make-path (first movements) start))))))))
 
 (defn abs-dist [[x y]]
   (+ (math/abs x) (math/abs y)))
