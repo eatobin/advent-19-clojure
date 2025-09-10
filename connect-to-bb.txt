@@ -1,0 +1,9 @@
+Steps:
+Start a Babashka nREPL server.
+Open your terminal and navigate to your project directory (if applicable). Execute the following command to start a Babashka nREPL server:
+Code
+
+    bb nrepl-server
+This will typically output the port number the nREPL server is listening on. Note this port number. Connect from Clojure Sublimed.
+Open Sublime Text with your Clojure project. Open the Sublime Text Command Palette (usually Ctrl+Shift+P or Cmd+Shift+P). Type and select "Clojure Sublimed: Connect to Socket REPL". When prompted for the REPL type, choose "Raw nREPL". Enter the host (usually localhost) and the port number obtained in step 1.
+Clojure Sublimed should now be connected to your running Babashka nREPL server, allowing you to interactively evaluate Babashka code within Sublime Text.
