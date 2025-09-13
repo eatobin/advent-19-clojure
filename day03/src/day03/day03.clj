@@ -52,6 +52,10 @@
        (last (make-path (first movements) start))
        (vec (concat path (rest (make-path (first movements) start))))))))
 
+(comment
+  (make-paths ["R3" "U3" "L3" "D3"] [0 0])
+  :rcf)
+
 (defn abs-dist [[x y]]
   (+ (math/abs x) (math/abs y)))
 
