@@ -1,0 +1,13 @@
+{:paths   ["src"]
+ :deps    {org.clojure/clojure            {:mvn/version "1.12.2"}
+           org.clojure/math.numeric-tower {:mvn/version "0.1.0"}
+           org.clojure/data.csv           {:mvn/version "1.1.0"}}
+ :aliases {:neil {:project {:name day05/day05}}}}
+
+;; clojure -X:deps aliases
+;; clojure -M:repl/rebel
+
+;; - report project dependencies that have newer versions available:
+;; cd project-directory && clojure -T:search/outdated
+;; - update library versions in this deps.edn file:
+;; cd $XDG_CONFIG_HOME/clojure && clojure -T:search/outdated
