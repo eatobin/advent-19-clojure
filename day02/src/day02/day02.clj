@@ -1,7 +1,5 @@
 (ns day02.day02)
 
-;; clojure -M:repl/reloaded
-
 ;; Instruction:
 ;; ABCDE
 ;; 01234
@@ -131,6 +129,7 @@
   *ns*)
 
 (comment
+  ;; clojure -M:repl/reloaded
   (require '[portal.api :as p])
   (def p (p/open))
   (add-tap #'p/submit)

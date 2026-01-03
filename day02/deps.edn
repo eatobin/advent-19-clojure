@@ -1,6 +1,7 @@
 {:paths   ["src"]
  :deps    {org.clojure/clojure {:mvn/version "1.12.4"}}
- :aliases {:neil {:project {:name day02/day02}}}}
+ :aliases {:neil               {:project {:name day02/day02}}
+           :inspect/portal-cli {:extra-deps {djblue/portal {:mvn/version "0.62.1"}}}}}
 
 ;; clojure -X:deps aliases
 
