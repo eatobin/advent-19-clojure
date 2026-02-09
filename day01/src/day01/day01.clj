@@ -1,6 +1,6 @@
 (ns day01.day01
   (:require
-    [malli.core :as m]))
+   [malli.core :as m]))
 
 ; clojure -M:repl/rebel
 
