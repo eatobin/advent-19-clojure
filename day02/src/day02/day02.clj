@@ -1,5 +1,15 @@
 (ns day02.day02)
 
+; [eric@eric-minisforum day02](dev)$ clojure -M:repl/rebel
+; nREPL server started on port 45677 on host localhost - nrepl://localhost:45677
+; [Rebel readline] Type :repl/help for online help info
+; user=> (require '[day02.day02 :as day02])
+; nil
+; user=> *ns*
+; #namespace[user]
+; user=> (day02/answer-b)
+; 8226
+
 ;; Instruction:
 ;; ABCDE
 ;; 01234
@@ -77,27 +87,25 @@
          (multiply {:instruction instruction :pointer pointer :memory memory}))
       9 {:instruction instruction :pointer pointer :memory memory})))
 
-(defn updated-memory [noun verb]
+(defn updated-memory-temp [noun verb]
   (->
    memory
    (assoc 1 noun)
    (assoc 2 verb)))
 
 (defn answer-a []
-  (get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0))
+  (get (:memory (op-code {:pointer 0 :memory (updated-memory-temp 12 2)})) 0))
 
 (defn print-a
   "Invoke me with clojure -X day02.day02/print-a"
-  [_]
-  (println)
-  (printf "Part A answer: %s, correct: 2890696%n" (answer-a))
-  (flush))
+  []
+  (printf "\nPart A answer: %s, correct: 2890696%n" (answer-a)))
 
 ;;part b
 (def noun-verb
   (vec (for [noun (range 0 100)
              verb (range 0 100)
-             :let [candidate ((:memory (op-code {:pointer 0 :memory (updated-memory noun verb)})) 0)]
+             :let [candidate ((:memory (op-code {:pointer 0 :memory (updated-memory-temp noun verb)})) 0)]
              :when (= candidate 19690720)]
          [candidate noun verb (+ (* 100 noun) verb)])))
 
@@ -106,23 +114,18 @@
 
 (defn print-b
   "Invoke me with clojure -X day02.day02/print-b"
-  [_]
-  (println)
-  (printf "Part B answer: %s, correct: 8226%n" (answer-b))
-  (flush))
+  []
+  (printf "\nPart B answer: %s, correct: 8226%n" (answer-b)))
 
 (comment
-  (print-a nil)
-  (print-b nil))
+  (print-a)
+  (print-b))
 
 (defn -main
   "Invoke me with clojure -M -m day02.day02"
   [& _]
-  (println)
-  (printf "Part A answer: %s, correct: 2890696%n" (answer-a))
-  (flush)
-  (printf "Part B answer: %s, correct: 8226%n" (answer-b))
-  (flush))
+  (printf "\nPart A answer: %s, correct: 2890696%n" (answer-a))
+  (printf "Part B answer: %s, correct: 8226%n\n" (answer-b)))
 
 (comment
   (-main)
