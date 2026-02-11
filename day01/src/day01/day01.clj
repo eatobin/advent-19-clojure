@@ -14,8 +14,8 @@
 ;part a
 (def gas
   (m/-instrument
-    {:schema [:=> [:cat :int] :int]}
-    (fn [module] (- (quot module 3) 2))))
+   {:schema [:=> [:cat :int] :int]}
+   (fn [module] (- (quot module 3) 2))))
 #_(gas 77.7)
 
 (defn answer-a []
@@ -26,15 +26,15 @@
 ;part b
 (def gas-plus
   (m/-instrument
-    {:schema [:=> [:cat :int] :int]}
-    (fn [module] (loop [m module
-                        acc 0]
-                   (let [new-gas (gas m)]
-                     (if (pos-int? new-gas)
-                       (recur
-                         new-gas
-                         (+ acc new-gas))
-                       acc))))))
+   {:schema [:=> [:cat :int] :int]}
+   (fn [module] (loop [m   module
+                       acc 0]
+                  (let [new-gas (gas m)]
+                    (if (pos-int? new-gas)
+                      (recur
+                       new-gas
+                       (+ acc new-gas))
+                      acc))))))
 #_(gas-plus 77.7)
 
 (defn gas-plus-lazy [module]
