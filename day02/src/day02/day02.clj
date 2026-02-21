@@ -39,7 +39,7 @@
 (def OFFSET-C 1)
 (def OFFSET-B 2)
 (def OFFSET-A 3)
-
+;;change to haskell
 (defn write-to-read-from-index [{:keys [pointer memory]} offset]
   (get memory (+ pointer offset)))
 
@@ -48,7 +48,7 @@
 
 (defn -p-r [{:keys [pointer memory]} offset]
   (get memory (write-to-read-from-index {:pointer pointer :memory memory} offset)))
-
+;;change to generec with offset
 (defn a-param [{:keys [instruction pointer memory]}]
   (case (instruction :a)
     0 (-p-w {:pointer pointer :memory memory} OFFSET-A)))   ; a-p-w
