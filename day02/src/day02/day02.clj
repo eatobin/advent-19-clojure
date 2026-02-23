@@ -1,4 +1,6 @@
-(ns day02.day02)
+(ns day02.day02
+  (:require
+   [clojure.string :as str]))
 
 ; [eric@eric-minisforum day02](dev)$ clojure -M:repl/rebel
 ; nREPL server started on port 45677 on host localhost - nrepl://localhost:45677
@@ -23,7 +25,15 @@
 ;; p i or r = position, immediate or relative mode
 ;; r or w = read or write
 
-(def memory [1, 0, 0, 3, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 10, 1, 19, 2, 9, 19, 23, 2, 13, 23, 27, 1, 6, 27, 31, 2, 6, 31, 35, 2, 13, 35, 39, 1, 39, 10, 43, 2, 43, 13, 47, 1, 9, 47, 51, 1, 51, 13, 55, 1, 55, 13, 59, 2, 59, 13, 63, 1, 63, 6, 67, 2, 6, 67, 71, 1, 5, 71, 75, 2, 6, 75, 79, 1, 5, 79, 83, 2, 83, 6, 87, 1, 5, 87, 91, 1, 6, 91, 95, 2, 95, 6, 99, 1, 5, 99, 103, 1, 6, 103, 107, 1, 107, 2, 111, 1, 111, 5, 0, 99, 2, 14, 0, 0])
+(defn csv-to-ints [csv-string]
+  (->> (str/split csv-string #",")
+       (map parse-long)
+       (apply list)))
+
+;(def memory-as-csv-string "1, 0, 0, 3, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 10, 1, 19, 2, 9, 19, 23, 2, 13, 23, 27, 1, 6, 27, 31, 2, 6, 31, 35, 2, 13, 35, 39, 1, 39, 10, 43, 2, 43, 13, 47, 1, 9, 47, 51, 1, 51, 13, 55, 1, 55, 13, 59, 2, 59, 13, 63, 1, 63, 6, 67, 2, 6, 67, 71, 1, 5, 71, 75, 2, 6, 75, 79, 1, 5, 79, 83, 2, 83, 6, 87, 1, 5, 87, 91, 1, 6, 91, 95, 2, 95, 6, 99, 1, 5, 99, 103, 1, 6, 103, 107, 1, 107, 2, 111, 1, 111, 5, 0, 99, 2, 14, 0, 0")
+
+(defn make-intcode [pointer memory-as-csv-string]
+  {:pointer pointer :memory (zipmap (range) (csv-to-ints memory-as-csv-string))})
 
 (defn pad-5 [instruction]
   (zipmap [:a :b :c :d :e]
@@ -33,7 +43,7 @@
 (def POINTER-OFFSET-C 1)
 (def POINTER-OFFSET-B 2)
 (def POINTER-OFFSET-A 3)
-;;change to haskell
+
 (defn key-to-key [{:keys [pointer memory]} pointer-offset]
   (get memory (+ pointer pointer-offset)))
 
