@@ -92,45 +92,46 @@
          (multiply {:instruction instruction :pointer pointer :memory memory}))
       9 {:instruction instruction :pointer pointer :memory memory})))
 
-(defn updated-memory-temp [noun verb]
-  (->
-   memory
-   (assoc 1 noun)
-   (assoc 2 verb)))
+;(defn updated-memory [memory noun verb]
+;  (->
+;   memory
+;   (assoc 1 noun)
+;   (assoc 2 verb)))
 
-(defn answer-a []
-  (get (:memory (op-code {:pointer 0 :memory (updated-memory-temp 12 2)})) 0))
-
-(defn print-a
-  "Invoke me with clojure -X day02.day02/print-a"
-  []
-  (printf "\nPart A answer: %s, correct: 2890696%n" (answer-a)))
-
-;;part b
-(def noun-verb
-  (vec (for [noun (range 0 100)
-             verb (range 0 100)
-             :let [candidate ((:memory (op-code {:pointer 0 :memory (updated-memory-temp noun verb)})) 0)]
-             :when (= candidate 19690720)]
-         [candidate noun verb (+ (* 100 noun) verb)])))
-
-(defn answer-b []
-  (last (first noun-verb)))
-
-(defn print-b
-  "Invoke me with clojure -X day02.day02/print-b"
-  []
-  (printf "\nPart B answer: %s, correct: 8226%n" (answer-b)))
-
-(comment
-  (print-a)
-  (print-b))
+;(defn answer-a []
+;  (get (:memory (op-code {:pointer 0 :memory (updated-memory 12 2)})) 0))
+;
+;(defn print-a
+;  "Invoke me with clojure -X day02.day02/print-a"
+;  []
+;  (printf "\nPart A answer: %s, correct: 2890696%n" (answer-a)))
+;
+;;;part b
+;(def noun-verb
+;  (vec (for [noun (range 0 100)
+;             verb (range 0 100)
+;             :let [candidate ((:memory (op-code {:pointer 0 :memory (updated-memory noun verb)})) 0)]
+;             :when (= candidate 19690720)]
+;         [candidate noun verb (+ (* 100 noun) verb)])))
+;
+;(defn answer-b []
+;  (last (first noun-verb)))
+;
+;(defn print-b
+;  "Invoke me with clojure -X day02.day02/print-b"
+;  []
+;  (printf "\nPart B answer: %s, correct: 8226%n" (answer-b)))
+;
+;(comment
+;  (print-a)
+;  (print-b))
 
 (defn -main
   "Invoke me with clojure -M -m day02.day02"
   [& _]
-  (printf "\nPart A answer: %s, correct: 2890696%n" (answer-a))
-  (printf "Part B answer: %s, correct: 8226%n\n" (answer-b)))
+  ;(printf "\nPart A answer: %s, correct: 2890696%n" (answer-a))
+  ;(printf "Part B answer: %s, correct: 8226%n\n" (answer-b)))
+  )
 
 (comment
   (-main)
