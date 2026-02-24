@@ -67,7 +67,7 @@
   (case (instruction :c)
     0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-C))) ; c-p-r
 
-;;part a
+;; part a
 (defn add [{:keys [instruction pointer memory]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
@@ -99,32 +99,13 @@
    (assoc 1 noun)
    (assoc 2 verb)))
 
-
-;
-;(defn print-a
-;  "Invoke me with clojure -X day02.day02/print-a"
-;  []
-;  (printf "\nPart A answer: %s, correct: 2890696%n" (answer-a)))
-;
-;;;part b
-;(def noun-verb
-;  (vec (for [noun (range 0 100)
-;             verb (range 0 100)
-;             :let [candidate ((:memory (op-code {:pointer 0 :memory (updated-memory noun verb)})) 0)]
-;             :when (= candidate 19690720)]
-;         [candidate noun verb (+ (* 100 noun) verb)])))
-;
-;(defn answer-b []
-;  (last (first noun-verb)))
-;
-;(defn print-b
-;  "Invoke me with clojure -X day02.day02/print-b"
-;  []
-;  (printf "\nPart B answer: %s, correct: 8226%n" (answer-b)))
-;
-;(comment
-;  (print-a)
-;  (print-b))
+;; part b
+(defn noun-verb [memory]
+  (vec (for [noun (range 0 100)
+             verb (range 0 100)
+             :let [candidate ((:memory (op-code {:pointer 0 :memory (updated-memory memory noun verb)})) 0)]
+             :when (= candidate 19690720)]
+         [candidate noun verb (+ (* 100 noun) verb)])))
 
 (defn -main
   "Invoke me with clojure -M -m day02.day02"
@@ -133,9 +114,10 @@
         memory               (make-memory memory-as-csv-string)
         new-memory           (updated-memory memory 12 2)
         answer-a             (get (:memory (op-code {:pointer 0 :memory new-memory})) 0)]
-    (printf "\nPart A answer: %s, correct: 2890696%n" answer-a)))
-
-;(printf "Part B answer: %s, correct: 8226%n\n" (answer-b)))
+    (printf "\nPart A answer: %s, correct: 2890696%n" answer-a)
+    (let [winner   (noun-verb memory)
+          answer-b (last (first winner))]
+      (printf "Part B answer: %s, correct: 8226%n\n" answer-b))))
 
 (comment
   (-main)
