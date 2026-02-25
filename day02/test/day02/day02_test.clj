@@ -28,8 +28,8 @@
 
 (deftest -p-w
   (testing "-p-w"
-    (is (= 12
-           (sut/-p-w {:pointer 0 :memory {0 10 1 11 2 12}} 2)))))
+    (is (= 1
+           (sut/-p-w {:pointer 0 :memory {0 10 1 11 2 1}} 2)))))
 
 (deftest -p-r
   (testing "-p-r"
