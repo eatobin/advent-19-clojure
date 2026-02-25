@@ -54,7 +54,6 @@
 (defn -p-r [{:keys [pointer memory]} pointer-offset]
   (get memory (key-to-key {:pointer pointer :memory memory} pointer-offset)))
 
-;;change to generic with offset
 (defn a-param [{:keys [instruction pointer memory]}]
   (case (instruction :a)
     0 (-p-w {:pointer pointer :memory memory} POINTER-OFFSET-A))) ; a-p-w
