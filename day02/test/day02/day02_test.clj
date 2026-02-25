@@ -4,28 +4,41 @@
 
 (deftest a-test
   (testing "This is a stand-alone test."
-    (is (= 1 1))))
+    (is (=
+         1
+         1))))
 
 (deftest make-intcode
   (testing "make-intcode makes an intcode"
-    (is (= (sut/make-intcode 0 "10,11,12") {:pointer 0 :memory {0 10 1 11 2 12}}))))
+    (is (=
+         {:pointer 0 :memory {0 10 1 11 2 12}}
+         (sut/make-intcode 0 "10,11,12")))))
 
 (deftest make-instruction-1
   (testing "make-instruction makes a 1 digit instruction"
-    (is (= {:a 0, :b 0, :c 0, :d 0, :e 1} (sut/make-instruction 1)))))
+    (is (=
+         {:a 0, :b 0, :c 0, :d 0, :e 1}
+         (sut/make-instruction 1)))))
 
 (deftest make-instruction-5
   (testing "make-instruction makes a 5 digit instruction"
-    (is (= {:a 1, :b 2, :c 3, :d 4, :e 5} (sut/make-instruction 12345)))))
+    (is (=
+         {:a 1, :b 2, :c 3, :d 4, :e 5}
+         (sut/make-instruction 12345)))))
 
 (deftest key-to-key
   (testing "key-to-key"
-    (is (= 11 (sut/key-to-key {:pointer 0 :memory {0 10 1 11 2 12}} 1)))))
+    (is (=
+         11
+         (sut/key-to-key {:pointer 0 :memory {0 10 1 11 2 12}} 1)))))
 
 (deftest -p-w
   (testing "-p-w"
-    (is (= 12 (sut/-p-w {:pointer 0 :memory {0 10 1 11 2 12}} 2)))))
+    (is (= 12
+           (sut/-p-w {:pointer 0 :memory {0 10 1 11 2 12}} 2)))))
 
 (deftest -p-r
   (testing "-p-r"
-    (is (= 11 (sut/-p-r {:pointer 0 :memory {0 10 1 11 2 1}} 2)))))
+    (is (=
+         11
+         (sut/-p-r {:pointer 0 :memory {0 10 1 11 2 1}} 2)))))
