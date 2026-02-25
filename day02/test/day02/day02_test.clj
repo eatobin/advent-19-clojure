@@ -3,6 +3,7 @@
             [day02.day02 :as sut]))                         ; system under test
 
 (def memory-as-csv-string "10,11,1")
+(def intCode {:pointer 0 :memory {0 10 1 11 2 1}})
 
 (deftest a-test
   (testing "This is a stand-alone test."
@@ -13,7 +14,7 @@
 (deftest make-intcode
   (testing "make-intcode makes an intcode"
     (is (=
-         {:pointer 0 :memory {0 10 1 11 2 1}}
+         intCode
          (sut/make-intcode 0 memory-as-csv-string)))))
 
 (deftest make-instruction-1
@@ -31,10 +32,10 @@
 (deftest -p-w
   (testing "-p-w"
     (is (= 1
-           (sut/-p-w {:pointer 0 :memory {0 10 1 11 2 1}} 2)))))
+           (sut/-p-w intCode 2)))))
 
 (deftest -p-r
   (testing "-p-r"
     (is (=
          11
-         (sut/-p-r {:pointer 0 :memory {0 10 1 11 2 1}} 2)))))
+         (sut/-p-r intCode 2)))))
