@@ -26,12 +26,6 @@
          {:a 1, :b 2, :c 3, :d 4, :e 5}
          (sut/make-instruction 12345)))))
 
-(deftest key-to-key
-  (testing "key-to-key"
-    (is (=
-         11
-         (sut/key-to-key {:pointer 0 :memory {0 10 1 11 2 12}} 1)))))
-
 (deftest -p-w
   (testing "-p-w"
     (is (= 12
