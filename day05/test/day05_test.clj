@@ -1,6 +1,6 @@
 (ns day05-test
   (:require [clojure.test :refer [deftest is testing]]
-            [main :as sut])) ; system under test
+            [main :as sut]))                                ; system under test
 
 (deftest a-test
   (testing "FIXME, I fail."
