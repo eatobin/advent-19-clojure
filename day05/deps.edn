@@ -1,8 +1,8 @@
 {:paths ["src" "app"]
  :deps  {org.clojure/clojure {:mvn/version "1.12.4"}}
  :aliases
- {:run-m {:main-opts ["-m" "main"]}
-  :run-x {:ns-default main
+ {:run-m {:main-opts ["-m" "day05"]}
+  :run-x {:ns-default day05
           :exec-fn    greet
           :exec-args  {:name "Clojure"}}
   :build {:deps       {io.github.clojure/tools.build

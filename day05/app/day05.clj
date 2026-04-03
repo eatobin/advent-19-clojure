@@ -1,4 +1,4 @@
-(ns main
+(ns day05
   (:gen-class))
 
 (defn greet
