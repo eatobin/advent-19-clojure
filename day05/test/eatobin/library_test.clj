@@ -1,7 +1,7 @@
-(ns lib-test
-  (:require [clojure.test :refer [deftest is testing]]
-   ; system under test
-            [lib :as sut]))
+(ns eatobin.library-test
+  (:require
+   [clojure.test :refer [deftest is testing]] ; system under test
+   [eatobin.library :as sut]))
 
 (deftest a-test
   (testing "FIXME, I fail."
