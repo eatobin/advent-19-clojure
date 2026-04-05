@@ -15,6 +15,9 @@
 
 ;; clojure -M:repl/rebel
 
+;; clojure -M::repl/basic
+
+;; On port 5555:
 ;; clj -X:repl-server
 
 ;; clojure -X:deps aliases
