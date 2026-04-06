@@ -6,19 +6,16 @@
          :extra-deps  {io.github.cognitect-labs/test-runner {:git/tag "v0.5.1"
                                                              :git/sha "dfb30dd"}}
          :main-opts   ["-m" "cognitect.test-runner"]
-         :exec-fn     cognitect.test-runner.api/test}
-  :repl-server {:exec-fn clojure.core.server/start-server
-                :exec-args {:name "repl-server"
-                            :port 5555
-                            :accept clojure.core.server/repl
-                            :server-daemon false}}}}
+         :exec-fn     cognitect.test-runner.api/test}}}
 
+;; Best:
+;; On port 5555:
+;; clojure -X:repl/socket
+
+;; Others:
 ;; clojure -M:repl/rebel
 
 ;; clojure -M::repl/basic
-
-;; On port 5555:
-;; clj -X:repl-server
 
 ;; clojure -X:deps aliases
 
