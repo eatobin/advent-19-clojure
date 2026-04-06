@@ -1,6 +1,7 @@
 (ns eatobin.library-test
   (:require
-   [clojure.test :refer [deftest is testing]] ;; sut = system under test
+   ;; sut = system under test
+   [clojure.test :refer [deftest is testing]]
    [eatobin.library :as sut]))
 
 (def instruction1 {:a 0, :b 0, :c 0, :d 0, :e 6})
