@@ -3,9 +3,10 @@
    [clojure.string :as str]))
 
 (defn make-instruction [integer]
-  (zipmap [:a :b :c :d :e]
-          (for [character (format "%05d" integer)]
-            (- (byte character) 48))))
+  (into (sorted-map)
+        (zipmap [:a :b :c :d :e]
+                (for [character (format "%05d" integer)]
+                  (- (byte character) 48)))))
 
 (defn make-memory [memory-as-csv-string]
   (->>
