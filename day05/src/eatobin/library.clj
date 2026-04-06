@@ -1,5 +1,6 @@
 (ns eatobin.library
   (:require
+   [clojure.data.int-map :as i]
    [clojure.string :as str]))
 
 (defn make-instruction [integer]
@@ -14,7 +15,7 @@
    (map #(Long/parseLong %))
    (into [])
    (zipmap (range))
-   (into (sorted-map))))
+   (into (i/int-map))))
 
 (comment
   (make-memory "10,11,1"))
