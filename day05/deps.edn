@@ -8,14 +8,16 @@
          :main-opts   ["-m" "cognitect.test-runner"]
          :exec-fn     cognitect.test-runner.api/test}}}
 
-;; Best:
+;; clojure -M:test
+
+;; Best REPL:
 ;; On port 5555:
 ;; clojure -X:repl/socket
 
 ;; Others:
 ;; clojure -M:repl/rebel
 
-;; clojure -M::repl/basic
+;; clj -M:repl/basic <- with rlwrap
 
 ;; clojure -X:deps aliases
 
