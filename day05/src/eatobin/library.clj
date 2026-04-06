@@ -18,4 +18,4 @@
    (into (i/int-map))))
 
 (comment
-  (make-memory "10,11,1"))
+  (type (make-memory "10,11,1")))
