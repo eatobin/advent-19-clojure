@@ -11,7 +11,7 @@
 ;; clojure -M:test
 
 ;; Best REPL:
-;; On port 5555:
+;; On port 55555 (five fives):
 ;; clojure -X:repl/socket
 
 ;; Others:
