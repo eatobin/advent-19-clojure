@@ -19,6 +19,16 @@
 
 ;; clj -M:repl/basic <- with rlwrap
 
+;; ForRebel
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- resuts to output panel
+;; (new) JVM Socket REPL <- no connection
+
+;; For clj -M:repl/basic
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- resuts to output panel
+;; (new) JVM Socket REPL <- no connection
+
 ;; clojure -X:deps aliases
 
 ;; - report project dependencies that have newer versions available:
