@@ -1,8 +1,11 @@
 (ns eatobin.library)
 
-(defn add-5 [x]
-  (+ x 5))
+(defn char-to-int [char-as-byte]
+  (- char-as-byte 48))
 
+(defn make-instruction [integer]
+  (zipmap [:a :b :c :d :e]
+          (for [character (format "%05d" integer)]
+            (char-to-int (byte character)))))
 (comment
-  (add-5 8)
-  (println "Hi!"))
+  (make-instruction 6))
