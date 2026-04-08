@@ -10,6 +10,7 @@
 ;; clojure -M:test/run
 ;; clojure -M:test/run-all
 ;; clojure -M:test/watch
+;; [eric@eric-sony day05](app)$ bin/kaocha
 
 ;; Best REPL:
 ;; On port 55555 (five fives):

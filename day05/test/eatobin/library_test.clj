@@ -1,6 +1,5 @@
 (ns eatobin.library-test
   (:require
-   ;; sut = system under test
    [clojure.test :refer [deftest is testing]]
    [eatobin.library :as sut]))
 
