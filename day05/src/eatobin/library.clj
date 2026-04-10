@@ -3,7 +3,7 @@
    [clojure.data.int-map :as i]
    [clojure.string :as str]))
 
-;{:input input :output output :pointer pointer :memory memory}
+;; {:input input :output output :pointer pointer :memory memory}
 
 (def pointer-offset-c 1)
 (def pointer-offset-b 2)
