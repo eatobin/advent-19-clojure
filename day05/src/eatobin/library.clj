@@ -3,6 +3,12 @@
    [clojure.data.int-map :as i]
    [clojure.string :as str]))
 
+;{:input input :output output :pointer pointer :memory memory}
+
+(def pointer-offset-c 1)
+(def pointer-offset-b 2)
+(def pointer-offset-a 3)
+
 (defn make-instruction [integer]
   (into (sorted-map)
         (zipmap [:a :b :c :d :e]
@@ -17,5 +23,13 @@
    (zipmap (range))
    (into (i/int-map))))
 
-(comment
-  (type (make-memory "10,11,1")))
+(defn lookup-abc [intcode pointer-offset-x]
+  (get (:memory intcode)
+       (+ (:pointer intcode) pointer-offset-x)))
+
+(defn p-w [intcode pointer-offset-x]
+  (lookup-abc intcode pointer-offset-x))
+
+(defn p-r [intcode pointer-offset-x]
+  (get (:memory intcode)
+       (lookup-abc intcode pointer-offset-x)))
