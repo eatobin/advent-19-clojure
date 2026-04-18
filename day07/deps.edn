@@ -1,0 +1,40 @@
+{:paths ["src" "resources"]
+ :deps  {org.clojure/data.int-map {:mvn/version "1.3.1"}
+         org.clojure/data.csv     {:mvn/version "1.1.1"}}
+ :aliases
+ {:neil {:project {:name eatobin/day07}}}}
+
+;; cognitect:
+;; clojure -X:test/cognitect
+
+;; kaocha
+;; clojure -M:test/run
+;; clojure -M:test/run-all
+;; clojure -M:test/watch
+;; [eric@eric-sony day05](app)$ bin/kaocha
+
+;; Best REPL:
+;; On port 55555 (five fives):
+;; clojure -X:repl/socket
+
+;; Others:
+;; clojure -M:repl/rebel
+
+;; clj -M:repl/basic <- with rlwrap
+
+;; ForRebel
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- results to output panel
+;; (new) JVM Socket REPL <- no connection
+
+;; For clj -M:repl/basic
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- results to output panel
+;; (new) JVM Socket REPL <- no connection
+
+;; clojure -X:deps aliases
+
+;; - report project dependencies that have newer versions available:
+;; cd project-directory && clojure -T:search/outdated
+;; - update library versions in this deps.edn file:
+;; cd $XDG_CONFIG_HOME/clojure && clojure -T:search/outdated
