@@ -14,42 +14,47 @@
                  [a b c d e]))
 
 (defn pass [[a b c d e] i-code]
-  (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input         (last ((ic/op-code {:input  0
-                                                                                                                                                                  :output []
-                                                                                                                                                                  :phase a
-                                                                                                                                                                  :pointer 0
-                                                                                                                                                                  :relative-base 0
-                                                                                                                                                                  :memory i-code
-                                                                                                                                                                  :stopped? false
-                                                                                                                                                                  :recur? true}) :output))
-                                                                                                                               :output        []
-                                                                                                                               :phase         b
-                                                                                                                               :pointer       0
-                                                                                                                               :relative-base 0
-                                                                                                                               :memory        i-code
-                                                                                                                               :stopped?      false
-                                                                                                                               :recur?        true}) :output))
-                                                                                            :output        []
-                                                                                            :phase         c
-                                                                                            :pointer       0
-                                                                                            :relative-base 0
-                                                                                            :memory        i-code
-                                                                                            :stopped?      false
-                                                                                            :recur?        true}) :output))
-                                                         :output        []
-                                                         :phase         d
-                                                         :pointer       0
-                                                         :relative-base 0
-                                                         :memory        i-code
-                                                         :stopped?      false
-                                                         :recur?        true}) :output))
-                      :output        []
-                      :phase         e
-                      :pointer       0
-                      :relative-base 0
-                      :memory        i-code
-                      :stopped?      false
-                      :recur?        true}) :output)))
+  (let [op-a {:input         0
+              :output        []
+              :phase         a
+              :pointer       0
+              :relative-base 0
+              :memory        i-code
+              :stopped?      false
+              :recur?        true}
+        op-b {:input         (last ((ic/op-code op-a) :output))
+              :output        []
+              :phase         b
+              :pointer       0
+              :relative-base 0
+              :memory        i-code
+              :stopped?      false
+              :recur?        true}
+        op-c {:input         (last ((ic/op-code op-b) :output))
+              :output        []
+              :phase         c
+              :pointer       0
+              :relative-base 0
+              :memory        i-code
+              :stopped?      false
+              :recur?        true}
+        op-d {:input         (last ((ic/op-code op-c) :output))
+              :output        []
+              :phase         d
+              :pointer       0
+              :relative-base 0
+              :memory        i-code
+              :stopped?      false
+              :recur?        true}
+        op-e {:input         (last ((ic/op-code op-d) :output))
+              :output        []
+              :phase         e
+              :pointer       0
+              :relative-base 0
+              :memory        i-code
+              :stopped?      false
+              :recur?        true}]
+    (last ((ic/op-code op-e) :output))))
 
 (defn passes [i-code]
   (map #(pass % i-code) possibles))
@@ -58,7 +63,7 @@
 
 (comment
   answer)
-
+answer
 ;368584
 
 ;part b
