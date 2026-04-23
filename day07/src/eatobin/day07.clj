@@ -5,13 +5,15 @@
 ;part a
 (def memory (ic/make-memory "resources/day07.csv"))
 
-(def possibles (for [a (range 0 5)
-                     b (range 0 5)
-                     c (range 0 5)
-                     d (range 0 5)
-                     e (range 0 5)
-                     :when (distinct? a b c d e)]
-                 [a b c d e]))
+(def possibles (into ()
+                     (reverse
+                      (for [a (range 0 5)
+                            b (range 0 5)
+                            c (range 0 5)
+                            d (range 0 5)
+                            e (range 0 5)
+                            :when (distinct? a b c d e)]
+                        [a b c d e]))))
 
 (defn pass [[a b c d e] i-code]
   (let [op-a {:input         0
@@ -63,17 +65,19 @@
 
 (comment
   answer)
-answer
+
 ;368584
 
 ;part b
-(def possibles-2 (for [a (range 5 10)
-                       b (range 5 10)
-                       c (range 5 10)
-                       d (range 5 10)
-                       e (range 5 10)
-                       :when (distinct? a b c d e)]
-                   [a b c d e]))
+(def possibles-2 (into ()
+                       (reverse
+                        (for [a (range 5 10)
+                              b (range 5 10)
+                              c (range 5 10)
+                              d (range 5 10)
+                              e (range 5 10)
+                              :when (distinct? a b c d e)]
+                          [a b c d e]))))
 
 (defn to-amps-list [phases-vector memory]
   (letfn [(to-amps [phases]
