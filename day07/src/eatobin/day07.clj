@@ -15,13 +15,13 @@
                             :when (distinct? a b c d e)]
                         [a b c d e]))))
 
-(defn pass [[a b c d e] i-code]
+(defn pass [i-code-memory [a b c d e]]
   (let [op-a {:input         0
               :output        []
               :phase         a
               :pointer       0
               :relative-base 0
-              :memory        i-code
+              :memory        i-code-memory
               :stopped?      false
               :recur?        true}
         op-b {:input         (last ((ic/op-code op-a) :output))
@@ -29,7 +29,7 @@
               :phase         b
               :pointer       0
               :relative-base 0
-              :memory        i-code
+              :memory        i-code-memory
               :stopped?      false
               :recur?        true}
         op-c {:input         (last ((ic/op-code op-b) :output))
@@ -37,7 +37,7 @@
               :phase         c
               :pointer       0
               :relative-base 0
-              :memory        i-code
+              :memory        i-code-memory
               :stopped?      false
               :recur?        true}
         op-d {:input         (last ((ic/op-code op-c) :output))
@@ -45,7 +45,7 @@
               :phase         d
               :pointer       0
               :relative-base 0
-              :memory        i-code
+              :memory        i-code-memory
               :stopped?      false
               :recur?        true}
         op-e {:input         (last ((ic/op-code op-d) :output))
@@ -53,13 +53,13 @@
               :phase         e
               :pointer       0
               :relative-base 0
-              :memory        i-code
+              :memory        i-code-memory
               :stopped?      false
               :recur?        true}]
     (last ((ic/op-code op-e) :output))))
 
-(defn passes [i-code]
-  (map #(pass % i-code) possibles))
+(defn passes [i-code-memory]
+  (map #(pass i-code-memory %) possibles))
 
 (def answer (apply max (passes memory)))
 
