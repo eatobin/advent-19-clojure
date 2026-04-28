@@ -164,7 +164,7 @@
               :recur?        true}]
     (last ((ic/op-code op-e) :output))))
 
-(defn to-amps-list-2 [phases-vector memory]
+(defn to-amps-list-2 [a-single-phases-vector memory]
   (into {}
         (letfn [(to-amps [phases]
                   {1 {:input 0 :output [] :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
@@ -172,7 +172,7 @@
                    3 {:input nil :output [] :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                    4 {:input nil :output [] :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                    5 {:input nil :output [] :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}})]
-          (map to-amps phases-vector))))
+          (map to-amps a-single-phases-vector))))
 
 (comment
   (to-amps-list-2
