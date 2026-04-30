@@ -1,9 +1,21 @@
 (ns eatobin.day07
   (:require
-   [eatobin.intcode :as ic]))
+   [eatobin.intcode :as ic]
+   [clojure.data.int-map :as i]
+   [clojure.string :as str]))
+
+(defn make-memory [memory-as-csv-string]
+  (->>
+   (str/split memory-as-csv-string #",")
+   (map #(Long/parseLong %))
+   (into [])
+   (zipmap (range))
+   (into (i/int-map))))
+
+(def memory-as-csv-string "3,8,1001,8,10,8,105,1,0,0,21,38,55,72,93,118,199,280,361,442,99999,3,9,1001,9,2,9,1002,9,5,9,101,4,9,9,4,9,99,3,9,1002,9,3,9,1001,9,5,9,1002,9,4,9,4,9,99,3,9,101,4,9,9,1002,9,3,9,1001,9,4,9,4,9,99,3,9,1002,9,4,9,1001,9,4,9,102,5,9,9,1001,9,4,9,4,9,99,3,9,101,3,9,9,1002,9,3,9,1001,9,3,9,102,5,9,9,101,4,9,9,4,9,99,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99")
 
 ;part a
-(def memory (ic/make-memory "resources/day07.csv"))
+(def memory (make-memory memory-as-csv-string))
 
 (def possibles (into ()
                      (reverse
@@ -121,60 +133,17 @@
    [[5 6 7 8 9]]
    {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
 
-(defn pass-2 [i-code-memory [a b c d e]]
-  (let [op-a {:input         0
-              :output        []
-              :phase         a
-              :pointer       0
-              :relative-base 0
-              :memory        i-code-memory
-              :stopped?      false
-              :recur?        true}
-        op-b {:input         (last ((ic/op-code op-a) :output))
-              :output        []
-              :phase         b
-              :pointer       0
-              :relative-base 0
-              :memory        i-code-memory
-              :stopped?      false
-              :recur?        true}
-        op-c {:input         (last ((ic/op-code op-b) :output))
-              :output        []
-              :phase         c
-              :pointer       0
-              :relative-base 0
-              :memory        i-code-memory
-              :stopped?      false
-              :recur?        true}
-        op-d {:input         (last ((ic/op-code op-c) :output))
-              :output        []
-              :phase         d
-              :pointer       0
-              :relative-base 0
-              :memory        i-code-memory
-              :stopped?      false
-              :recur?        true}
-        op-e {:input         (last ((ic/op-code op-d) :output))
-              :output        []
-              :phase         e
-              :pointer       0
-              :relative-base 0
-              :memory        i-code-memory
-              :stopped?      false
-              :recur?        true}]
-    (last ((ic/op-code op-e) :output))))
-
-(defn to-amps-list-2 [a-single-phases-vector memory]
-  (into {}
-        (letfn [(to-amps [phases]
-                  {1 {:input 0 :output [] :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                   2 {:input nil :output [] :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                   3 {:input nil :output [] :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                   4 {:input nil :output [] :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                   5 {:input nil :output [] :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}})]
-          (map to-amps a-single-phases-vector))))
-
 (comment
+  (defn to-amps-list-2 [a-single-phases-vector memory]
+    (into {}
+          (letfn [(to-amps [phases]
+                    {1 {:input 0 :output [] :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                     2 {:input nil :output [] :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                     3 {:input nil :output [] :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                     4 {:input nil :output [] :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                     5 {:input nil :output [] :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}})]
+            (map to-amps a-single-phases-vector))))
+
   (to-amps-list-2
    [[5 6 7 8 9]]
    {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
