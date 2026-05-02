@@ -1,7 +1,4 @@
-(ns eatobin.intcode
-  (:require
-   [clojure.data.csv :as csv]
-   [clojure.java.io :as io]))
+(ns eatobin.intcode)
 
 ; ABCDE
 ; 01002
@@ -9,16 +6,6 @@
 ; a b or c = left-to-right position after 2 digit opcode
 ; p i or r = position, immediate or relative mode
 ; r or w = read or write
-
-(defn make-memory [file]
-  (->>
-   (first (with-open [reader (io/reader file)]
-            (doall
-             (csv/read-csv reader))))
-   (map #(Long/parseLong %))
-   (into [])
-   (zipmap (range))
-   (into (sorted-map))))
 
 (def OFFSET-C 1)
 (def OFFSET-B 2)
