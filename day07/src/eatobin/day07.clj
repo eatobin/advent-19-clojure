@@ -1,8 +1,8 @@
 (ns eatobin.day07
   (:require
-   [eatobin.intcode :as ic]
    [clojure.data.int-map :as i]
-   [clojure.string :as str]))
+   [clojure.string :as str]
+   [eatobin.intcode :as ic]))
 
 (defn make-memory [memory-as-csv-string]
   (->>
