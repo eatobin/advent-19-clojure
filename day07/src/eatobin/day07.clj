@@ -133,20 +133,21 @@
    [[5 6 7 8 9]]
    {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
 
-(comment
-  (defn to-amps-list-2 [a-single-phases-vector memory]
-    (into {}
-          (letfn [(to-amps [phases]
-                    {1 {:input 0 :output [] :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                     2 {:input nil :output [] :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                     3 {:input nil :output [] :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                     4 {:input nil :output [] :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                     5 {:input nil :output [] :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}})]
-            (map to-amps a-single-phases-vector))))
+(defn to-amps-list-2 [a-single-phases-vector memory]
+  (into {}
+        (letfn [(to-amps [phases]
+                  {:1 {:input 0 :output [] :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                   :2 {:input nil :output [] :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                   :3 {:input nil :output [] :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                   :4 {:input nil :output [] :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
+                   :5 {:input nil :output [] :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}})]
+          (map to-amps a-single-phases-vector))))
 
-  (to-amps-list-2
-   [[5 6 7 8 9]]
-   {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
+(def xxx (to-amps-list-2
+          [[5 6 7 8 9]]
+          {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
+
+(:5 xxx)
 
 ;Here are some example programs:
 ;
