@@ -8,11 +8,11 @@
 ;; (let [user {:first "Jane" :last "Doe" :age 30}]
 ;;   (let [{:keys [first last]} user]
 ;;     (str first " " last)))
-;; 
+;;
 ;; (defn make-user [user-map]
 ;;   (let [{:keys [first last]} user-map]
 ;;     (str first " " last)))
-;; 
+;;
 ;; (defn ccc [{:keys [first last]}]
 ;;   (str first " " last))
 
@@ -30,7 +30,7 @@
 (till-3 user-map-1)
 
 (defn three [index triple]
-  (loop [index index
+  (loop [index  index
          triple triple]
     (if (= (get-in triple [index :output]) 3)
       triple
