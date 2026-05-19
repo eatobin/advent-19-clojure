@@ -53,6 +53,9 @@
 
 (three triple)
 
+;(three triple)
+;=> {1 {:input 1, :output 3}, 2 {:input 0, :output 3}, 3 {:input 0, :output 3}}
+
 (defn three-1 [triple]
   (let [index   1
         current (get triple index)]
