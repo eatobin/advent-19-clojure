@@ -29,13 +29,27 @@
 
 (till-3 user-map-1)
 
+;(defn three [triple]
+;  (loop [index  1
+;         triple triple]
+;    (if (= (get-in triple [index :output]) 3)
+;      triple
+;      (recur
+;       index (update-in triple [index :output] inc)))))
+
 (defn three [triple]
   (loop [index  1
          triple triple]
-    (if (= (get-in triple [index :output]) 3)
+    (if (= (get-in triple [3 :output]) 9)
       triple
       (recur
-       index (update-in triple [index :output] inc)))))
+       (inc index)
+       (loop [index  index
+              triple triple]
+         (if (= (get-in triple [index :output]) 3)
+           triple
+           (recur
+            index (update-in triple [index :output] inc))))))))
 
 (three triple)
 
