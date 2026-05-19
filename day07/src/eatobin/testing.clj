@@ -38,3 +38,15 @@
        index (update-in triple [index :output] inc)))))
 
 (three triple)
+
+(defn three-1 [triple]
+  (let [index   1
+        current (get triple index)]
+    (loop [index   index
+           current current]
+      (if (= (:output current) 3)
+        current
+        (recur
+         index (update current :output inc))))))
+
+(three-1 triple)
