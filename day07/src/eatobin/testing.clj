@@ -40,15 +40,29 @@
 (defn increment-specific-output-and-input-2 [index target-map input]
   (assoc-in target-map [(inc (mod index 3)) :input] (inc input)))
 
-(increment-specific-output-and-input 3 triple 11)
+(increment-specific-output-and-input 1 triple 11)
+
+
+
+
+
 
 ;(increment-output user-map-1)
-;
-;(defn till-3 [user-map]
-;  (if (= (:output user-map) 3)
-;    user-map
+
+;(defn till-3 [index target-map input]
+;  (if (= (get-in target-map [3 :output]) 19)
+;    target-map
 ;    (recur
-;     (increment-output user-map))))
+;     6 (increment-specific-output-and-input index triple input) 8)))
+
+;(defn till-19 [target-map input]
+;  (loop [index          1
+;         new-target-map (increment-specific-output-and-input index target-map input)
+;         new-input      (:output new-target-map)]
+;    (if (= (get-in target-map [3 :output]) 19)
+;      target-map
+;      (recur
+;       (inc (mod index 3)) new-target-map new-input))))
 
 ;(till-3 user-map-1)
 
