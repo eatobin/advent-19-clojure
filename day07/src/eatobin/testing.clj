@@ -1,6 +1,6 @@
 (ns eatobin.testing)
 
-(def user-map-1 {:input 1 :output 0})
+(def user-map-1 {:input 0 :output 0})
 (def user-map-2 {:input 0 :output 0})
 (def user-map-3 {:input 0 :output 0})
 (def triple {1 user-map-1 2 user-map-2 3 user-map-3})
@@ -16,18 +16,24 @@
 ;; (defn ccc [{:keys [first last]}]
 ;;   (str first " " last))
 
-(defn increment-output [user-map]
-  (update user-map :output inc))
+;(defn increment-output [user-map]
+;  (update user-map :output inc))
 
-(increment-output user-map-1)
+(defn increment-specific-output [index target-map input]
+  (assoc-in target-map [index :output] (inc input)))
 
-(defn till-3 [user-map]
-  (if (= (:output user-map) 3)
-    user-map
-    (recur
-     (increment-output user-map))))
+(increment-specific-output 3 triple 11)
+(increment-specific-output 1 triple 99)
 
-(till-3 user-map-1)
+;(increment-output user-map-1)
+;
+;(defn till-3 [user-map]
+;  (if (= (:output user-map) 3)
+;    user-map
+;    (recur
+;     (increment-output user-map))))
+
+;(till-3 user-map-1)
 
 ;(defn three [triple]
 ;  (loop [index  1
@@ -37,21 +43,21 @@
 ;      (recur
 ;       index (update-in triple [index :output] inc)))))
 
-(defn three [triple]
-  (loop [index  1
-         triple triple]
-    (if (= (get-in triple [3 :output]) 9)
-      triple
-      (recur
-       (inc index)
-       (loop [index  index
-              triple triple]
-         (if (= (get-in triple [index :output]) 3)
-           triple
-           (recur
-            index (update-in triple [index :output] inc))))))))
-
-(three triple)
+;(defn three [triple]
+;  (loop [index  1
+;         triple triple]
+;    (if (= (get-in triple [3 :output]) 9)
+;      triple
+;      (recur
+;       (inc index)
+;       (loop [index  index
+;              triple triple]
+;         (if (= (get-in triple [index :output]) 3)
+;           triple
+;           (recur
+;            index (update-in triple [index :output] inc))))))))
+;
+;(three triple)
 
 ;(three triple)
 ;=> {1 {:input 1, :output 3}, 2 {:input 0, :output 3}, 3 {:input 0, :output 3}}
