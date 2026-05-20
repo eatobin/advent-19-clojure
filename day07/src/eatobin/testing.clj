@@ -31,6 +31,17 @@
 
 (increment-next-specific-output 2 triple)
 
+
+(defn increment-specific-output-and-input [index target-map input]
+  (->
+   (assoc-in target-map [index :output] (inc input))
+   (assoc-in [(inc (mod index 3)) :input] (inc input))))
+
+(defn increment-specific-output-and-input-2 [index target-map input]
+  (assoc-in target-map [(inc (mod index 3)) :input] (inc input)))
+
+(increment-specific-output-and-input 3 triple 11)
+
 ;(increment-output user-map-1)
 ;
 ;(defn till-3 [user-map]
