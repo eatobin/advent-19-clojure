@@ -1,8 +1,8 @@
 (ns eatobin.testing)
 
-(def user-map-1 {:input 0 :output 0})
-(def user-map-2 {:input 0 :output 0})
-(def user-map-3 {:input 0 :output 0})
+(def user-map-1 {:input 1 :output 0})
+(def user-map-2 {:input 2 :output 0})
+(def user-map-3 {:input 3 :output 0})
 (def triple {1 user-map-1 2 user-map-2 3 user-map-3})
 
 ;; (let [user {:first "Jane" :last "Doe" :age 30}]
@@ -19,12 +19,12 @@
 ;(defn increment-output [user-map]
 ;  (update user-map :output inc))
 
-(defn increment-specific-output [index target-map input]
-  (assoc-in target-map [index :output] (inc input)))
+(defn increment-specific-output [index target-map]
+  (assoc-in target-map [index :output] (inc (get-in target-map [index :input]))))
 
-(increment-specific-output 3 triple 11)
-(increment-specific-output 1 triple 99)
-
+(increment-specific-output 1 triple)
+(increment-specific-output 2 triple)
+(increment-specific-output 3 triple)
 
 (defn increment-next-specific-output [index target-map]
   (assoc-in target-map [index :output] (inc (get-in target-map [(- index 1) :input]))))
