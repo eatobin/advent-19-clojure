@@ -25,6 +25,12 @@
 (increment-specific-output 3 triple 11)
 (increment-specific-output 1 triple 99)
 
+
+(defn increment-next-specific-output [index target-map]
+  (assoc-in target-map [index :output] (inc (get-in target-map [(- index 1) :input]))))
+
+(increment-next-specific-output 2 triple)
+
 ;(increment-output user-map-1)
 ;
 ;(defn till-3 [user-map]
