@@ -13,6 +13,18 @@
 (defn increment-my-output-from-my-input [index target-map]
   (assoc-in target-map [index :output] (inc (get-in target-map [index :input]))))
 
+(defn grab-and-increment [index target-map]
+  (if (= index 1)
+    (assoc-in target-map [index :input] (get-in target-map [3 :output]))
+    (assoc-in target-map [index :input] (get-in target-map [(dec index) :output])))
+  (assoc-in target-map [index :output] (inc (get-in target-map [index :input]))))
+
+(->>
+ triple
+ (grab-and-increment 1)
+ (grab-and-increment 2)
+ (grab-and-increment 3))
+
 (->>
  triple
  (grab-my-input-from-prior-output 1)
