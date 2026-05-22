@@ -1,10 +1,45 @@
 (ns eatobin.testing)
 
-(def user-map-1 {:input 0 :output 0})
-(def user-map-2 {:input 0 :output 0})
-(def user-map-3 {:input 0 :output 0})
-(def user-map-4 {:input 0 :output 0})
-(def user-map-5 {:input 0 :output 75})
+(def user-map-1 {:input         0
+                 :output        0
+                 :phase         0
+                 :pointer       0
+                 :relative-base 0
+                 :memory        0
+                 :stopped?      false
+                 :recur?        true})
+(def user-map-2 {:input         0
+                 :output        0
+                 :phase         0
+                 :pointer       0
+                 :relative-base 0
+                 :memory        0
+                 :stopped?      false
+                 :recur?        true})
+(def user-map-3 {:input         0
+                 :output        0
+                 :phase         0
+                 :pointer       0
+                 :relative-base 0
+                 :memory        0
+                 :stopped?      false
+                 :recur?        true})
+(def user-map-4 {:input         0
+                 :output        0
+                 :phase         0
+                 :pointer       0
+                 :relative-base 0
+                 :memory        0
+                 :stopped?      false
+                 :recur?        true})
+(def user-map-5 {:input         0
+                 :output        60
+                 :phase         0
+                 :pointer       0
+                 :relative-base 0
+                 :memory        0
+                 :stopped?      false
+                 :recur?        true})
 (def triple {1 user-map-1 2 user-map-2 3 user-map-3 4 user-map-4 5 user-map-5})
 
 (defn grab-my-input-from-prior-output [index target-map]
@@ -24,7 +59,7 @@
 (defn map-of-five [triple]
   (loop [index  1
          triple triple]
-    (if (= (get-in triple [5 :output]) 120)
+    (if (= (get-in triple [5 :output]) 220)
       triple
       (recur
        (inc (mod index 5)) (grab-and-increment index triple)))))
