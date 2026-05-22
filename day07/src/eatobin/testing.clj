@@ -40,7 +40,7 @@
                  :memory        0
                  :stopped?      false
                  :recur?        true})
-(def triple {1 user-map-1 2 user-map-2 3 user-map-3 4 user-map-4 5 user-map-5})
+(def fiver {1 user-map-1 2 user-map-2 3 user-map-3 4 user-map-4 5 user-map-5})
 
 (defn grab-my-input-from-prior-output [index target-map]
   (if (= index 1)
@@ -56,14 +56,14 @@
    (grab-my-input-from-prior-output index)
    (increment-my-output-from-my-input index)))
 
-(defn map-of-five [triple]
+(defn map-of-five [fiver]
   (loop [index  1
-         triple triple]
-    (if (= (get-in triple [5 :output]) 220)
-      triple
+         fiver fiver]
+    (if (= (get-in fiver [5 :output]) 220)
+      fiver
       (recur
-       (inc (mod index 5)) (grab-and-increment index triple)))))
+       (inc (mod index 5)) (grab-and-increment index fiver)))))
 
 (comment
-  (map-of-five triple)
+  (map-of-five fiver)
   :rcf)
