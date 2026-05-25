@@ -12,8 +12,7 @@
    (zipmap (range))
    (into (i/int-map))))
 
-;(def memory-as-csv-string "3,8,1001,8,10,8,105,1,0,0,21,38,55,72,93,118,199,280,361,442,99999,3,9,1001,9,2,9,1002,9,5,9,101,4,9,9,4,9,99,3,9,1002,9,3,9,1001,9,5,9,1002,9,4,9,4,9,99,3,9,101,4,9,9,1002,9,3,9,1001,9,4,9,4,9,99,3,9,1002,9,4,9,1001,9,4,9,102,5,9,9,1001,9,4,9,4,9,99,3,9,101,3,9,9,1002,9,3,9,1001,9,3,9,102,5,9,9,101,4,9,9,4,9,99,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99")
-(def memory-as-csv-string "3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0")
+(def memory-as-csv-string "3,8,1001,8,10,8,105,1,0,0,21,38,55,72,93,118,199,280,361,442,99999,3,9,1001,9,2,9,1002,9,5,9,101,4,9,9,4,9,99,3,9,1002,9,3,9,1001,9,5,9,1002,9,4,9,4,9,99,3,9,101,4,9,9,1002,9,3,9,1001,9,4,9,4,9,99,3,9,1002,9,4,9,1001,9,4,9,102,5,9,9,1001,9,4,9,4,9,99,3,9,101,3,9,9,1002,9,3,9,1001,9,3,9,102,5,9,9,101,4,9,9,4,9,99,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,99,3,9,101,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,99,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,101,1,9,9,4,9,99")
 
 ;part a
 (def memory (make-memory memory-as-csv-string))
@@ -27,8 +26,6 @@
                             e (range 0 5)
                             :when (distinct? a b c d e)]
                         [a b c d e]))))
-
-(def test-possibility [1, 0, 4, 3, 2])
 
 (defn a-pass-map [[a b c d e]]
   {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
@@ -48,15 +45,6 @@
    index
    (ic/op-code (get this-pass-map index))))
 
-;(last ((ic/op-code (get-in a-pass-map [index :input])) :output))
-
-;(defn grab-and-run [index test-possibility]
-;  (let [this-pass-map (a-pass-map test-possibility)]
-;    (->>
-;     this-pass-map
-;     (grab-my-input-from-prior-output index)
-;     (run-my-output-from-my-input index))))
-
 (defn grab-and-run [index this-pass-map]
   (->>
    this-pass-map
@@ -67,14 +55,17 @@
   (loop [index         1
          this-pass-map (a-pass-map test-possibility)]
     (if (get-in this-pass-map [5 :stopped?])
-      this-pass-map
+      (first (get-in this-pass-map [5 :output]))
       (recur
        (inc (mod index 5)) (grab-and-run index this-pass-map)))))
 
+(defn passes []
+  (map #(map-of-five %) possibles))
 
-;(defn passes []
-;  (map #(map-of-five %) possibles))
+(def answer (apply max (passes)))
 
+(comment
+  answer)
 
 ;(defn passX [i-code-memory [a b c d e]]
 ;  (let [a-pass-map
@@ -84,149 +75,3 @@
 ;         4 {:input 0 :output [] :phase d :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
 ;         5 {:input 0 :output [] :phase e :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}}]
 ;    (get-in a-pass-map [1 :phase])))
-
-;=> #'eatobin.day07/passX
-;(passX 66 [9 8 7 6 5])
-;=> 9
-
-(comment
-  (->>
-   (a-pass-map test-possibility)
-   (grab-and-run 1)
-   (grab-and-run 2)
-   (grab-and-run 3)
-   (grab-and-run 4)
-   (grab-and-run 5))
-  (map-of-five test-possibility))
-
-;(defn pass [i-code-memory [a b c d e]]
-;  (let [op-a {:input         0
-;              :output        []
-;              :phase         a
-;              :pointer       0
-;              :relative-base 0
-;              :memory        i-code-memory
-;              :stopped?      false
-;              :recur?        true}
-;        op-b {:input         (last ((ic/op-code op-a) :output))
-;              :output        []
-;              :phase         b
-;              :pointer       0
-;              :relative-base 0
-;              :memory        i-code-memory
-;              :stopped?      false
-;              :recur?        true}
-;        op-c {:input         (last ((ic/op-code op-b) :output))
-;              :output        []
-;              :phase         c
-;              :pointer       0
-;              :relative-base 0
-;              :memory        i-code-memory
-;              :stopped?      false
-;              :recur?        true}
-;        op-d {:input         (last ((ic/op-code op-c) :output))
-;              :output        []
-;              :phase         d
-;              :pointer       0
-;              :relative-base 0
-;              :memory        i-code-memory
-;              :stopped?      false
-;              :recur?        true}
-;        op-e {:input         (last ((ic/op-code op-d) :output))
-;              :output        []
-;              :phase         e
-;              :pointer       0
-;              :relative-base 0
-;              :memory        i-code-memory
-;              :stopped?      false
-;              :recur?        true}]
-;    (last ((ic/op-code op-e) :output))))
-;
-;(defn passes [i-code-memory]
-;  (map #(pass i-code-memory %) possibles))
-;
-;(def answer (apply max (passes memory)))
-;
-;(comment
-;  answer)
-;
-;;368584
-;
-;;part b
-;(def possibles-2 (into ()
-;                       (reverse
-;                        (for [a (range 5 10)
-;                              b (range 5 10)
-;                              c (range 5 10)
-;                              d (range 5 10)
-;                              e (range 5 10)
-;                              :when (distinct? a b c d e)]
-;                          [a b c d e]))))
-;
-;(defn to-amps-list [phases-vector memory]
-;  (letfn [(to-amps [phases]
-;            {1 (atom {:input 0 :output [] :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;             2 (atom {:input nil :output [] :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;             3 (atom {:input nil :output [] :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;             4 (atom {:input nil :output [] :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})
-;             5 (atom {:input nil :output [] :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false})})]
-;    (map to-amps phases-vector)))
-;
-;(defn runner [five-amps]
-;  (loop [amps           five-amps
-;         current-amp-no 1
-;         next-amp-no    (+ 1 (mod current-amp-no 5))]
-;    (if (and (= 5 current-amp-no) (:stopped? @(amps current-amp-no)))
-;      (last (:output @(amps current-amp-no)))
-;      (do (swap! (amps current-amp-no) ic/op-code)
-;          (swap! (amps next-amp-no) assoc :input (last (:output @(amps current-amp-no))))
-;          (recur
-;           (assoc amps current-amp-no (amps current-amp-no) next-amp-no (amps next-amp-no))
-;           next-amp-no
-;           (+ 1 (mod next-amp-no 5)))))))
-;
-;(def answer-2 (apply max (map runner (to-amps-list possibles-2 memory))))
-;
-;(comment
-;  answer-2)
-;
-;;35993240
-;
-;(comment
-;  (def mv [((vec possibles-2) 0)])
-;  mv
-;  [[5 6 7 8 9]]
-;  (def five-amps (first (to-amps-list mv memory)))
-;  (runner five-amps)
-;  33807717)
-;
-;(comment
-;  (to-amps-list
-;   [[5 6 7 8 9]]
-;   {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
-;
-;(defn to-amps-list-2 [a-single-phases-vector memory]
-;  (into {}
-;        (letfn [(to-amps [phases]
-;                  {:1 {:input 0 :output [] :phase (phases 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-;                   :2 {:input nil :output [] :phase (phases 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-;                   :3 {:input nil :output [] :phase (phases 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-;                   :4 {:input nil :output [] :phase (phases 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-;                   :5 {:input nil :output [] :phase (phases 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}})]
-;          (map to-amps a-single-phases-vector))))
-;
-;(def xxx (to-amps-list-2
-;          [[5 6 7 8 9]]
-;          {0 3, 1 15, 2 3, 3 16, 4 1002, 5 16, 6 10, 7 16, 8 1, 9 16, 10 15, 11 15, 12 4, 13 15, 14 99, 15 0, 16 0}))
-;
-;(:5 xxx)
-
-;Here are some example programs:
-;
-;Max thruster signal 139629729 (from phase setting sequence 9,8,7,6,5):
-;
-;3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5
-
-;Max thruster signal 18216 (from phase setting sequence 9,7,8,5,6):
-;
-;3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10
