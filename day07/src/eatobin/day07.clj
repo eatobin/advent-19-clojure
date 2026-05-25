@@ -27,6 +27,18 @@
                             :when (distinct? a b c d e)]
                         [a b c d e]))))
 
+(defn passX [i-code-memory [a b c d e]]
+  (let [vv {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+            2 {:input 0 :output [] :phase b :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+            3 {:input 0 :output [] :phase c :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+            4 {:input 0 :output [] :phase d :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+            5 {:input 0 :output [] :phase e :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}}]
+    (get-in vv [1 :phase])))
+
+;=> #'eatobin.day07/passX
+;(passX 66 [9 8 7 6 5])
+;=> 9
+
 (defn pass [i-code-memory [a b c d e]]
   (let [op-a {:input         0
               :output        []

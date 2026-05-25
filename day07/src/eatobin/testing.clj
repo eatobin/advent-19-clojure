@@ -1,46 +1,46 @@
 (ns eatobin.testing)
 
-(def user-map-1 {:input         0
-                 :output        0
-                 :phase         0
-                 :pointer       0
-                 :relative-base 0
-                 :memory        0
-                 :stopped?      false
-                 :recur?        true})
-(def user-map-2 {:input         0
-                 :output        0
-                 :phase         0
-                 :pointer       0
-                 :relative-base 0
-                 :memory        0
-                 :stopped?      false
-                 :recur?        true})
-(def user-map-3 {:input         0
-                 :output        0
-                 :phase         0
-                 :pointer       0
-                 :relative-base 0
-                 :memory        0
-                 :stopped?      false
-                 :recur?        true})
-(def user-map-4 {:input         0
-                 :output        0
-                 :phase         0
-                 :pointer       0
-                 :relative-base 0
-                 :memory        0
-                 :stopped?      false
-                 :recur?        true})
-(def user-map-5 {:input         0
-                 :output        60
-                 :phase         0
-                 :pointer       0
-                 :relative-base 0
-                 :memory        0
-                 :stopped?      false
-                 :recur?        true})
-(def fiver {1 user-map-1 2 user-map-2 3 user-map-3 4 user-map-4 5 user-map-5})
+(def op-a {:input         0
+           :output        0
+           :phase         0
+           :pointer       0
+           :relative-base 0
+           :memory        0
+           :stopped?      false
+           :recur?        true})
+(def op-b {:input         0
+           :output        0
+           :phase         0
+           :pointer       0
+           :relative-base 0
+           :memory        0
+           :stopped?      false
+           :recur?        true})
+(def op-c {:input         0
+           :output        0
+           :phase         0
+           :pointer       0
+           :relative-base 0
+           :memory        0
+           :stopped?      false
+           :recur?        true})
+(def op-d {:input         0
+           :output        0
+           :phase         0
+           :pointer       0
+           :relative-base 0
+           :memory        0
+           :stopped?      false
+           :recur?        true})
+(def op-e {:input         0
+           :output        60
+           :phase         0
+           :pointer       0
+           :relative-base 0
+           :memory        0
+           :stopped?      false
+           :recur?        true})
+(def fiver {1 op-a 2 op-b 3 op-c 4 op-d 5 op-e})
 
 (defn grab-my-input-from-prior-output [index target-map]
   (if (= index 1)
@@ -57,7 +57,7 @@
    (increment-my-output-from-my-input index)))
 
 (defn map-of-five [fiver]
-  (loop [index  1
+  (loop [index 1
          fiver fiver]
     (if (= (get-in fiver [5 :output]) 220)
       fiver
@@ -67,3 +67,45 @@
 (comment
   (map-of-five fiver)
   :rcf)
+
+(defn pass [i-code-memory [a b c d e]]
+  (let [ic {1 {:input         0
+               :output        []
+               :phase         a
+               :pointer       0
+               :relative-base 0
+               :memory        i-code-memory
+               :stopped?      false
+               :recur?        true}
+            2 {:input         0
+               :output        0
+               :phase         0
+               :pointer       0
+               :relative-base 0
+               :memory        0
+               :stopped?      false
+               :recur?        true}
+            3 {:input         0
+               :output        0
+               :phase         0
+               :pointer       0
+               :relative-base 0
+               :memory        0
+               :stopped?      false
+               :recur?        true}
+            4 {:input         0
+               :output        0
+               :phase         0
+               :pointer       0
+               :relative-base 0
+               :memory        0
+               :stopped?      false
+               :recur?        true}
+            5 {:input         0
+               :output        0
+               :phase         0
+               :pointer       0
+               :relative-base 0
+               :memory        0
+               :stopped?      false
+               :recur?        true}}]))
