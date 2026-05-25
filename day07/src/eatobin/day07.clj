@@ -56,7 +56,13 @@
    (grab-my-input-from-prior-output index)
    (run-my-output-from-my-input index)))
 
-
+(defn map-of-five [fiver]
+  (loop [index 1
+         fiver fiver]
+    (if (get-in fiver [5 :stopped?])
+      fiver
+      (recur
+       (inc (mod index 5)) (grab-and-run index fiver)))))
 
 (defn passX [i-code-memory [a b c d e]]
   (let [a-pass-map
@@ -78,7 +84,8 @@
    (grab-and-run 2)
    (grab-and-run 3)
    (grab-and-run 4)
-   (grab-and-run 5)))
+   (grab-and-run 5))
+  (map-of-five a-pass-map))
 
 ;(defn pass [i-code-memory [a b c d e]]
 ;  (let [op-a {:input         0
