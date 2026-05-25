@@ -72,7 +72,13 @@
 ;=> 9
 
 (comment
-  (passX 66 [9 8 7 6 5]))
+  (->>
+   a-pass-map
+   (grab-and-run 1)
+   (grab-and-run 2)
+   (grab-and-run 3)
+   (grab-and-run 4)
+   (grab-and-run 5)))
 
 ;(defn pass [i-code-memory [a b c d e]]
 ;  (let [op-a {:input         0
