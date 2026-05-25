@@ -27,13 +27,30 @@
                             :when (distinct? a b c d e)]
                         [a b c d e]))))
 
+
+(defn grab-my-input-from-prior-output [index a-pass-map]
+  (if (= index 1)
+    (assoc-in a-pass-map [index :input] 0)
+    (assoc-in a-pass-map [index :input] (get-in a-pass-map [(dec index) :output]))))
+
+(defn increment-my-output-from-my-input [index a-pass-map]
+  (assoc-in a-pass-map [index :output] (inc (get-in a-pass-map [index :input]))))
+
+(defn grab-and-increment [index a-pass-map]
+  (->>
+   a-pass-map
+   (grab-my-input-from-prior-output index)
+   (increment-my-output-from-my-input index)))
+
+
+
 (defn passX [i-code-memory [a b c d e]]
-  (let [vv {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+  (let [a-pass-map {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
             2 {:input 0 :output [] :phase b :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
             3 {:input 0 :output [] :phase c :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
             4 {:input 0 :output [] :phase d :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
             5 {:input 0 :output [] :phase e :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}}]
-    (get-in vv [1 :phase])))
+    (get-in a-pass-map [1 :phase])))
 
 ;=> #'eatobin.day07/passX
 ;(passX 66 [9 8 7 6 5])
