@@ -51,7 +51,7 @@
    (grab-my-input-from-prior-output index)
    (run-my-output-from-my-input index)))
 
-(defn map-of-five [test-possibility]
+(defn pass [test-possibility]
   (loop [index         1
          this-pass-map (a-pass-map test-possibility)]
     (if (get-in this-pass-map [5 :stopped?])
@@ -60,18 +60,19 @@
        (inc (mod index 5)) (grab-and-run index this-pass-map)))))
 
 (defn passes []
-  (map #(map-of-five %) possibles))
+  (map #(pass %) possibles))
 
 (def answer (apply max (passes)))
 
 (comment
-  answer)
+  answer
+  :rcf)
 
-;(defn passX [i-code-memory [a b c d e]]
-;  (let [a-pass-map
-;        {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
-;         2 {:input 0 :output [] :phase b :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
-;         3 {:input 0 :output [] :phase c :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
-;         4 {:input 0 :output [] :phase d :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
-;         5 {:input 0 :output [] :phase e :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}}]
-;    (get-in a-pass-map [1 :phase])))
+(defn passX [i-code-memory [a b c d e]]
+  (let [a-pass-map
+        {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+         2 {:input 0 :output [] :phase b :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+         3 {:input 0 :output [] :phase c :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+         4 {:input 0 :output [] :phase d :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}
+         5 {:input 0 :output [] :phase e :pointer 0 :relative-base 0 :memory i-code-memory :stopped? false :recur? true}}]
+    (get-in a-pass-map [1 :phase])))
