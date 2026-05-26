@@ -103,7 +103,7 @@
                         2 {:input 0 :output [] :phase b :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                         3 {:input 0 :output [] :phase c :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                         4 {:input 0 :output [] :phase d :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
-                        5 {:input 0 :output [] :phase e :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}}]
+                        5 {:input 0 :output [0] :phase e :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}}]
     (if (get-in this-pass-map [5 :stopped?])
       (first (get-in this-pass-map [5 :output]))
       (recur
