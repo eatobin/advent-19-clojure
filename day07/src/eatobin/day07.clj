@@ -45,7 +45,7 @@
    (run-my-output-from-my-input my-index)))
 
 (defn pass [[a b c d e]]
-  (loop [my-index         1
+  (loop [my-index      1
          this-pass-map {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
                         2 {:input 0 :output [] :phase b :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
                         3 {:input 0 :output [] :phase c :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
@@ -78,13 +78,6 @@
                               :when (distinct? a b c d e)]
                           [a b c d e]))))
 
-(def a-pass-map
-  {1 {:input 0 :output [] :phase (test-possibility 0) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
-   2 {:input 0 :output [] :phase (test-possibility 1) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
-   3 {:input 0 :output [] :phase (test-possibility 2) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
-   4 {:input 0 :output [] :phase (test-possibility 3) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}
-   5 {:input 0 :output [] :phase (test-possibility 4) :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}})
-
 (defn grab-my-input-from-last-output [my-index this-pass-map]
   (if (= my-index 1)
     (assoc-in this-pass-map [my-index :input] (last (get-in this-pass-map [5 :output])))
@@ -98,14 +91,14 @@
 
 
 (defn pass-2 [[a b c d e]]
-  (loop [my-index         1
+  (loop [my-index      1
          this-pass-map {1 {:input 0 :output [] :phase a :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                         2 {:input 0 :output [] :phase b :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                         3 {:input 0 :output [] :phase c :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                         4 {:input 0 :output [] :phase d :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}
                         5 {:input 0 :output [0] :phase e :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? false}}]
     (if (get-in this-pass-map [5 :stopped?])
-      (first (get-in this-pass-map [5 :output]))
+      (last (get-in this-pass-map [5 :output]))
       (recur
        (inc (mod my-index 5))
        (grab-and-run-2 my-index this-pass-map)))))
