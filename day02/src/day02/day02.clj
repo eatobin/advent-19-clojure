@@ -1,6 +1,7 @@
 (ns day02.day02
   (:require
-   [clojure.string :as str]))
+   [clojure.string :as str]
+   [day02.library :as lib]))
 
 ; [eric@eric-minisforum day02](dev)$ clojure -M:repl/rebel
 ; nREPL server started on port 45677 on host localhost - nrepl://localhost:45677
@@ -25,7 +26,6 @@
 ;; p i or r = position, immediate or relative mode
 ;; r or w = read or write
 
-(def POINTER-OFFSET-C 1)
 (def POINTER-OFFSET-B 2)
 (def POINTER-OFFSET-A 3)
 
@@ -64,7 +64,7 @@
 
 (defn c-param [{:keys [instruction pointer memory]}]
   (case (instruction :c)
-    0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-C))) ; c-p-r
+    0 (-p-r {:pointer pointer :memory memory} lib/POINTER-OFFSET-C))) ; c-p-r
 
 ;; part a
 (defn add [{:keys [instruction pointer memory]}]
