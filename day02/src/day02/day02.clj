@@ -26,8 +26,7 @@
 ;; p i or r = position, immediate or relative mode
 ;; r or w = read or write
 
-(def POINTER-OFFSET-B 2)
-(def POINTER-OFFSET-A 3)
+
 
 (defn make-ints-list [memory-as-csv-string]
   (->> (str/split memory-as-csv-string #",")
@@ -56,11 +55,11 @@
 
 (defn a-param [{:keys [instruction pointer memory]}]
   (case (instruction :a)
-    0 (-p-w {:pointer pointer :memory memory} POINTER-OFFSET-A))) ; a-p-w
+    0 (-p-w {:pointer pointer :memory memory} lib/POINTER-OFFSET-A))) ; a-p-w
 
 (defn b-param [{:keys [instruction pointer memory]}]
   (case (instruction :b)
-    0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-B))) ; b-p-r
+    0 (-p-r {:pointer pointer :memory memory} lib/POINTER-OFFSET-B))) ; b-p-r
 
 (defn c-param [{:keys [instruction pointer memory]}]
   (case (instruction :c)
