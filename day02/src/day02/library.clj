@@ -56,15 +56,18 @@
 
 (defn a-param [{:keys [instruction pointer memory]}]
   (case (instruction :a)
-    0 (-p-w {:pointer pointer :memory memory} POINTER-OFFSET-A))) ; a-p-w
+    0 (-p-w {:pointer pointer :memory memory} POINTER-OFFSET-A) ; a-p-w
+    "no a-param match"))
 
 (defn b-param [{:keys [instruction pointer memory]}]
   (case (instruction :b)
-    0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-B))) ; b-p-r
+    0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-B) ; b-p-r
+    "no b-param match"))
 
 (defn c-param [{:keys [instruction pointer memory]}]
   (case (instruction :c)
-    0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-C))) ; c-p-r
+    0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-C) ; c-p-r
+    "no c-param match"))
 
 (defn add [{:keys [instruction pointer memory]}]
   {:pointer (+ 4 pointer)
@@ -89,4 +92,5 @@
          (add {:instruction instruction :pointer pointer :memory memory}))
       2 (recur
          (multiply {:instruction instruction :pointer pointer :memory memory}))
-      9 {:instruction instruction :pointer pointer :memory memory})))
+      9 {:instruction instruction :pointer pointer :memory memory}
+      "no run-op-code match")))

@@ -27,7 +27,7 @@
     (printf "\nPart A answer: %s, correct: 2890696%n" answer-a)
     (let [winner   (noun-verb memory)
           answer-b (last (first winner))]
-      (printf "Part B answer: %s, correct: 8226%n\n" answer-b))))
+      (printf "Part B answer: %s, correct: 8226%n" answer-b))))
 
 (comment
   (-main)
