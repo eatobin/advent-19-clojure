@@ -93,4 +93,5 @@
       2 (recur
          (multiply {:instruction instruction :pointer pointer :memory memory}))
       9 {:instruction instruction :pointer pointer :memory memory}
-      "no run-op-code match")))
+      (throw (ex-info "run-op-code failed"
+                      {:error-type :bad-case-choice})))))
