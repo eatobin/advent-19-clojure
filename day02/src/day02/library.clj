@@ -29,21 +29,26 @@
 (def POINTER-OFFSET-B 2)
 (def POINTER-OFFSET-A 3)
 
-(defn make-ints-list [memory-as-csv-string]
-  (->> (str/split memory-as-csv-string #",")
-       (map parse-long)
-       (apply list)))
-
-(defn make-memory [memory-as-csv-string]
-  (zipmap (range) (make-ints-list memory-as-csv-string)))
-
-(defn make-intcode [pointer memory-as-csv-string]
-  {:pointer pointer :memory (make-memory memory-as-csv-string)})
-
 (defn make-instruction [instruction]
   (zipmap [:a :b :c :d :e]
           (for [character (format "%05d" instruction)]
             (- (byte character) 48))))
+
+(defn make-memory [memory-as-csv-string]
+  (->> (str/split memory-as-csv-string #",")
+       (map parse-long)
+       (apply vector)))
+
+(defn updated-memory [noun verb memory]
+  (->
+   memory
+   (assoc 1 noun)
+   (assoc 2 verb)))
+
+;(defn make-intcode [pointer memory-as-csv-string]
+;  {:pointer pointer :memory (make-memory memory-as-csv-string)})
+
+
 
 (defn key-to-key [{:keys [pointer memory]} pointer-offset]
   (get memory (+ pointer pointer-offset)))
