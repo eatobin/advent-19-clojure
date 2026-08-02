@@ -77,29 +77,36 @@
     (throw (ex-info "no c-param match"
                     {:error-type :bad-c-param-choice}))))
 
-(defn add [{:keys [instruction pointer memory]}]
+(defn add [{:keys [instruction pointer memory actions]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
              memory
              (a-param {:instruction instruction :pointer pointer :memory memory})
              (+ (c-param {:instruction instruction :pointer pointer :memory memory})
-                (b-param {:instruction instruction :pointer pointer :memory memory})))})
+                (b-param {:instruction instruction :pointer pointer :memory memory})))
+   :actions (cons :add actions)})
 
-(defn multiply [{:keys [instruction pointer memory]}]
+(defn multiply [{:keys [instruction pointer memory actions]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
              memory
              (a-param {:instruction instruction :pointer pointer :memory memory})
              (* (c-param {:instruction instruction :pointer pointer :memory memory})
-                (b-param {:instruction instruction :pointer pointer :memory memory})))})
+                (b-param {:instruction instruction :pointer pointer :memory memory})))
+   :actions (cons :multiply actions)})
 
-(defn run-op-code [{:keys [pointer memory]}]
+(defn exit [{:keys [pointer memory actions]}]
+  {:pointer pointer
+   :memory  memory
+   :actions (cons :exit actions)})
+
+(defn run-op-code [{:keys [pointer memory actions]}]
   (let [instruction (make-instruction (memory pointer))]
     (case (instruction :e)
       1 (recur
-         (add {:instruction instruction :pointer pointer :memory memory}))
+         (add {:instruction instruction :pointer pointer :memory memory :actions actions}))
       2 (recur
-         (multiply {:instruction instruction :pointer pointer :memory memory}))
-      9 {:instruction instruction :pointer pointer :memory memory}
+         (multiply {:instruction instruction :pointer pointer :memory memory :actions actions}))
+      9 (exit {:instruction instruction :pointer pointer :memory memory :actions actions})
       (throw (ex-info "run-op-code failed"
                       {:error-type :bad-run-op-code-choice})))))

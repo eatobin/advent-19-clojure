@@ -13,6 +13,7 @@
 
     ;; part a
     (printf "\nPart A answer: %s, correct: 2890696%n" answer-1)
+    (println (reverse (:actions final-state-a)))
 
     ;; part b
     (let [answer-2 (last (first (for [noun (range 0 100)
