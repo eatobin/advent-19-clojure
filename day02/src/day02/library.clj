@@ -45,11 +45,6 @@
    (assoc 1 noun)
    (assoc 2 verb)))
 
-;(defn make-intcode [pointer memory-as-csv-string]
-;  {:pointer pointer :memory (make-memory memory-as-csv-string)})
-
-
-
 (defn key-to-key [{:keys [pointer memory]} pointer-offset]
   (get memory (+ pointer pointer-offset)))
 
