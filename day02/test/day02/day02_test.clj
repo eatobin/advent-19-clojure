@@ -35,6 +35,11 @@
            instruction-5
            (sut/make-instruction 23456))))))
 
+(deftest make-memory
+  (testing "make a Memory"
+    (is (=
+         this-memory
+         (sut/make-memory memory-as-csv-string)))))
 
 
 ;(deftest -p-w
