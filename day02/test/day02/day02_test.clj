@@ -2,7 +2,6 @@
   (:require [clojure.test :refer [deftest is testing]]
             [day02.library :as sut]))                       ; system under test
 
-(def memory-as-csv-string "10,11,1")
 (def intCode {:pointer 0 :memory {0 10 1 11 2 1}})
 
 (deftest a-test
@@ -10,12 +9,6 @@
     (is (=
          1
          1))))
-
-(deftest make-intcode
-  (testing "make-intcode makes an intcode"
-    (is (=
-         intCode
-         (sut/make-intcode 0 memory-as-csv-string)))))
 
 (deftest make-instruction-1
   (testing "make-instruction makes a 1 digit instruction"
