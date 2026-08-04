@@ -2,7 +2,7 @@
   (:require [clojure.test :refer [deftest is testing]]
             [day02.library :as sut]))                       ; system under test
 
-(def intCode {:pointer 0 :memory {0 10 1 11 2 1}})
+(def intCode {:pointer 0 :memory [10 11 1]})
 
 (deftest a-test
   (testing "This is a stand-alone test."
