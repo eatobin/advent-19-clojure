@@ -20,23 +20,22 @@
          1
          1))))
 
-(deftest make-instruction-1
-  (testing "make-instruction makes a 1 digit instruction"
-    (is (=
-         instruction-1
-         (sut/make-instruction 6)))))
+(deftest make-instructions
+  (testing "make various instructions"
+    (testing "make-instruction makes a 1 digit instruction"
+      (is (=
+           instruction-1
+           (sut/make-instruction 6))))
+    (testing "make-instruction makes a 3 digit instruction"
+      (is (=
+           instruction-3
+           (sut/make-instruction 456))))
+    (testing "make-instruction makes a 5 digit instruction"
+      (is (=
+           instruction-5
+           (sut/make-instruction 23456))))))
 
-(deftest make-instruction-3
-  (testing "make-instruction makes a 3 digit instruction"
-    (is (=
-         instruction-3
-         (sut/make-instruction 456)))))
 
-(deftest make-instruction-5
-  (testing "make-instruction makes a 5 digit instruction"
-    (is (=
-         instruction-5
-         (sut/make-instruction 23456)))))
 
 ;(deftest -p-w
 ;  (testing "-p-w"
