@@ -34,13 +34,6 @@
                    :memory  this-memory-add-mult
                    :actions '(:exit)})
 
-
-
-
-
-
-
-
 (deftest a-stand-alone-test
   (testing "This is a stand-alone test."
     (is (=
