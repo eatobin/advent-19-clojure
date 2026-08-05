@@ -54,40 +54,40 @@
 (defn -p-r [{:keys [pointer memory]} pointer-offset]
   (get memory (key-to-key {:pointer pointer :memory memory} pointer-offset)))
 
-(defn a-param [{:keys [instruction pointer memory]}]
+(defn a-param [instruction {:keys [pointer memory]}]
   (case (instruction :a)
     0 (-p-w {:pointer pointer :memory memory} POINTER-OFFSET-A) ; a-p-w
     (throw (ex-info "no a-param match"
                     {:error-type :bad-a-param-choice}))))
 
-(defn b-param [{:keys [instruction pointer memory]}]
+(defn b-param [instruction {:keys [pointer memory]}]
   (case (instruction :b)
     0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-B) ; b-p-r
     (throw (ex-info "no b-param match"
                     {:error-type :bad-b-param-choice}))))
 
-(defn c-param [{:keys [instruction pointer memory]}]
+(defn c-param [instruction {:keys [pointer memory]}]
   (case (instruction :c)
     0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-C) ; c-p-r
     (throw (ex-info "no c-param match"
                     {:error-type :bad-c-param-choice}))))
 
-(defn add [{:keys [instruction pointer memory actions]}]
+(defn add [instruction {:keys [pointer memory actions]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
              memory
-             (a-param {:instruction instruction :pointer pointer :memory memory})
-             (+ (c-param {:instruction instruction :pointer pointer :memory memory})
-                (b-param {:instruction instruction :pointer pointer :memory memory})))
+             (a-param instruction {:pointer pointer :memory memory})
+             (+ (c-param instruction {:pointer pointer :memory memory})
+                (b-param instruction {:pointer pointer :memory memory})))
    :actions (cons :add actions)})
 
-(defn multiply [{:keys [instruction pointer memory actions]}]
+(defn multiply [instruction {:keys [pointer memory actions]}]
   {:pointer (+ 4 pointer)
    :memory  (assoc
              memory
-             (a-param {:instruction instruction :pointer pointer :memory memory})
-             (* (c-param {:instruction instruction :pointer pointer :memory memory})
-                (b-param {:instruction instruction :pointer pointer :memory memory})))
+             (a-param instruction {:pointer pointer :memory memory})
+             (* (c-param instruction {:pointer pointer :memory memory})
+                (b-param instruction {:pointer pointer :memory memory})))
    :actions (cons :multiply actions)})
 
 (defn exit [{:keys [pointer memory actions]}]
@@ -99,9 +99,9 @@
   (let [instruction (make-instruction (memory pointer))]
     (case (instruction :e)
       1 (recur
-         (add {:instruction instruction :pointer pointer :memory memory :actions actions}))
+         (add instruction [{:keys [pointer memory actions]}]))
       2 (recur
-         (multiply {:instruction instruction :pointer pointer :memory memory :actions actions}))
-      9 (exit {:instruction instruction :pointer pointer :memory memory :actions actions})
+         (multiply instruction [{:keys [pointer memory actions]}]))
+      9 (exit [instruction {:keys [pointer memory actions]}])
       (throw (ex-info "run-op-code failed"
                       {:error-type :bad-run-op-code-choice})))))

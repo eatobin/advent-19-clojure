@@ -24,10 +24,10 @@
 (def intcode-add-mult-exit {:pointer 0
                             :memory  this-memory-add-mult
                             :actions '()})
-(def intode-add {:pointer 0
-                 :memory  [3 2 1 0]
-                 :actions '(:add)})
-(def intcode-mult {:pointer 0
+(def intcode-add {:pointer 4
+                  :memory  [3 2 1 0]
+                  :actions '(:add)})
+(def intcode-mult {:pointer 4
                    :memory  [2 2 1 0]
                    :actions '(:multiply)})
 (def intcode-exit {:pointer 0
@@ -84,25 +84,22 @@
   (testing "lookup various params"
     (testing "lookup a valid aParam"
       (is (= 33
-             (sut/a-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
+             (sut/a-param instruction-1 {:pointer 0 :memory this-memory-x}))))
     (testing "lookup a valid bParam"
       (is (= 2
-             (sut/b-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
+             (sut/b-param instruction-1 {:pointer 0 :memory this-memory-x}))))
     (testing "lookup a valid cParam"
       (is (= 33
-             (sut/c-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
+             (sut/c-param instruction-1 {:pointer 0 :memory this-memory-x}))))
     (testing "lookup a valid cParam with a bad instruction"
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no c-param match"
-                            (sut/c-param {:instruction instruction-5 :pointer 0 :memory this-memory-x}))))))
+                            (sut/c-param instruction-5 {:pointer 0 :memory this-memory-x}))))))
 
 (deftest opcode-actions
   (testing "add and multiply"
     (testing "1 plus 2 should be set at 0 and pointer should be 4"
-      (is (= 1
-             (sut/add {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
-    (testing "lookup a valid Memory index - -p-r"
-      (is (= 11
-             (sut/-p-r intcode 2))))
-    (testing "lookup an invalid Memory index - -p-w"
-      (is (nil?
-           (sut/-p-w intcode 33))))))
+      (is (= intcode-add
+             (sut/add instruction-1 intcode-add-mult-exit))))
+    (testing "1 times 2 should be set at 0 and pointer should be 4"
+      (is (= intcode-mult
+             (sut/multiply instruction-1 intcode-add-mult-exit))))))
