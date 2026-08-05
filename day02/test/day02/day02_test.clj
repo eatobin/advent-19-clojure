@@ -14,6 +14,30 @@
 (def intcode-x {:pointer 0
                 :memory  this-memory-x
                 :actions '()})
+(def this-memory-add-mult [0 2 1 0])
+(def aoc-memory-1 "1,0,0,3,99")
+(def aoc-memory-2 "1,9,10,3,2,3,11,0,99,30,40,50")
+(def aoc-memory-3 "1,0,0,0,99")
+(def aoc-memory-4 "2,3,0,3,99")
+(def aoc-memory-5 "2,4,4,5,99,0")
+(def aoc-memory-6 "1,1,1,4,99,5,6,0,99")
+(def intcode-add-mult-exit {:pointer 0
+                            :memory  this-memory-add-mult
+                            :actions '()})
+(def intode-add {:pointer 0
+                 :memory  [3 2 1 0]
+                 :actions '(:add)})
+(def intcode-mult {:pointer 0
+                   :memory  [2 2 1 0]
+                   :actions '(:multiply)})
+(def intcode-exit {:pointer 0
+                   :memory  this-memory-add-mult
+                   :actions '(:exit)})
+
+
+
+
+
 
 
 
@@ -69,4 +93,16 @@
              (sut/c-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
     (testing "lookup a valid cParam with a bad instruction"
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no c-param match"
-             (sut/c-param {:instruction instruction-5 :pointer 0 :memory this-memory-x}))))))
+                            (sut/c-param {:instruction instruction-5 :pointer 0 :memory this-memory-x}))))))
+
+(deftest opcode-actions
+  (testing "add and multiply"
+    (testing "1 plus 2 should be set at 0 and pointer should be 4"
+      (is (= 1
+             (sut/add {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
+    (testing "lookup a valid Memory index - -p-r"
+      (is (= 11
+             (sut/-p-r intcode 2))))
+    (testing "lookup an invalid Memory index - -p-w"
+      (is (nil?
+           (sut/-p-w intcode 33))))))
