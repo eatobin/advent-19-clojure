@@ -99,9 +99,9 @@
   (let [instruction (make-instruction (memory pointer))]
     (case (instruction :e)
       1 (recur
-         (add instruction {:keys [pointer memory actions]}))
+         (add instruction {:pointer pointer :memory memory :actions actions}))
       2 (recur
-         (multiply instruction {:keys [pointer memory actions]}))
-      9 (exit {:keys [pointer memory actions]})
+         (multiply instruction {:pointer pointer :memory memory :actions actions}))
+      9 (exit {:pointer pointer :memory memory :actions actions})
       (throw (ex-info "run-op-code failed"
                       {:error-type :bad-run-op-code-choice})))))
