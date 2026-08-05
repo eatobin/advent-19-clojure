@@ -95,7 +95,10 @@
              (sut/add instruction-1 intcode-add-mult-exit))))
     (testing "1 times 2 should be set at 0 and pointer should be 4"
       (is (= intcode-mult
-             (sut/multiply instruction-1 intcode-add-mult-exit))))))
+             (sut/multiply instruction-1 intcode-add-mult-exit))))
+    (testing "exit should just add an Exit to the actions and return the intCode"
+      (is (= intcode-exit
+             (sut/exit intcode-add-mult-exit))))))
 
 
 ;; TODO
