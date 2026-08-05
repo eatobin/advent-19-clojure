@@ -66,4 +66,7 @@
              (sut/b-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
     (testing "lookup a valid cParam"
       (is (= 33
-             (sut/c-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))))
+             (sut/c-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
+    (testing "lookup a valid cParam with a bad instruction"
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no c-param match"
+             (sut/c-param {:instruction instruction-5 :pointer 0 :memory this-memory-x}))))))
