@@ -61,7 +61,7 @@
                     {:error-type :bad-a-param-choice}))))
 
 (defn b-param [instruction {:keys [pointer memory]}]
-  (case (:b instruction
+  (case (:b instruction)
     0 (-p-r {:pointer pointer :memory memory} POINTER-OFFSET-B) ; b-p-r
     (throw (ex-info "no b-param match"
                     {:error-type :bad-b-param-choice}))))
@@ -102,6 +102,6 @@
          (add instruction {:keys [pointer memory actions]}))
       2 (recur
          (multiply instruction {:keys [pointer memory actions]}))
-      9 (exit instruction {:keys [pointer memory actions]})
+      9 (exit {:keys [pointer memory actions]})
       (throw (ex-info "run-op-code failed"
                       {:error-type :bad-run-op-code-choice})))))

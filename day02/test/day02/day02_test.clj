@@ -96,3 +96,13 @@
     (testing "1 times 2 should be set at 0 and pointer should be 4"
       (is (= intcode-mult
              (sut/multiply instruction-1 intcode-add-mult-exit))))))
+
+
+;; TODO
+;; describe "\nAdd/Mult/Exit Tests" $ do
+;; it "1 plus 2 should be set at 0 and pointer should be 4" $ do
+;; add instruction1 intCodeAddMultExit `shouldBe `intCodeAdd
+;; it "1 times 2 should be set at 0 and pointer should be 4" $ do
+;; multiply instruction1 intCodeAddMultExit `shouldBe `intCodeMult
+;; it "exit should just add an Exit to the actions and return the intCode" $ do
+;; exit intCodeAddMultExit `shouldBe `intCodeExit
