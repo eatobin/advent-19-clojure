@@ -77,16 +77,16 @@
   (testing "lookup various params"
     (testing "lookup a valid aParam"
       (is (= 33
-             (sut/a-param instruction-1 {:pointer 0 :memory this-memory-x}))))
+             (sut/a-param instruction-1 intcode-x))))
     (testing "lookup a valid bParam"
       (is (= 2
-             (sut/b-param instruction-1 {:pointer 0 :memory this-memory-x}))))
+             (sut/b-param instruction-1 intcode-x))))
     (testing "lookup a valid cParam"
       (is (= 33
-             (sut/c-param instruction-1 {:pointer 0 :memory this-memory-x}))))
+             (sut/c-param instruction-1 intcode-x))))
     (testing "lookup a valid cParam with a bad instruction"
       (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no c-param match"
-                            (sut/c-param instruction-5 {:pointer 0 :memory this-memory-x}))))))
+                            (sut/c-param instruction-5 intcode-x))))))
 
 (deftest opcode-actions
   (testing "add and multiply"
@@ -99,13 +99,3 @@
     (testing "exit should just add an Exit to the actions and return the intCode"
       (is (= intcode-exit
              (sut/exit intcode-add-mult-exit))))))
-
-
-;; TODO
-;; describe "\nAdd/Mult/Exit Tests" $ do
-;; it "1 plus 2 should be set at 0 and pointer should be 4" $ do
-;; add instruction1 intCodeAddMultExit `shouldBe `intCodeAdd
-;; it "1 times 2 should be set at 0 and pointer should be 4" $ do
-;; multiply instruction1 intCodeAddMultExit `shouldBe `intCodeMult
-;; it "exit should just add an Exit to the actions and return the intCode" $ do
-;; exit intCodeAddMultExit `shouldBe `intCodeExit
