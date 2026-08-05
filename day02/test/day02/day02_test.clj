@@ -7,10 +7,13 @@
 (def instruction-5 {:a 2, :b 3, :c 4, :d 5, :e 6})
 (def memory-as-csv-string "10,11,1")
 (def this-memory [10 11 1])
-(def intCode {:pointer 0
+(def intcode {:pointer 0
               :memory  this-memory
               :actions '()})
 (def this-memory-x [0 3 2 33])
+(def intcode-x {:pointer 0
+                :memory  this-memory-x
+                :actions '()})
 
 
 
@@ -41,14 +44,26 @@
          this-memory
          (sut/make-memory memory-as-csv-string)))))
 
+(deftest memory-lookup
+  (testing "lookup various memory locations"
+    (testing "lookup a valid Memory index - -p-w"
+      (is (= 1
+             (sut/-p-w intcode 2))))
+    (testing "lookup a valid Memory index - -p-r"
+      (is (= 11
+             (sut/-p-r intcode 2))))
+    (testing "lookup an invalid Memory index - -p-w"
+      (is (nil?
+           (sut/-p-w intcode 33))))))
 
-;(deftest -p-w
-;  (testing "-p-w"
-;    (is (= 1
-;           (sut/-p-w intCode 2)))))
-;
-;(deftest -p-r
-;  (testing "-p-r"
-;    (is (=
-;         11
-;         (sut/-p-r intCode 2)))))
+(deftest params-lookup
+  (testing "lookup various params"
+    (testing "lookup a valid aParam"
+      (is (= 33
+             (sut/a-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
+    (testing "lookup a valid bParam"
+      (is (= 2
+             (sut/b-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))
+    (testing "lookup a valid cParam"
+      (is (= 33
+             (sut/c-param {:instruction instruction-1 :pointer 0 :memory this-memory-x}))))))
