@@ -109,25 +109,3 @@
              (sut/run-op-code {:pointer 0
                                :memory (sut/make-memory aoc-memory-1)
                                :actions '()}))))))
-;; (testing "1 times 2 should be set at 0 and pointer should be 4"
-;;   (is (= intcode-mult
-;;          (sut/multiply instruction-1 intcode-add-mult-exit))))
-;; (testing "exit should just add an Exit to the actions and return the intCode"
-;;   (is (= intcode-exit
-;;          (sut/exit intcode-add-mult-exit))))
-;; ))
-
-
-
-;; let aocMemory1Test () =
-;;     runOpCode
-;;         { pointer = 0
-;;           memory = makeMemory aocMemory1
-;;           actions = [] }
-;;     |> should
-;;         equal
-;;         
-;;     { pointer = 4
-;;           memory = PersistentVector.ofSeq 
-;;         [ 1; 0; 0; 2; 99 ]
-;;           actions = [ Exit; Add ] }
