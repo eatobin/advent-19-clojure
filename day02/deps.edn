@@ -14,6 +14,34 @@
   :neil               {:project {:name day02/day02}}
   :inspect/portal-cli {:extra-deps {djblue/portal {:mvn/version "0.67.1"}}}}}
 
+;; cognitect:
+;; clojure -X:test/cognitect
+
+;; kaocha
+;; clojure -M:test/run
+;; clojure -M:test/run-all
+;; clojure -M:test/watch
+;; [eric@eric-sony day05](app)$ bin/kaocha
+
+;; Best REPL:
+;; On port 55555 (five fives):
+;; clojure -X:repl/socket
+
+;; Others:
+;; clojure -M:repl/rebel
+
+;; clj -M:repl/basic <- with rlwrap
+
+;; ForRebel
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- results to output panel
+;; (new) JVM Socket REPL <- no connection
+
+;; For clj -M:repl/basic
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- results to output panel
+;; (new) JVM Socket REPL <- no connection
+
 ;; clojure -X:deps aliases
 
 ;; - report project dependencies that have newer versions available:
