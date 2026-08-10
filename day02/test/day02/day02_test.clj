@@ -109,4 +109,18 @@
               :actions '(:exit :add)}
              (sut/run-op-code {:pointer 0
                                :memory  (sut/make-memory aoc-memory-1)
+                               :actions '()}))))
+    (testing "aoc-memory-test-2"
+      (is (= {:pointer 8
+              :memory  [3500 9 10 70 2 3 11 0 99 30 40 50]
+              :actions '(:exit :multiply :add)}
+             (sut/run-op-code {:pointer 0
+                               :memory  (sut/make-memory aoc-memory-2)
+                               :actions '()}))))
+    (testing "aoc-memory-test-3"
+      (is (= {:pointer 4
+              :memory  [ 2 0 0 0 99]
+              :actions '(:exit :add)}
+             (sut/run-op-code {:pointer 0
+                               :memory  (sut/make-memory aoc-memory-3)
                                :actions '()}))))))
