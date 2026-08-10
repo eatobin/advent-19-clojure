@@ -1,6 +1,7 @@
 (ns day02.day02-test
   (:require [clojure.test :refer [deftest is testing]]
-            [day02.library :as sut]))                       ; system under test
+            [day02.library :as sut])
+  (:import (clojure.lang ExceptionInfo)))                   ; system under test
 
 (def instruction-1 {:a 0, :b 0, :c 0, :d 0, :e 6})
 (def instruction-3 {:a 0, :b 0, :c 4, :d 5, :e 6})
@@ -85,7 +86,7 @@
       (is (= 33
              (sut/c-param instruction-1 intcode-x))))
     (testing "lookup a valid cParam with a bad instruction"
-      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"no c-param match"
+      (is (thrown-with-msg? ExceptionInfo #"no c-param match"
                             (sut/c-param instruction-5 intcode-x))))))
 
 (deftest opcode-actions
@@ -104,8 +105,8 @@
   (testing "aoc-memory-tests"
     (testing "aoc-memory-test-1"
       (is (= {:pointer 4
-              :memory [1 0 0 2 99]
+              :memory  [1 0 0 2 99]
               :actions '(:exit :add)}
              (sut/run-op-code {:pointer 0
-                               :memory (sut/make-memory aoc-memory-1)
+                               :memory  (sut/make-memory aoc-memory-1)
                                :actions '()}))))))
