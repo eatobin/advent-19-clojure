@@ -1,5 +1,5 @@
 {:paths ["src" "resources"]
- :deps  {org.clojure/clojure {:mvn/version "1.12.5"}}
+ :deps  {org.clojure/clojure {:mvn/version "1.13.0-alpha6"}}
  :aliases
  {:run-m              {:main-opts ["-m" "day02.day02"]}
   :run-x              {:ns-default day02.day02
