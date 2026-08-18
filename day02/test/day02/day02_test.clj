@@ -1,5 +1,7 @@
 (ns day02.day02-test
   (:require [clojure.test :refer [deftest is testing]]
+            [matcher-combinators.test]
+            [matcher-combinators.matchers :as m]
             [day02.library :as sut])
   (:import (clojure.lang ExceptionInfo)))                   ; system under test
 
@@ -19,9 +21,9 @@
 (def aoc-memory-1 "1,0,0,3,99")
 (def aoc-memory-2 "1,9,10,3,2,3,11,0,99,30,40,50")
 (def aoc-memory-3 "1,0,0,0,99")
-(def aoc-memory-4 "2,3,0,3,99")
-(def aoc-memory-5 "2,4,4,5,99,0")
-(def aoc-memory-6 "1,1,1,4,99,5,6,0,99")
+;; (def aoc-memory-4 "2,3,0,3,99")
+;; (def aoc-memory-5 "2,4,4,5,99,0")
+;; (def aoc-memory-6 "1,1,1,4,99,5,6,0,99")
 (def intcode-add-mult-exit {:pointer 0
                             :memory  this-memory-add-mult
                             :actions '()})
@@ -40,6 +42,10 @@
     (is (=
          1
          1))))
+
+(deftest test-matching-with-explicit-matchers
+  (is (match? (m/equals 37) (+ 29 8)))
+  (is (match? (m/regex #"fox") "The quick brown fox jumps over the lazy dog")))
 
 (deftest make-instructions
   (testing "make various instructions"
@@ -86,8 +92,9 @@
       (is (= 33
              (sut/c-param instruction-1 intcode-x))))
     (testing "lookup a valid cParam with a bad instruction"
-      (is (thrown-with-msg? ExceptionInfo #"no c-param match"
-                            (sut/c-param instruction-5 intcode-x))))))
+      (is (thrown-match? ExceptionInfo
+                         {:error-type :bad-c-param-choice}
+                         (sut/c-param instruction-5 intcode-x))))))
 
 (deftest opcode-actions
   (testing "add and multiply"
@@ -119,7 +126,7 @@
                                :actions '()}))))
     (testing "aoc-memory-test-3"
       (is (= {:pointer 4
-              :memory  [ 2 0 0 0 99]
+              :memory  [2 0 0 0 99]
               :actions '(:exit :add)}
              (sut/run-op-code {:pointer 0
                                :memory  (sut/make-memory aoc-memory-3)
