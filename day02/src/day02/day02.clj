@@ -38,13 +38,13 @@
 
     ;; part a
     (printf "%nPart A answer: %s, correct: 2890696%n" answer-1)
-    (println (reverse (:actions final-state-a)))))
+    (println (reverse (:actions final-state-a)))
 
-;     ;  ;; part b
-;     (let [noun    (first (first (first (find-winner))))
-;           verb    (last (first (first (find-winner))))
-;           answer2 (+ (* 100 noun) verb)]
-;       (printf "%nPart B answer: %s, correct: 8226%n" answer2)
+    ;; part b
+    (let [noun    (first (first (first (find-winner the-main-memory))))
+          verb    (last (first (first (find-winner the-main-memory))))
+          answer2 (+ (* 100 noun) verb)]
+      (printf "%nPart B answer: %s, correct: 8226%n" answer2))))
 ;       (let [initial-state-b {:pointer 0 :memory (lib/updated-memory noun verb initial-memory) :actions '()}
 ;             final-state-b   (lib/run-op-code initial-state-b)]
 ;         (println (reverse (:actions final-state-b)))))))
