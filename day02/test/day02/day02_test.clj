@@ -1,8 +1,8 @@
 (ns day02.day02-test
   (:require [clojure.test :refer [deftest is testing]]
-            [matcher-combinators.test]
+            [day02.library :as sut]
             [matcher-combinators.matchers :as m]
-            [day02.library :as sut])
+            [matcher-combinators.test])
   (:import (clojure.lang ExceptionInfo)))                   ; system under test
 
 (def instruction-1 {:a 0, :b 0, :c 0, :d 0, :e 6})
@@ -21,7 +21,7 @@
 (def aoc-memory-1 "1,0,0,3,99")
 (def aoc-memory-2 "1,9,10,3,2,3,11,0,99,30,40,50")
 (def aoc-memory-3 "1,0,0,0,99")
-;; (def aoc-memory-4 "2,3,0,3,99")
+(def aoc-memory-4 "2,3,0,3,99")
 ;; (def aoc-memory-5 "2,4,4,5,99,0")
 ;; (def aoc-memory-6 "1,1,1,4,99,5,6,0,99")
 (def intcode-add-mult-exit {:pointer 0
@@ -130,4 +130,27 @@
               :actions '(:exit :add)}
              (sut/run-op-code {:pointer 0
                                :memory  (sut/make-memory aoc-memory-3)
+                               :actions '()}))))
+    (testing "aoc-memory-test-4"
+      (is (= {:pointer 4
+              :memory  [2 3 0 6 99]
+              :actions '(:exit :multiply)}
+             (sut/run-op-code {:pointer 0
+                               :memory  (sut/make-memory aoc-memory-4)
                                :actions '()}))))))
+; pub fn aoc_memory_4_test() {
+;   let this_aoc_memory = "2,3,0,3,99"
+;   lib.run_op_code(
+;     lib.IntCode(
+;       pointer: 0,
+;       memory: lib.make_memory(this_aoc_memory),
+;       actions: [],
+;     ),
+;   )
+;   |> should.equal(
+;     lib.IntCode(pointer: 4, memory: iv.from_list([2, 3, 0, 6, 99]), actions: [
+;       lib.Exit,
+;       lib.Multiply,
+;     ]),
+;   )
+; }
