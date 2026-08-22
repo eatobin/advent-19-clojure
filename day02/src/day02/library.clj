@@ -2,16 +2,6 @@
   (:require
    [clojure.string :as str]))
 
-; [eric@eric-minisforum day02](dev)$ clojure -M:repl/rebel
-; nREPL server started on port 45677 on host localhost - nrepl://localhost:45677
-; [Rebel readline] Type :repl/help for online help info
-; user=> (require '[day02.day02 :as day02])
-; nil
-; user=> *ns*
-; #namespace[user]
-; user=> (day02/answer-b)
-; 8226
-
 ;; Instruction:
 ;; ABCDE
 ;; 01234

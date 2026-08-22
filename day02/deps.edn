@@ -52,3 +52,13 @@
 ;; cd project-directory && clojure -T:search/outdated
 ;; - update library versions in this deps.edn file:
 ;; cd $XDG_CONFIG_HOME/clojure && clojure -T:search/outdated
+
+; [eric@eric-minisforum day02](dev)$ clojure -M:repl/rebel
+; nREPL server started on port 45677 on host localhost - nrepl://localhost:45677
+; [Rebel readline] Type :repl/help for online help info
+; user=> (require '[day02.day02 :as day02])
+; nil
+; user=> *ns*
+; #namespace[user]
+; user=> (day02/answer-b)
+; 8226

@@ -23,7 +23,7 @@
 (def aoc-memory-3 "1,0,0,0,99")
 (def aoc-memory-4 "2,3,0,3,99")
 (def aoc-memory-5 "2,4,4,5,99,0")
-;; (def aoc-memory-6 "1,1,1,4,99,5,6,0,99")
+(def aoc-memory-6 "1,1,1,4,99,5,6,0,99")
 (def intcode-add-mult-exit {:pointer 0
                             :memory  this-memory-add-mult
                             :actions '()})
@@ -144,24 +144,12 @@
               :actions '(:exit :multiply)}
              (sut/run-op-code {:pointer 0
                                :memory  (sut/make-memory aoc-memory-5)
+                               :actions '()}))))
+    (testing "aoc-memory-test-6"
+      (is (= {:pointer 8
+              :memory  [30 1 1 4 2 5 6 0 99]
+              :actions '(:exit :multiply :add)}
+             (sut/run-op-code {:pointer 0
+                               :memory  (sut/make-memory aoc-memory-6)
                                :actions '()}))))))
-; pub fn aoc_memory_5_test() {
-;   let this_aoc_memory = "2,4,4,5,99,0"
-;   lib.run_op_code(
-;     lib.IntCode(
-;       pointer: 0,
-;       memory: lib.make_memory(this_aoc_memory),
-;       actions: [],
-;     ),
-;   )
-;   |> should.equal(
-;     lib.IntCode(
-;       pointer: 4,
-;       memory: iv.from_list([2, 4, 4, 5, 99, 9801]),
-;       actions: [
-;         lib.Exit,
-;         lib.Multiply,
-;       ],
-;     ),
-;   )
-; }
+
