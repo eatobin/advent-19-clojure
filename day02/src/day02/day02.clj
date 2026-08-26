@@ -31,24 +31,24 @@
                            [candidate-intcode (+ (* 100 noun) verb)]))]
       (printf "%nPart B answer: %s, correct: 8226%n" (last final-state-b))
       (println (reverse (:actions (first final-state-b)))))))
-;; 
-;; (comment
-;;   (-main)
-;;   *ns*)
-;; 
-;; (comment
-;;   ;; clojure -M:repl/reloaded
-;;   (require '[portal.api :as p])
-;;   (def p (p/open))
-;;   (add-tap #'p/submit)
-;;   (tap> {:nope
-;;          [{:name "jen" :email "jen@jen.com"}
-;;           {:name "sara" :email "sara@sara.com"}
-;;           {:name "ericky" :email "eatobin@gmail.com"}]})
-;;   (p/clear)
-;;   (remove-tap #'p/submit)
-;;   (p/close)
-;;   (p/docs))
+
+(comment
+  (-main)
+  *ns*)
+
+(comment
+  ;; clojure -M:repl/reloaded
+  (require '[portal.api :as p])
+  (def p (p/open))
+  (add-tap #'p/submit)
+  (tap> {:nope
+         [{:name "jen" :email "jen@jen.com"}
+          {:name "sara" :email "sara@sara.com"}
+          {:name "ericky" :email "eatobin@gmail.com"}]})
+  (p/clear)
+  (remove-tap #'p/submit)
+  (p/close)
+  (p/docs))
 
 ; gleamy:
 
