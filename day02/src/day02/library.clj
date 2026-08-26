@@ -105,3 +105,27 @@
       9 (exit {:pointer pointer :memory memory :actions actions})
       (throw (ex-info "run-op-code failed"
                       {:error-type :bad-run-op-code-choice})))))
+
+(def candidate-pairs
+  (for [noun (range 0 100)
+        verb (range 0 100)]
+    [noun verb]))
+
+(defn run-a-candidate-pair [memory]
+  (fn [candidate-pair]
+    (let [candidate-intcode (run-op-code {:pointer 0
+                                              :memory  (updated-memory
+                                                        (first candidate-pair)
+                                                        (last candidate-pair)
+                                                        memory)
+                                              :actions '()})]
+      [candidate-pair ((:memory candidate-intcode) 0)])))
+
+(defn map-over-pairs [memory]
+  (map (run-a-candidate-pair memory) candidate-pairs))
+
+(defn winner-is [candidate-triple]
+  (= (last candidate-triple) 19690720))
+
+(defn find-winner [memory]
+  (first (filterv winner-is (map-over-pairs memory))))
