@@ -12,3 +12,4 @@ checkouts
 .clj-kondo
 .calva
 .lsp
+bb-out
