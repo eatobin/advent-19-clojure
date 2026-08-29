@@ -79,6 +79,30 @@
 (def red-v-i (map-indexed vector red-v))
 (def red-blue-intersect (clojure.set/intersection red-set blue-set))
 
+(comment
+  (def red-v (make-path "R5" [0 0]))
+  (def blue-v (make-path "R5" [3 0]))
+  (def red-set (set red-v))
+  (def blue-set (set blue-v))
+  (def red-blue-intersect (clojure.set/intersection red-set blue-set))
+  (def red-v-i (map-indexed vector red-v))
+  (def blue-v-i (map-indexed vector blue-v))
+
+  (def reds-k-v
+    (rest (for [[k v] red-v-i
+                hit red-blue-intersect
+                :when (= v hit)]
+            [k v])))
+  (def blues-k-v
+    (rest (for [[k v] blue-v-i
+                hit red-blue-intersect
+                :when (= v hit)]
+            [k v])))
+  reds-k-v
+  blues-k-v
+  :rcf)
+
+
 (def reds-k-v
   (rest (for [[k v] red-v-i
               hit red-blue-intersect
