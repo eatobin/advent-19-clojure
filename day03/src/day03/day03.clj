@@ -77,7 +77,7 @@
 (def red-set (set red-v))
 (def blue-v-i (map-indexed vector blue-v))
 (def red-v-i (map-indexed vector red-v))
-(def red-blue-intersect (clojure.set/intersection red-set blue-set))
+(def red-blue-intersect (disj (clojure.set/intersection red-set blue-set) [0 0]))
 
 ;R75,D30,R83,U83,L12,D49,R71,U7,L72
 ;U62,R66,U55,R34,D71,R55,D58,R83 = 610 steps
@@ -91,7 +91,7 @@
   (def blue-v (make-paths ["U98" "R91" "D20" "R16" "D67" "R40" "U7" "R15" "U6" "R7"] [0 0]))
   (def red-set (set red-v))
   (def blue-set (set blue-v))
-  (def red-blue-intersect (clojure.set/intersection red-set blue-set))
+  (def red-blue-intersect (disj (clojure.set/intersection red-set blue-set) [0 0]))
   (def red-v-i (map-indexed vector red-v))
   (def blue-v-i (map-indexed vector blue-v))
 
@@ -105,6 +105,7 @@
                 hit red-blue-intersect
                 :when (= v hit)]
             [k v])))
+  red-blue-intersect
   reds-k-v
   blues-k-v
   (def answer-2 (apply min (for [[kr vr] reds-k-v
