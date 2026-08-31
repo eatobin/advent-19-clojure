@@ -132,5 +132,6 @@
                                  :when (= vr vb)]
                              (+ kr kb))))
   answer-2
+  (println answer-2)
   610 or 410
   :rcf)
