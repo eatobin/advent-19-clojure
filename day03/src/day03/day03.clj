@@ -89,49 +89,60 @@
         hit red-blue-intersect
         :when (= v hit)]
     [k v]))
-(def answer-2 (apply min (for [[kr vr] reds-k-v
-                               [kb vb] blues-k-v
-                               :when (= vr vb)]
-                           (+ kr kb))))
+(def answer-all (apply min (for [[kr vr] reds-k-v
+                                 [kb vb] blues-k-v
+                                 :when (= vr vb)]
+                             (+ kr kb))))
 
 (comment
-  (println answer-2)
+  (println answer-all)
   :rcf)
 
 ;63526
 
 (comment
+  ;;R10
+  ;;U2,R8,D3,L4,U2
+
   ;R75,D30,R83,U83,L12,D49,R71,U7,L72
   ;U62,R66,U55,R34,D71,R55,D58,R83 = 610 steps
   ;R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
   ;U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = 410 steps
   ;;(def red-v (make-paths ["R75" "D30" "R83" "U83" "L12" "D49" "R71" "U7" "L72"] [0 0]))
   ;;(def blue-v (make-paths ["U62" "R66" "U55" "R34" "D71" "R55" "D58" "R83"] [0 0]))
-  (def red-v (make-paths ["R98" "U47" "R26" "D63" "R33" "U87" "L62" "D20" "R33" "U53" "R51"] [0 0]))
-  (def blue-v (make-paths ["U98" "R91" "D20" "R16" "D67" "R40" "U7" "R15" "U6" "R7"] [0 0]))
+  ;; (def red-v (make-paths ["R98" "U47" "R26" "D63" "R33" "U87" "L62" "D20" "R33" "U53" "R51"] [0 0]))
+  ;; (def blue-v (make-paths ["U98" "R91" "D20" "R16" "D67" "R40" "U7" "R15" "U6" "R7"] [0 0]))
+  (def red-v (make-paths ["R10"] [0 0]))
+  red-v
+  (def blue-v (make-paths ["U2" "R8" "D3" "L4" "U2"] [0 0]))
+  blue-v
   (def red-set (set red-v))
+  red-set
   (def blue-set (set blue-v))
+  blue-set
   (def red-blue-intersect (disj (clojure.set/intersection red-set blue-set) [0 0]))
+  red-blue-intersect
   (def red-v-i (map-indexed vector red-v))
+  red-v-i
   (def blue-v-i (map-indexed vector blue-v))
+  blue-v-i
   (def reds-k-v
     (for [[k v] red-v-i
           hit red-blue-intersect
           :when (= v hit)]
       [k v]))
+  reds-k-v
   (def blues-k-v
     (for [[k v] blue-v-i
           hit red-blue-intersect
           :when (= v hit)]
       [k v]))
-  red-blue-intersect
-  reds-k-v
   blues-k-v
-  (def answer-2 (apply min (for [[kr vr] reds-k-v
-                                 [kb vb] blues-k-v
-                                 :when (= vr vb)]
-                             (+ kr kb))))
-  answer-2
-  (println answer-2)
+  (def answer-all (for [[kr vr] reds-k-v
+                        [kb vb] blues-k-v
+                        :when (= vr vb)]
+                    (+ kr kb)))
+  answer-all
+  (println answer-all)
   610 or 410
   :rcf)
