@@ -85,10 +85,36 @@
 ;U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = 410 steps
 
 (comment
-  ;(def red-v (make-paths ["R75" "D30" "R83" "U83" "L12" "D49" "R71" "U7" "L72"] [0 0]))
-  ;(def blue-v (make-paths ["U62" "R66" "U55" "R34" "D71" "R55" "D58" "R83"] [0 0]))
-  (def red-v (vec (make-paths ["R98" "U47" "R26" "D63" "R33" "U87" "L62" "D20" "R33" "U53" "R51"] [0 0])))
-  (def blue-v (vec (make-paths ["U98" "R91" "D20" "R16" "D67" "R40" "U7" "R15" "U6" "R7"] [0 0])))
+  (def red-v (make-paths ["R3"] [0 0]))
+  red-v
+  (def blue-v (make-paths ["U2" "R2" "D3" "L1" "U2"] [0 0]))
+  blue-v
+  (def red-set (set red-v))
+  red-set
+  (def blue-set (set blue-v))
+  blue-set
+  (def red-blue-intersect-seq (seq (disj (clojure.set/intersection red-set blue-set) [0 0])))
+  red-blue-intersect-seq
+  (def red-v-i (map-indexed vector red-v))
+  red-v-i
+  (def blue-v-i (map-indexed vector blue-v))
+  blue-v-i
+  (def candidate-map-red (s/map-invert (into {} red-v-i)))
+  candidate-map-red
+  (def candidate-map-blue (s/map-invert (into {} blue-v-i)))
+  candidate-map-blue
+  (def red-hits
+    (for [point red-blue-intersect-seq
+          k-and-v (find
+                   candidate-map-red point)
+          k     (key k-and-v)
+          v     (val k-and-v)]
+      [k v])))
+  
+  
+  
+  
+  (def red-v-i (map-indexed vector red-v))
   (def red-blue-intersect-vector (vec (disj (clojure.set/intersection red-set blue-set) [0 0])))
   (def red-v-inverted (s/map-invert (into (sorted-map) (zipmap (range) red-v))))
   (def blue-v-inverted (s/map-invert (vec blue-set)))
