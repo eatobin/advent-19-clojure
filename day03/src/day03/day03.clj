@@ -138,19 +138,37 @@
   red-blue-intersect-seq
 
   (def red-hits
-    (for [point red-blue-intersect-seq
-          k-and-v (find
-                   candidate-map-red point)
-          k     (key k-and-v)
-          v     (val k-and-v)]
-      [k v]))
+    (vec (for [point red-blue-intersect-seq
+               :let [k-and-v (find candidate-map-red point)
+                     k (key k-and-v)
+                     v (val k-and-v)]]
+           [k v])))
+
+  red-hits
+  (first red-hits)
+  (type (first red-hits))
+
+  (for [x (range 10)
+        :let [squared (* x x)]
+        :when (even? squared)
+        :while (< x 7)]
+    squared)
+
+  (for [point red-blue-intersect-seq
+        :let [k-and-v (find candidate-map-red point)
+              k (key k-and-v)
+              v     (val k-and-v)]]
+    [k v])
+
+
 
   (def red-hitsX
-    (for [point red-blue-intersect-seq
-          k-and-v (find candidate-map-red point)]
-      k-and-v))
+    (vec (for [point red-blue-intersect-seq
+               k-and-v (first (find candidate-map-red point))]
+           k-and-v)))
 
-  red-hitsX)
+  red-hitsX
+  :rcf)
 
 
 
