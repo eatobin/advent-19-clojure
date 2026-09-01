@@ -148,26 +148,26 @@
   (first red-hits)
   (type (first red-hits))
 
-  (for [x (range 10)
-        :let [squared (* x x)]
-        :when (even? squared)
-        :while (< x 7)]
-    squared)
-
-  (for [point red-blue-intersect-seq
-        :let [k-and-v (find candidate-map-red point)
-              k (key k-and-v)
-              v     (val k-and-v)]]
-    [k v])
-
-
-
-  (def red-hitsX
+  (def blue-hits
     (vec (for [point red-blue-intersect-seq
-               k-and-v (first (find candidate-map-red point))]
-           k-and-v)))
+               :let [k-and-v (find candidate-map-blue point)
+                     k (key k-and-v)
+                     v (val k-and-v)]]
+           [k v])))
 
-  red-hitsX
+  blue-hits
+
+  (let [[kr vr] (first red-hits)
+        [kb vb] (first blue-hits)]
+    [[kr vr] [kb vb]])
+
+  (def answer-all (apply min (for [[kr vr] red-hits
+                                   [kb vb] blue-hits
+                                   :when (= kr kb)]
+                               (+ vr vb))))
+  answer-all
+
+
   :rcf)
 
 
