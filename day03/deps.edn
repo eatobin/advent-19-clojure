@@ -3,8 +3,35 @@
            org.clojure/math.numeric-tower {:mvn/version "0.1.1"}}
  :aliases {:neil {:project {:name day03/day03}}}}
 
-;; clojure -X:deps aliases
+;; cognitect:
+;; clojure -X:test/cognitect
+
+;; kaocha
+;; clojure -M:test/run
+;; clojure -M:test/run-all
+;; clojure -M:test/watch
+;; [eric@eric-sony day05](app)$ bin/kaocha
+
+;; Best REPL:
+;; On port 55555 (five fives):
+;; clojure -X:repl/socket
+
+;; Others:
 ;; clojure -M:repl/rebel
+
+;; clj -M:repl/basic <- with rlwrap
+
+;; ForRebel
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- results to output panel
+;; (new) JVM Socket REPL <- no connection
+
+;; For clj -M:repl/basic
+;; JVM nREPL which installs a few extra middlewares. <-cannot run tests from keyboard
+;; (new) Raw nREPL for non-JVM environments (babashka, etc). <- results to output panel
+;; (new) JVM Socket REPL <- no connection
+
+;; clojure -X:deps aliases
 
 ;; - report project dependencies that have newer versions available:
 ;; cd project-directory && clojure -T:search/outdated
