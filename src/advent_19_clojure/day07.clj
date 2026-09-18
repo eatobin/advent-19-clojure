@@ -1,8 +1,8 @@
-(ns eatobin.day07
+(ns advent-19-clojure.day07
   (:require
+   [advent-19-clojure.intcode :as ic]
    [clojure.data.int-map :as i]
-   [clojure.string :as str]
-   [eatobin.intcode :as ic]))
+   [clojure.string :as str]))
 
 (defn make-memory [memory-as-csv-string]
   (->>
