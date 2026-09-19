@@ -72,6 +72,11 @@
   (print-b nil)
   :rcf)
 
+(comment
+  (answer-a)
+  (answer-b)
+  (answer-c)
+  :rcf)
 
 (defn day01
   "Invoke me with clojure -X:run-day01 advent-19-clojure.day01/day01"
