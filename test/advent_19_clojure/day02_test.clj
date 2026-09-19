@@ -3,7 +3,7 @@
             [clojure.test :refer [deftest is testing]]
             [matcher-combinators.matchers :as m]
             [matcher-combinators.test])
-  (:import (clojure.lang ExceptionInfo)))                   ; system under test
+  (:import (clojure.lang ExceptionInfo))) ; system under test
 
 (def instruction-1 {:a 0, :b 0, :c 0, :d 0, :e 6})
 (def instruction-3 {:a 0, :b 0, :c 4, :d 5, :e 6})
