@@ -1,6 +1,7 @@
 (ns advent-19-clojure.day01-test
   (:require [advent-19-clojure.day01 :as day01]
-            [clojure.test :refer [deftest is]]))
+            [clojure.test :refer [deftest is]]
+            [kaocha.repl :as k]))
 
 (deftest gas-test
   (is (= 2
@@ -19,3 +20,9 @@
          (day01/gas-plus 1969)))
   (is (= 50346
          (day01/gas-plus 100756))))
+
+(comment
+  *ns*
+  (k/run *ns*)
+  (k/run-all)
+  :rcf)

@@ -1,9 +1,10 @@
 (ns advent-19-clojure.day02-test
   (:require [advent-19-clojure.day02 :as sut]
             [clojure.test :refer [deftest is testing]]
+            [kaocha.repl :as k]
             [matcher-combinators.matchers :as m]
             [matcher-combinators.test])
-  (:import (clojure.lang ExceptionInfo))) ; system under test
+  (:import (clojure.lang ExceptionInfo)))
 
 (def instruction-1 {:a 0, :b 0, :c 0, :d 0, :e 6})
 (def instruction-3 {:a 0, :b 0, :c 4, :d 5, :e 6})
@@ -152,3 +153,9 @@
              (sut/run-op-code {:pointer 0
                                :memory  (sut/make-memory aoc-memory-6)
                                :actions '()}))))))
+
+(comment
+  *ns*
+  (k/run *ns*)
+  (k/run-all)
+  :rcf)

@@ -7,7 +7,9 @@
 (def answer (last ((ic/op-code {:input 1 :output [] :phase nil :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}) :output)))
 
 (comment
-  answer)
+  answer
+  (println answer)
+  :rcf)
 
 ;9025675
 
@@ -15,6 +17,8 @@
 (def answer-2 (last ((ic/op-code {:input 5 :output [] :phase nil :pointer 0 :relative-base 0 :memory memory :stopped? false :recur? true}) :output)))
 
 (comment
-  answer-2)
+  answer-2
+  (println answer-2)
+  :rcf)
 
 ;11981754
