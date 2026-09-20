@@ -1,7 +1,11 @@
 (ns advent-19-clojure.day01-test
   (:require [advent-19-clojure.day01 :as day01]
-            [clojure.test :refer [deftest is]]
+            [clojure.test :refer [deftest is testing]]
             [kaocha.repl :as k]))
+
+((deftest self-test
+   (testing "This just tests that tests are wired"
+     (is (= 1 1)))))
 
 (deftest gas-test
   (is (= 2
