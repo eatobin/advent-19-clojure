@@ -36,6 +36,7 @@
 
 ;; Others:
 ;; clojure -M:repl/rebel
+;; bb nrepl-server
 
 ;; clj -M:repl/basic <- with rlwrap
 
