@@ -66,6 +66,7 @@
     (apply min (map abs-dist (disj red-blue-intersect [0 0])))))
 
 (comment
+  answer
   (println answer)
   :rcf)
 
@@ -100,6 +101,7 @@
                            (+ vr vb))))
 
 (comment
+  answer-2
   (println answer-2)
   :rcf)
 
