@@ -6,6 +6,14 @@
   (for [n (str num)]
     (- (byte n) 48)))
 
+(comment
+  (str 234)
+  (byte 4)
+  (explode 234)
+  (explode 67899)
+  (type (explode 67899))
+  :rcf)
+
 (defn increasing? [candidate]
   (apply <= (vec (explode candidate))))
 
@@ -16,7 +24,6 @@
 (def answer (count (for [c pass
                          :when (and (increasing? c) (doubles-or-more c))]
                      c)))
-
 
 (comment
   answer
