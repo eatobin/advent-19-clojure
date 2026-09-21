@@ -17,7 +17,11 @@
                          :when (and (increasing? c) (doubles-or-more c))]
                      c)))
 
-(println answer)
+
+(comment
+  answer
+  (println answer)
+  :rcf)
 
 ;=> 1246
 
@@ -29,6 +33,9 @@
                            :when (and (increasing? c) (doubles? c))]
                        c)))
 
-(println answer-2)
+(comment
+  answer-2
+  (println answer-2)
+  :rcf)
 
 ;814
