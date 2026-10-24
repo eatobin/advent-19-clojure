@@ -21,6 +21,13 @@
   (distance one)
   :rcf)
 
+(comment
+  (reduce + 11 '(44 55 66))
+  (def vv (map #(* % 17) '(44 55 66)))
+  vv
+  (type vv)
+  :rcf)
+
 (defn make-path [movement [start-x start-y]]
   (let [direction (direction movement)
         distance  (distance movement)]
