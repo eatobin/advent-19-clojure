@@ -140,6 +140,11 @@
          [{:name "jen" :email "jen@jen.com"}
           {:name "sara" :email "sara@sara.com"}
           {:name "ericky" :email "eatobin@gmail.com"}]})
+  (tap> {:yup
+         [{:name "jen" :email "jen@jen.com"}
+          {:name "sara" :email "sara@sara.com"}
+          {:name "ericky" :email "eatobin@gmail.com"}]})
+  (tap> "Hi Ericky!")
   (p/clear)
   (remove-tap #'p/submit)
   (p/close)
