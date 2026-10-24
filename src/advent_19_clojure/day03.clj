@@ -26,6 +26,9 @@
   (def vv (map #(* % 17) '(44 55 66)))
   vv
   (type vv)
+  (def rr (zipmap '(1 2 3) '(100 200 300)))
+  rr
+  (type rr)
   :rcf)
 
 (defn make-path [movement [start-x start-y]]
