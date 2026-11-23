@@ -24,7 +24,7 @@
 ;; cognitect:
 ;; clojure -X:test/cognitect
 
-;; kaocha
+;; kaocha:
 ;; clojure -M:test/run
 ;; clojure -M:test/run-all
 ;; - `:fail-fast? false` argument to run all tests
